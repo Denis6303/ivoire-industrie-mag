@@ -1,0 +1,38 @@
+<?php
+
+use App\Http\Controllers\Front\AdvertisementController;
+use App\Http\Controllers\Front\ArticleController;
+use App\Http\Controllers\Front\CategoryController;
+use App\Http\Controllers\Front\CommentController;
+use App\Http\Controllers\Front\CompanyController;
+use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Front\NewsletterController;
+use App\Http\Controllers\Front\ProjectController;
+use App\Http\Controllers\Front\SearchController;
+use App\Http\Controllers\Front\SectorController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
+Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('articles.show')->middleware('track.article.view');
+
+Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
+
+Route::get('/secteurs', [SectorController::class, 'index'])->name('sectors.index');
+Route::get('/secteurs/{slug}', [SectorController::class, 'show'])->name('sectors.show');
+
+Route::get('/entreprises', [CompanyController::class, 'index'])->name('companies.index');
+Route::get('/entreprises/{slug}', [CompanyController::class, 'show'])->name('companies.show');
+
+Route::get('/projets', [ProjectController::class, 'index'])->name('projects.index');
+
+Route::get('/recherche', [SearchController::class, 'index'])->name('search');
+
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+Route::get('/newsletter/confirm/{token}', [NewsletterController::class, 'confirm'])->name('newsletter.confirm');
+Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
+
+Route::post('/articles/{article}/comments', [CommentController::class, 'store'])->name('comments.store');
+
+Route::get('/ads/{ad}/click', [AdvertisementController::class, 'trackClick'])->name('ads.click');
