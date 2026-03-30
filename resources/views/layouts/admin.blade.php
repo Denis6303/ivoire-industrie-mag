@@ -6,22 +6,28 @@
     <title>Admin - {{ config('app.name') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100">
-<div class="flex min-h-screen">
-    <aside class="w-60 bg-emerald-900 p-4 text-white">
-        <a href="{{ route('admin.dashboard') }}" class="mb-6 block text-lg font-bold">ivoireindustriemag</a>
-        <nav class="space-y-2 text-sm">
-            <a class="block" href="{{ route('admin.articles.index') }}">Articles</a>
-            <a class="block" href="{{ route('admin.comments.index') }}">Commentaires</a>
-            <a class="block" href="{{ route('admin.settings') }}">Paramètres</a>
-        </nav>
-    </aside>
-    <main class="flex-1 p-6">
-        @if(session('success'))
-            <div class="mb-4 rounded bg-emerald-100 p-3 text-emerald-900">{{ session('success') }}</div>
-        @endif
-        @yield('content')
-    </main>
+<body class="bg-light">
+<div class="container-fluid">
+    <div class="row min-vh-100">
+        <aside class="col-lg-2 col-md-3 bg-dark text-white p-4">
+            <a href="{{ route('admin.dashboard') }}" class="d-block mb-4 h5 text-white text-decoration-none">Admin IvoireMag</a>
+            <nav class="nav flex-column gap-2">
+                <a class="nav-link text-white p-0" href="{{ route('admin.articles.index') }}">Articles</a>
+                <a class="nav-link text-white p-0" href="{{ route('admin.commentaires.index') }}">Commentaires</a>
+                <a class="nav-link text-white p-0" href="{{ route('admin.settings') }}">Paramètres</a>
+                <form method="POST" action="{{ route('admin.logout') }}" class="mt-3">
+                    @csrf
+                    <button class="btn btn-sm btn-outline-light">Déconnexion</button>
+                </form>
+            </nav>
+        </aside>
+        <main class="col-lg-10 col-md-9 p-4">
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+            @yield('content')
+        </main>
+    </div>
 </div>
 </body>
 </html>

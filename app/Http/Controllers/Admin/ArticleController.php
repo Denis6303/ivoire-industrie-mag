@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Media;
+use App\Services\MediaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -38,10 +40,33 @@ class ArticleController extends Controller
             'excerpt' => ['required', 'string'],
             'content' => ['required', 'string'],
             'category_id' => ['required', 'exists:categories,id'],
+            'cover_file' => ['nullable', 'image', 'max:10240'],
+            'cover_alt' => ['nullable', 'string', 'max:255'],
         ]);
 
         $data['author_id'] = auth()->id();
         $data['slug'] = Str::slug($data['title']).'-'.Str::lower(Str::random(6));
+
+        unset($data['cover_file']);
+
+        if ($request->hasFile('cover_file')) {
+            $uploaded = app(MediaService::class)->upload($request->file('cover_file'), 'media', 'public');
+            $media = Media::create([
+                'filename' => $uploaded['filename'],
+                'original_name' => $uploaded['original_name'],
+                'path' => $uploaded['path'],
+                'url' => $uploaded['url'],
+                'disk' => $uploaded['disk'],
+                'mime_type' => $uploaded['mime_type'],
+                'type' => 'image',
+                'size' => $uploaded['size'],
+                'alt' => $data['cover_alt'] ?? null,
+                'caption' => null,
+                'uploaded_by' => auth()->id(),
+            ]);
+
+            $data['cover_image'] = $media->url;
+        }
 
         Article::create($data);
         return redirect()->route('admin.articles.index')->with('success', 'Article créé.');
@@ -74,7 +99,30 @@ class ArticleController extends Controller
             'excerpt' => ['required', 'string'],
             'content' => ['required', 'string'],
             'category_id' => ['required', 'exists:categories,id'],
+            'cover_file' => ['nullable', 'image', 'max:10240'],
+            'cover_alt' => ['nullable', 'string', 'max:255'],
         ]);
+
+        unset($data['cover_file']);
+
+        if ($request->hasFile('cover_file')) {
+            $uploaded = app(MediaService::class)->upload($request->file('cover_file'), 'media', 'public');
+            $media = Media::create([
+                'filename' => $uploaded['filename'],
+                'original_name' => $uploaded['original_name'],
+                'path' => $uploaded['path'],
+                'url' => $uploaded['url'],
+                'disk' => $uploaded['disk'],
+                'mime_type' => $uploaded['mime_type'],
+                'type' => 'image',
+                'size' => $uploaded['size'],
+                'alt' => $data['cover_alt'] ?? null,
+                'caption' => null,
+                'uploaded_by' => auth()->id(),
+            ]);
+
+            $data['cover_image'] = $media->url;
+        }
 
         $article->update($data);
         return redirect()->route('admin.articles.index')->with('success', 'Article mis à jour.');

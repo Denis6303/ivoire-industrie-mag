@@ -1,0 +1,44 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+:root {
+    --ivm-green: #1b4332;
+    --ivm-gold: #d97706;
+    --ivm-paper: #fafaf7;
+}
+
+body {
+    background-color: var(--ivm-paper);
+}
+
+.brand-title {
+    color: var(--ivm-green);
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+.brand-title span {
+    color: var(--ivm-gold);
+}
+
+.topbar {
+    background: #fff;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.card-mag {
+    border: 1px solid #ececec;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.btn-ivm {
+    background-color: var(--ivm-green);
+    border-color: var(--ivm-green);
+    color: #fff;
+}
+
+.btn-ivm:hover {
+    background-color: #153628;
+    border-color: #153628;
+    color: #fff;
+}

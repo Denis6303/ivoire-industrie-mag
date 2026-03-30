@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Models\Article;
 use Illuminate\Http\Request;
+use App\Services\SearchService;
 
 class SearchController extends Controller
 {
@@ -13,13 +13,8 @@ class SearchController extends Controller
         $q = trim((string) $request->query('q', ''));
         $articles = null;
 
-        if ($q !== '') {
-            $articles = Article::with(['category', 'author'])
-                ->published()
-                ->whereFullText(['title', 'excerpt', 'content'], $q)
-                ->latest('published_at')
-                ->paginate(12)
-                ->withQueryString();
+        if ($q !== '' && mb_strlen($q) >= 2) {
+            $articles = app(SearchService::class)->searchArticles($q, 12);
         }
 
         return view('front.search.index', compact('q', 'articles'));

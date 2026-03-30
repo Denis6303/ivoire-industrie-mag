@@ -21,7 +21,7 @@ class CommentController extends Controller
 
         $data['article_id'] = $article->id;
         $data['user_id'] = auth()->id();
-        $data['is_approved'] = auth()->check();
+        $data['is_approved'] = auth()->check() && in_array(auth()->user()->role, ['super_admin', 'admin', 'editor'], true);
 
         Comment::create($data);
 

@@ -19,7 +19,22 @@ class ArticleController extends Controller
 
     public function show(string $slug)
     {
-        $article = Article::with(['author', 'category', 'tags', 'sectors', 'comments.replies'])
+        $article = Article::with([
+            'author',
+            'category',
+            'tags',
+            'sectors',
+            'comments' => function ($q) {
+                $q->where('is_approved', true)
+                    ->whereNull('parent_id')
+                    ->with([
+                        'user',
+                        'replies' => function ($r) {
+                            $r->where('is_approved', true)->with('user');
+                        },
+                    ]);
+            },
+        ])
             ->published()
             ->where('slug', $slug)
             ->firstOrFail();

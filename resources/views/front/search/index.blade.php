@@ -1,17 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="mb-4 text-2xl font-bold">Recherche</h1>
-    <form method="GET" class="mb-6">
-        <input type="text" name="q" value="{{ $q }}" class="w-full rounded border px-3 py-2" placeholder="Mot-clé..." />
+    <h1 class="mb-4">Recherche</h1>
+    <form method="GET" class="row g-2 mb-4">
+        <div class="col-md-10">
+            <input type="text" name="q" value="{{ $q }}" class="form-control" placeholder="Mot-clé..." />
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-ivm w-100">Rechercher</button>
+        </div>
     </form>
 
     @if($articles)
-        <div class="space-y-3">
+        <div class="d-grid gap-3">
             @foreach($articles as $article)
-                <a href="{{ route('articles.show', $article->slug) }}" class="block rounded bg-white p-4 shadow">{{ $article->title }}</a>
+                <a href="{{ route('articles.show', $article->slug) }}" class="card card-body card-mag text-decoration-none text-dark">{{ $article->title }}</a>
             @endforeach
         </div>
-        <div class="mt-6">{{ $articles->links() }}</div>
+        <div class="mt-4">{{ $articles->links() }}</div>
     @endif
 @endsection

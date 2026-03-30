@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\AdminAuthController;
+use App\Http\Controllers\Auth\ClientAuthController;
 use App\Http\Controllers\Front\AdvertisementController;
 use App\Http\Controllers\Front\ArticleController;
 use App\Http\Controllers\Front\CategoryController;
@@ -36,3 +38,15 @@ Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'uns
 Route::post('/articles/{article}/comments', [CommentController::class, 'store'])->name('comments.store');
 
 Route::get('/ads/{ad}/click', [AdvertisementController::class, 'trackClick'])->name('ads.click');
+
+Route::middleware('guest')->group(function () {
+    Route::get('/connexion', [ClientAuthController::class, 'showLogin'])->name('login');
+    Route::post('/connexion', [ClientAuthController::class, 'login'])->name('login.post');
+    Route::get('/inscription', [ClientAuthController::class, 'showRegister'])->name('register');
+    Route::post('/inscription', [ClientAuthController::class, 'register'])->name('register.post');
+    Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+    Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
+});
+
+Route::post('/deconnexion', [ClientAuthController::class, 'logout'])->middleware('auth')->name('logout');
+Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->middleware('auth')->name('admin.logout');
