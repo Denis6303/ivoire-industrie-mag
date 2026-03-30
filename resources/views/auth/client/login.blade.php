@@ -1,31 +1,113 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+  
+<!-- Mirrored from themes.potenzaglobalsolutions.com/html/nezzy/sign-in.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Mar 2026 09:38:52 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="HTML5 Template" />
+    <meta name="description" content="Nezzy - News and Magazine HTML Template" />
+    <meta name="author" content="potenzaglobalsolutions.com" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Nezzy - News and Magazine HTML Template</title>
 
-@section('content')
-<div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5">
-        <div class="card card-mag">
-            <div class="card-body p-4">
-                <h1 class="h4 mb-3">Connexion client</h1>
-                <form method="POST" action="{{ route('login.post') }}" class="d-grid gap-3">
-                    @csrf
-                    <div>
-                        <label class="form-label">Email</label>
-                        <input type="email" name="email" class="form-control" required>
-                        @error('email')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="images/favicon.ico" />
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
+
+    <!-- CSS Global Compulsory (Do not remove)-->
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/fontawesome/all.min.css" />
+
+    <!-- Template Style -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="bg-light">
+     <!--=================================
+    Loader -->  
+    <div id="overlayer"></div>
+    <span class="loader">
+      <span class="loader-inner"></span>
+    </span>
+
+    <!--=================================
+    Sign In -->
+    <section class="sign-in">
+      <div class="container">
+        <div class="row g-0">
+          <div class="col-lg-6 col-xl-6 col-xxl-7">
+            <div class="sign-in-bg"></div>
+          </div>
+          <div class="col-lg-6 col-xl-6 col-xxl-5">
+            <div class="sign-in-box text-center">
+              <a class="navbar-brand mb-4 d-block" href="index.html">
+                  <img class="img-fluid" src="images/logo-dark.png" alt="">
+                </a>
+                <div class="login-social-media">
+                  <a class="btn google mb-3" href="#"><i class="fa-brands fa-google me-3"></i>Google</a>
+                  <a class="btn twitter mb-3" href="#"><i class="fa-brands fa-twitter me-3"></i>Twitter</a>
+                  <a class="btn Facebook mb-3" href="#"><i class="fa-brands fa-facebook-f me-3"></i>Facebook</a>
+                </div>
+                <span class="text-center pt-1 mb-4 d-block login-with">
+                  <span>OR login With Email</span>
+                </span>
+                <form method="POST" action="{{ route('login.post') }}" class="row mt-4 align-items-center">
+                  @csrf
+                  <div class="mb-3 col-sm-12">
+                    <input type="email" class="form-control" name="email" placeholder="Email Address" autocomplete="email" required value="{{ old('email') }}">
+                    @error('email')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
+                  </div>
+                  <div class="mb-3 col-sm-12">
+                    <input type="password" class="form-control" name="password" placeholder="Password" autocomplete="current-password" required>
+                    @error('password')<div class="text-danger small mt-1">{{ $message }}</div>@enderror
+                  </div>
+                  <div class="col-sm-6 text-sm-start">
+                    <div class="mb-3 form-check">
+                      <input type="checkbox" class="form-check-input" id="exampleCheck1" name="remember" value="1">
+                      <label class="form-check-label" for="exampleCheck1">Keep me logged in</label>
                     </div>
-                    <div>
-                        <label class="form-label">Mot de passe</label>
-                        <input type="password" name="password" class="form-control" required>
+                  </div>
+                  <div class="col-sm-6 mb-0 mb-sm-3 text-sm-end"><a href="#">Forget Password?</a></div>
+                  <div class="col-sm-12 ">
+                    <div class="sign-btn d-grid">
+                      <button type="submit" class="btn btn-primary btn-flat">Log in</button>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="remember" value="1" id="remember-client">
-                        <label class="form-check-label" for="remember-client">Se souvenir de moi</label>
-                    </div>
-                    <button class="btn btn-ivm">Se connecter</button>
+                  </div>
+                  <div class="col-sm-12">
+                    <ul class="list-unstyled">
+                      <li class="me-1">Don't have an account? <a class="text-primary" href="sign-up.html">Signup</a></li>
+                    </ul>
+                  </div>
                 </form>
-                <p class="mt-3 mb-0 small">Pas de compte ? <a href="{{ route('register') }}">Inscription</a></p>
             </div>
+          </div>
         </div>
+      </div>
+    </section>
+    <!--=================================
+    Sign In -->
+
+    <!--=================================
+    Back To Top -->
+    <div class="progress-wrap">
+      <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+      </svg>
     </div>
-</div>
-@endsection
+    <!--=================================
+    Back To Top -->
+
+    <!--=================================
+    Javascript -->
+    <!-- JS Global Compulsory (Do not remove)-->
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/jquery.appear.js"></script>
+    <script src="js/popper/popper.min.js"></script>
+    <script src="js/bootstrap/bootstrap.min.js"></script>
+    <!-- Template Scripts (Do not remove)-->
+    <script src="js/custom.js"></script>
+  </body>
+
+<!-- Mirrored from themes.potenzaglobalsolutions.com/html/nezzy/sign-in.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Mar 2026 09:38:52 GMT -->
+</html>
