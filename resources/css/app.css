@@ -1,8 +1,8 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
 :root {
-    --ivm-green: #1b4332;
-    --ivm-gold: #d97706;
+    --ivm-navy: #243e5d;
+    --ivm-orange: #ff7800;
     --ivm-paper: #fafaf7;
 }
 
@@ -11,13 +11,13 @@ body {
 }
 
 .brand-title {
-    color: var(--ivm-green);
+    color: var(--ivm-navy);
     font-weight: 700;
     letter-spacing: 0.2px;
 }
 
 .brand-title span {
-    color: var(--ivm-gold);
+    color: var(--ivm-orange);
 }
 
 .topbar {
@@ -32,13 +32,13 @@ body {
 }
 
 .btn-ivm {
-    background-color: var(--ivm-green);
-    border-color: var(--ivm-green);
+    background-color: var(--ivm-orange);
+    border-color: var(--ivm-orange);
     color: #fff;
 }
 
 .btn-ivm:hover {
-    background-color: #153628;
-    border-color: #153628;
+    background-color: #e06d00;
+    border-color: #e06d00;
     color: #fff;
 }

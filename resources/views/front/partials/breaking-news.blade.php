@@ -63,8 +63,8 @@
             height: 26px;
             margin: 0 !important;
             border-radius: 4px;
-            background: rgba(48, 201, 106, 0.2) !important;
-            color: #30c96a !important;
+            background: rgba(255, 120, 0, 0.2) !important;
+            color: #ff7800 !important;
             font-size: 11px;
             line-height: 1;
             display: inline-flex !important;
@@ -76,7 +76,7 @@
         .breaking-news .breaking-news-owl .owl-nav button.owl-next:hover,
         .breaking-news .breaking-news-owl .owl-nav button.owl-prev:focus,
         .breaking-news .breaking-news-owl .owl-nav button.owl-next:focus {
-            background: #30c96a !important;
+            background: #ff7800 !important;
             color: #fff !important;
             outline: none;
         }
