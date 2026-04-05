@@ -60,7 +60,9 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="sidebar">
-                        <div class="widget">
+                        @include('front.partials.sidebar-home-related-posts')
+                        @include('front.partials.sidebar-top-categories-and-tags')
+                        <div class="widget mt-4">
                             <h6 class="widget-title">Entreprises à suivre</h6>
                             @forelse ($companies as $company)
                                 <div class="d-flex mb-3 align-items-center border-bottom pb-3">
@@ -79,19 +81,7 @@
                             @endforelse
                             <a href="{{ route('companies.index') }}" class="btn btn-sm btn-primary w-100">Annuaire</a>
                         </div>
-                        @include('front.partials.sidebar-home-social-related')
-                        <div class="widget newsletter-widget mt-4">
-                            <h6 class="widget-title">Newsletter</h6>
-                            <div class="newsletter">
-                                <i class="fa-solid fa-envelope-open-text"></i>
-                                <p>Recevez les temps forts de l’industrie.</p>
-                                <form class="newsletter-box" method="POST" action="{{ route('newsletter.subscribe') }}">
-                                    @csrf
-                                    <input type="email" name="email" class="form-control" placeholder="Votre e-mail" required>
-                                    <button type="submit" class="btn btn-primary w-100 mt-2">S’abonner</button>
-                                </form>
-                            </div>
-                        </div>
+                        @include('front.partials.sidebar-home-follow-social')
                     </div>
                 </div>
             </div>

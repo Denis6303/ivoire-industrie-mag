@@ -86,8 +86,9 @@ POTENZA.isSticky = function () {
           $autohgt = ($this.data('autoheight')) ? $this.data('autoheight') : false,
           $space = ($this.attr('data-space')) ? $this.data('space') : 30,
           $animateOut = ($this.attr('data-animateOut')) ? $this.data('animateOut') : false;
+        var isBreakingNews = $this.hasClass('breaking-news-owl');
         $(this).owlCarousel({
-          loop: $loop,
+          loop: isBreakingNews ? true : $loop,
           items: $items,
           responsive: {
             0: {
@@ -119,7 +120,15 @@ POTENZA.isSticky = function () {
           autoHeight: $autohgt,
           margin: $space,
           nav: $navarrow,
-          navText: ["<i class='fas fa-arrow-left-long'></i>", "<i class='fas fa-arrow-right-long'></i>"],
+          navText: $this.hasClass('breaking-news-owl')
+            ? [
+                "<i class='fa-solid fa-chevron-left' aria-hidden='true'></i>",
+                "<i class='fa-solid fa-chevron-right' aria-hidden='true'></i>",
+              ]
+            : [
+                "<i class='fas fa-arrow-left-long'></i>",
+                "<i class='fas fa-arrow-right-long'></i>",
+              ],
           autoplay: $autoplay,
           autoplayHoverPause: true
         });

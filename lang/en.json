@@ -35,5 +35,9 @@
     "sidebar.social_fans": "Fans",
     "sidebar.social_followers": "Followers",
     "sidebar.social_subscribers": "Subscribers",
-    "sidebar.no_posts_tab": "No articles yet."
+    "sidebar.no_posts_tab": "No articles yet.",
+    "sidebar.top_category_posts": "Top category posts",
+    "sidebar.tags": "Tags",
+    "sidebar.no_category_posts": "No posts by category yet.",
+    "sidebar.no_tags": "No tags yet."
 }

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\Category;
 use App\Models\Company;
+use App\Models\Tag;
 
 class HomeController extends Controller
 {
@@ -34,6 +36,44 @@ class HomeController extends Controller
             ->take(3)
             ->get();
 
+        $topCategoriesForSidebar = Category::query()
+            ->whereHas('articles', fn ($q) => $q->published())
+            ->withCount(['articles as published_count' => fn ($q) => $q->published()])
+            ->orderByDesc('published_count')
+            ->take(5)
+            ->get();
+
+        $latestArticleByCategoryId = collect();
+        if ($topCategoriesForSidebar->isNotEmpty()) {
+            $latestArticleByCategoryId = Article::query()
+                ->published()
+                ->whereIn('category_id', $topCategoriesForSidebar->pluck('id'))
+                ->with('category')
+                ->orderByDesc('published_at')
+                ->get()
+                ->unique('category_id')
+                ->keyBy('category_id');
+        }
+
+        $topCategoryPosts = $topCategoriesForSidebar
+            ->map(function (Category $cat) use ($latestArticleByCategoryId) {
+                $article = $latestArticleByCategoryId->get($cat->id);
+                if (! $article) {
+                    return null;
+                }
+
+                return ['category' => $cat, 'article' => $article];
+            })
+            ->filter()
+            ->values();
+
+        $sidebarTags = Tag::query()
+            ->withCount(['articles' => fn ($q) => $q->published()])
+            ->having('articles_count', '>', 0)
+            ->orderByDesc('articles_count')
+            ->limit(24)
+            ->get();
+
         return view('front.home', compact(
             'featured',
             'latest',
@@ -41,6 +81,8 @@ class HomeController extends Controller
             'sidebarLatest',
             'sidebarTrending',
             'sidebarPopular',
+            'topCategoryPosts',
+            'sidebarTags',
         ));
     }
 }

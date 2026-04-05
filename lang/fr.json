@@ -35,5 +35,9 @@
     "sidebar.social_fans": "Fans",
     "sidebar.social_followers": "Abonnés",
     "sidebar.social_subscribers": "Abonnés",
-    "sidebar.no_posts_tab": "Aucun article pour le moment."
+    "sidebar.no_posts_tab": "Aucun article pour le moment.",
+    "sidebar.top_category_posts": "Articles par catégorie",
+    "sidebar.tags": "Mots-clés",
+    "sidebar.no_category_posts": "Aucun article par catégorie pour le moment.",
+    "sidebar.no_tags": "Aucun mot-clé pour le moment."
 }
