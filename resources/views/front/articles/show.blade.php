@@ -115,24 +115,10 @@
                 </div>
                 <div class="col-lg-4">
             <div class="sidebar mt-lg-0">
-              <div class="widget sidebar-category">
-                            <h6 class="widget-title">Catégories</h6>
-                <ul>
-                                @forelse ($sidebarCategories as $cat)
-                  <li>
-                                        <a href="{{ route('categories.show', $cat->slug) }}">
-                      <div class="category">
-                         <div class="category-name">
-                                                    <h6>{{ $cat->name }} <span>{{ $cat->published_articles_count }}</span></h6>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                                @empty
-                                    <li class="text-muted small">Aucune catégorie.</li>
-                                @endforelse
-                            </ul>
-                        </div>
+                        @include('front.partials.sidebar-category-list', [
+                            'categories' => $sidebarCategories,
+                            'title' => __('sidebar.categories_widget_title'),
+                        ])
             </div>
           </div>
         </div>

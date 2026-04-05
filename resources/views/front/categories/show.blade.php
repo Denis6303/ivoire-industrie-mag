@@ -25,22 +25,11 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="sidebar">
-                        <div class="widget sidebar-category">
-                            <h6 class="widget-title">Autres catégories</h6>
-                            <ul>
-                                @foreach ($navCategories->where('id', '!=', $category->id) as $cat)
-                                    <li>
-                                        <a href="{{ route('categories.show', $cat->slug) }}">
-                                            <div class="category">
-                                                <div class="category-name">
-                                                    <h6>{{ $cat->name }}</h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>
+                        @include('front.partials.sidebar-category-list', [
+                            'categories' => $sidebarCategories,
+                            'excludeCategoryId' => $category->id,
+                            'title' => __('sidebar.categories_other_title'),
+                        ])
                     </div>
                 </div>
             </div>

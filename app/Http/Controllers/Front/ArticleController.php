@@ -15,7 +15,9 @@ class ArticleController extends Controller
             ->latest('published_at')
             ->paginate(12);
 
-        return view('front.articles.index', compact('articles'));
+        $sidebarCategories = Category::sidebarListWithPublishedCounts();
+
+        return view('front.articles.index', compact('articles', 'sidebarCategories'));
     }
 
     public function show(string $locale, string $slug)
@@ -47,10 +49,7 @@ class ArticleController extends Controller
             ->take(3)
             ->get();
 
-        $sidebarCategories = Category::query()
-            ->withCount(['articles as published_articles_count' => fn ($q) => $q->published()])
-            ->orderBy('name')
-            ->get();
+        $sidebarCategories = Category::sidebarListWithPublishedCounts();
 
         return view('front.articles.show', compact('article', 'related', 'sidebarCategories'));
     }

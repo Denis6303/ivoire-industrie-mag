@@ -12,6 +12,8 @@ class CategoryController extends Controller
         $category = Category::where('slug', $slug)->firstOrFail();
         $articles = $category->articles()->published()->latest('published_at')->paginate(12);
 
-        return view('front.categories.show', compact('category', 'articles'));
+        $sidebarCategories = Category::sidebarListWithPublishedCounts();
+
+        return view('front.categories.show', compact('category', 'articles', 'sidebarCategories'));
     }
 }

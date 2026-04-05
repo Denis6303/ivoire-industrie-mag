@@ -39,5 +39,8 @@
     "sidebar.top_category_posts": "Top category posts",
     "sidebar.tags": "Tags",
     "sidebar.no_category_posts": "No posts by category yet.",
-    "sidebar.no_tags": "No tags yet."
+    "sidebar.no_tags": "No tags yet.",
+    "sidebar.categories_widget_title": "Categories",
+    "sidebar.categories_other_title": "Other categories",
+    "sidebar.no_categories": "No categories."
 }

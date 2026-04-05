@@ -39,5 +39,8 @@
     "sidebar.top_category_posts": "Articles par catégorie",
     "sidebar.tags": "Mots-clés",
     "sidebar.no_category_posts": "Aucun article par catégorie pour le moment.",
-    "sidebar.no_tags": "Aucun mot-clé pour le moment."
+    "sidebar.no_tags": "Aucun mot-clé pour le moment.",
+    "sidebar.categories_widget_title": "Catégories",
+    "sidebar.categories_other_title": "Autres catégories",
+    "sidebar.no_categories": "Aucune catégorie."
 }
