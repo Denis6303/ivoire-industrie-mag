@@ -37,10 +37,10 @@
                                         <i class="fas fa-chevron-down fa-xs"></i>
                                     </a>
                                     <div class="dropdown-menu mt-0" aria-labelledby="langMenu">
-                                        <a class="dropdown-item d-flex align-items-center" href="{{ route('locale.switch', 'fr') }}">
+                                        <a class="dropdown-item d-flex align-items-center" href="{{ switch_locale_url('fr') }}">
                                             <img class="img-fluid country-flag me-2" src="{{ asset('images/flags/fr.svg') }}" width="20" height="14" alt=""> {{ __('lang.fr') }}
                                         </a>
-                                        <a class="dropdown-item d-flex align-items-center" href="{{ route('locale.switch', 'en') }}">
+                                        <a class="dropdown-item d-flex align-items-center" href="{{ switch_locale_url('en') }}">
                                             <img class="img-fluid country-flag me-2" src="{{ asset('images/flags/en.svg') }}" width="20" height="14" alt=""> {{ __('lang.en') }}
                                         </a>
                                     </div>
@@ -99,6 +99,7 @@
                 </ul>
             </div>
             <div class="add-listing">
+                <div id="weathertime" class="clock" aria-live="polite"></div>
                 <div class="header-search">
                     <div class="search">
                         <a href="#search" aria-label="{{ __('header.search_button') }}"><i class="fa-solid fa-magnifying-glass"></i></a>

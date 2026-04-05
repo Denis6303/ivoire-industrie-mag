@@ -13,3 +13,9 @@
 <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/fontawesome/all.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+<style>
+    /* Pas de flèches Owl dans l’en-tête (filet de sécurité si le DOM est mal positionné) */
+    .header .owl-nav {
+        display: none !important;
+    }
+</style>

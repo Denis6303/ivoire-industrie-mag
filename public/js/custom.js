@@ -308,29 +308,19 @@ POTENZA.BannerStyle = function () {
   ShowTime
 *************************/
 POTENZA.ShowTime = function () {
-  if($("#weathertime")[0]){
+  if ($("#weathertime")[0]) {
+    var el = document.getElementById("weathertime");
+    var lang = document.documentElement.lang || "fr";
+    var locale = lang.indexOf("en") === 0 ? "en-US" : "fr-FR";
     var date = new Date();
-    var h = date.getHours(); // 0 - 23
-    var m = date.getMinutes(); // 0 - 59
-    var s = date.getSeconds(); // 0 - 59
-    var session = "AM";
-    
-    if(h == 0){
-        h = 12;
-    }
-    
-    if(h > 12){
-        h = h - 12;
-        session = "PM";
-    }
-    
-    h = (h < 10) ? "0" + h : h;
-    m = (m < 10) ? "0" + m : m;
-    s = (s < 10) ? "0" + s : s;
-    
-    var time = h + ":" + m + ":" + s + " " + session;
-    document.getElementById("weathertime").innerText = time;
-    document.getElementById("weathertime").textContent = time;
+    var time = date.toLocaleTimeString(locale, {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: locale === "en-US"
+    });
+    el.innerText = time;
+    el.textContent = time;
     setTimeout(POTENZA.ShowTime, 1000);
   }
 }

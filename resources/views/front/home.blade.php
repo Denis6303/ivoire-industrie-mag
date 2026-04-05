@@ -27,9 +27,6 @@
                                     <a href="{{ route('articles.show', $f->slug) }}">{{ $f->title }}</a>
                                 </h2>
                                 <div class="blog-post-meta">
-                                    @if ($f->author)
-                                        <div class="blog-post-user"><span>par {{ $f->author->name }}</span></div>
-                                    @endif
                                     @if ($f->published_at)
                                         <div class="blog-post-time">
                                             <span><i class="fa-solid fa-calendar-days"></i>{{ $f->published_at->translatedFormat('j F Y') }}</span>
@@ -38,6 +35,9 @@
                                 </div>
                                 @if ($f->excerpt)
                                     <p class="mt-3">{{ $f->excerpt }}</p>
+                                @endif
+                                @if ($f->author)
+                                    <div class="blog-post-user mt-2"><span>par {{ $f->author->name }}</span></div>
                                 @endif
                                 <a class="btn btn-primary mt-2" href="{{ route('articles.show', $f->slug) }}">Lire l’article</a>
                             </div>
@@ -55,7 +55,7 @@
                         @endforeach
                     </div>
                     <div class="text-center mt-3">
-                        <a href="{{ route('articles.index') }}" class="btn btn-outline-primary">Tous les articles</a>
+                        <a href="{{ route('articles.index') }}" class="btn btn-primary">Tous les articles</a>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -79,6 +79,7 @@
                             @endforelse
                             <a href="{{ route('companies.index') }}" class="btn btn-sm btn-primary w-100">Annuaire</a>
                         </div>
+                        @include('front.partials.sidebar-home-social-related')
                         <div class="widget newsletter-widget mt-4">
                             <h6 class="widget-title">Newsletter</h6>
                             <div class="newsletter">

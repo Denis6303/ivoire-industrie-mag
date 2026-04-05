@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('title', $sector->name)
+@section('title', e($sector->name))
 
 @section('content')
     @include('front.partials.page-header', [

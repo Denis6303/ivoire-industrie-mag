@@ -24,5 +24,16 @@
     "search.hint_empty": "Saisissez au moins 2 caractères pour lancer une recherche.",
     "search.hint_short": "La recherche nécessite au moins 2 caractères.",
     "search.no_results": "Aucun article ne correspond à « :q ».",
-    "search.results_count": ":count résultat(s) pour « :q »"
+    "search.results_count": ":count résultat(s) pour « :q »",
+    "errors.not_found_title": "Page introuvable",
+    "errors.not_found_lead": "La page demandée n’existe pas ou a été déplacée.",
+    "sidebar.follow_social": "Suivez-nous",
+    "sidebar.related_posts": "Articles à lire",
+    "sidebar.tab_latest": "Récents",
+    "sidebar.tab_trending": "Tendance",
+    "sidebar.tab_popular": "Populaires",
+    "sidebar.social_fans": "Fans",
+    "sidebar.social_followers": "Abonnés",
+    "sidebar.social_subscribers": "Abonnés",
+    "sidebar.no_posts_tab": "Aucun article pour le moment."
 }

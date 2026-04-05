@@ -81,7 +81,12 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'asset_url' => env('ASSET_URL', '/'),
+    /*
+    | Null = URLs d’assets basées sur la requête (hôte, port, sous-dossier /public).
+    | Ne pas forcer '/' ici : sous WAMP ou /fr/articles/…, les chemins /css/… peuvent
+    | viser la mauvaise racine. Pour un CDN, définir ASSET_URL en entier.
+    */
+    'asset_url' => env('ASSET_URL'),
 
     /*
     |--------------------------------------------------------------------------

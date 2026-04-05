@@ -11,9 +11,9 @@
                 </div>
                 <div class="col-xl-10 col-lg-9 col-md-8">
                     <div
-                        class="owl-carousel arrow-styel-03"
+                        class="owl-carousel"
                         data-nav-dots="false"
-                        data-nav-arrow="true"
+                        data-nav-arrow="false"
                         data-items="4"
                         data-xl-items="4"
                         data-lg-items="3"

@@ -25,11 +25,6 @@
             <a href="{{ route('articles.show', $article->slug) }}">{{ $article->title }}</a>
         </h4>
         <div class="blog-post-meta">
-            @if ($article->author)
-                <div class="blog-post-user">
-                    <a href="#">par {{ $article->author->name ?? 'Rédaction' }}</a>
-                </div>
-            @endif
             @if ($article->published_at)
                 <div class="blog-post-time">
                     <a href="#"><i class="fa-solid fa-calendar-days"></i>{{ $article->published_at->translatedFormat('j M Y') }}</a>
@@ -38,6 +33,11 @@
         </div>
         @if ($article->excerpt)
             <p>{{ \Illuminate\Support\Str::limit($article->excerpt, 180) }}</p>
+        @endif
+        @if ($article->author)
+            <div class="blog-post-user mt-2">
+                <span>par {{ $article->author->name ?? 'Rédaction' }}</span>
+            </div>
         @endif
         <a class="btn-link" href="{{ route('articles.show', $article->slug) }}">Lire la suite</a>
     </div>

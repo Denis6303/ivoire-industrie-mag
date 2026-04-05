@@ -17,7 +17,7 @@ class ArticleController extends Controller
         return view('front.articles.index', compact('articles'));
     }
 
-    public function show(string $slug)
+    public function show(string $locale, string $slug)
     {
         $article = Article::with([
             'author',

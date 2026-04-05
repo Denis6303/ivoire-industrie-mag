@@ -14,7 +14,7 @@ class SectorController extends Controller
         return view('front.sectors.index', compact('sectors'));
     }
 
-    public function show(string $slug)
+    public function show(string $locale, string $slug)
     {
         $sector = IndustrySector::where('slug', $slug)->firstOrFail();
         $articles = $sector->articles()->published()->latest('published_at')->paginate(12);

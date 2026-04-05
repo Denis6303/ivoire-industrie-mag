@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('title', $article->meta_title ?? $article->title)
+@section('title', e($article->meta_title ?? $article->title))
 @section('meta_description', e($article->meta_description ?? \Illuminate\Support\Str::limit(strip_tags($article->excerpt ?? $article->content), 160)))
 
 @section('content')
@@ -48,7 +48,7 @@
                                 </div>
                             </div>
                             <div class="article-body">
-                                {!! $article->content !!}
+                                {!! article_body_html($article->content) !!}
                             </div>
                             @if ($article->tags->isNotEmpty())
                                 <div class="badges mt-4">

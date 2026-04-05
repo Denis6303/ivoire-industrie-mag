@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('title', $category->name)
+@section('title', e($category->name))
 @section('meta_description', e(\Illuminate\Support\Str::limit(strip_tags($category->description ?? ''), 160)))
 
 @section('content')

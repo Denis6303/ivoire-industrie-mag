@@ -17,8 +17,8 @@
             <li class="nav-item"><a class="nav-link" href="{{ route('search') }}">{{ __('nav.search') }}</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">{{ __('nav.about') }}</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">{{ __('nav.contact') }}</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('locale.switch', 'fr') }}">{{ __('lang.fr') }}</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('locale.switch', 'en') }}">{{ __('lang.en') }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ switch_locale_url('fr') }}">{{ __('lang.fr') }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ switch_locale_url('en') }}">{{ __('lang.en') }}</a></li>
             @guest
                 <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">{{ __('nav.login') }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">{{ __('nav.register') }}</a></li>
