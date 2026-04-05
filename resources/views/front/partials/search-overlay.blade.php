@@ -1,11 +1,19 @@
 <div id="search">
-    <button type="button" class="close" aria-label="Fermer"><i class="fa-solid fa-xmark"></i></button>
+    <button type="button" class="close" aria-label="{{ __('app.close') }}"><i class="fa-solid fa-xmark"></i></button>
     <form action="{{ route('search') }}" method="get">
         <div class="container">
             <div class="row justify-content-md-center">
-                <div class="col-8 position-relative">
-                    <input type="search" name="q" value="{{ request('q') }}" placeholder="Mot-clé, secteur, entreprise…" autocomplete="off">
-                    <button type="submit" class="btn btn-primary">Rechercher</button>
+                <div class="col-9 col-sm-8">
+                    <div class="search-popup">
+                        <input
+                            type="search"
+                            name="q"
+                            value="{{ request('q') }}"
+                            placeholder="{{ __('header.search_placeholder') }}"
+                            autocomplete="off"
+                        >
+                        <button type="submit" class="btn btn-primary">{{ __('header.search_button') }}</button>
+                    </div>
                 </div>
             </div>
         </div>

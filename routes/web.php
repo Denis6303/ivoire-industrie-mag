@@ -8,6 +8,7 @@ use App\Http\Controllers\Front\CategoryController;
 use App\Http\Controllers\Front\CommentController;
 use App\Http\Controllers\Front\CompanyController;
 use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Front\LocaleController;
 use App\Http\Controllers\Front\NewsletterController;
 use App\Http\Controllers\Front\ProjectController;
 use App\Http\Controllers\Front\SearchController;
@@ -21,6 +22,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/locale/{locale}', [LocaleController::class, 'switch'])
+    ->name('locale.switch')
+    ->whereIn('locale', config('ivoireindustriemag.supported_locales', ['fr', 'en']));
 
 Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
 Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('articles.show')->middleware('track.article.view');

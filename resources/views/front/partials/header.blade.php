@@ -11,9 +11,9 @@
                                 </div>
                                 <div class="me-auto d-inline-flex">
                                     <ul class="list-unstyled top-menu">
-                                        <li><a href="{{ route('about') }}">À propos</a></li>
-                                        <li><a href="{{ route('contact') }}">Contact</a></li>
-                                        <li><a href="{{ route('team') }}">Équipe</a></li>
+                                        <li><a href="{{ route('about') }}">{{ __('nav.about') }}</a></li>
+                                        <li><a href="{{ route('contact') }}">{{ __('nav.contact') }}</a></li>
+                                        <li><a href="{{ route('team') }}">{{ __('nav.team') }}</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -22,14 +22,29 @@
                                     <span class="user">
                                         <form method="POST" action="{{ route('logout') }}" class="d-inline">
                                             @csrf
-                                            <button type="submit" class="btn btn-link btn-sm p-0 text-body">Déconnexion</button>
+                                            <button type="submit" class="btn btn-link btn-sm p-0 text-body">{{ __('nav.logout') }}</button>
                                         </form>
                                     </span>
                                 @else
                                     <span class="user">
-                                        <a href="{{ route('login') }}"><img src="{{ asset('images/user.png') }}" alt=""> Connexion</a>
+                                        <a href="{{ route('login') }}"><img src="{{ asset('images/user.png') }}" alt=""> {{ __('nav.login') }}</a>
                                     </span>
                                 @endauth
+                                <div class="dropdown right-menu d-inline-flex news-language">
+                                    <a class="dropdown-toggle" href="#" id="langMenu" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+                                        <img class="img-fluid country-flag" src="{{ asset('images/flags/'.app()->getLocale().'.svg') }}" width="20" height="14" alt="">
+                                        {{ app()->getLocale() === 'en' ? __('lang.en') : __('lang.fr') }}
+                                        <i class="fas fa-chevron-down fa-xs"></i>
+                                    </a>
+                                    <div class="dropdown-menu mt-0" aria-labelledby="langMenu">
+                                        <a class="dropdown-item d-flex align-items-center" href="{{ route('locale.switch', 'fr') }}">
+                                            <img class="img-fluid country-flag me-2" src="{{ asset('images/flags/fr.svg') }}" width="20" height="14" alt=""> {{ __('lang.fr') }}
+                                        </a>
+                                        <a class="dropdown-item d-flex align-items-center" href="{{ route('locale.switch', 'en') }}">
+                                            <img class="img-fluid country-flag me-2" src="{{ asset('images/flags/en.svg') }}" width="20" height="14" alt=""> {{ __('lang.en') }}
+                                        </a>
+                                    </div>
+                                </div>
                                 <div class="social d-inline-flex">
                                     <ul class="list-unstyled">
                                         <li><a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a></li>
@@ -53,15 +68,15 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Accueil</a>
+                        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">{{ __('nav.home') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('articles.*') ? 'active' : '' }}" href="{{ route('articles.index') }}">Articles</a>
+                        <a class="nav-link {{ request()->routeIs('articles.*') ? 'active' : '' }}" href="{{ route('articles.index') }}">{{ __('nav.articles') }}</a>
                     </li>
                     @if (isset($navCategories) && $navCategories->isNotEmpty())
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navCategories" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Catégories<i class="fas fa-chevron-down fa-xs"></i>
+                                {{ __('nav.categories') }}<i class="fas fa-chevron-down fa-xs"></i>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navCategories">
                                 @foreach ($navCategories as $cat)
@@ -73,20 +88,20 @@
                         </li>
                     @endif
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('sectors.*') ? 'active' : '' }}" href="{{ route('sectors.index') }}">Secteurs</a>
+                        <a class="nav-link {{ request()->routeIs('sectors.*') ? 'active' : '' }}" href="{{ route('sectors.index') }}">{{ __('nav.sectors') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('companies.*') ? 'active' : '' }}" href="{{ route('companies.index') }}">Entreprises</a>
+                        <a class="nav-link {{ request()->routeIs('companies.*') ? 'active' : '' }}" href="{{ route('companies.index') }}">{{ __('nav.companies') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}" href="{{ route('projects.index') }}">Projets</a>
+                        <a class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}" href="{{ route('projects.index') }}">{{ __('nav.projects') }}</a>
                     </li>
                 </ul>
             </div>
             <div class="add-listing">
                 <div class="header-search">
                     <div class="search">
-                        <a href="#search" aria-label="Recherche"><i class="fa-solid fa-magnifying-glass"></i></a>
+                        <a href="#search" aria-label="{{ __('header.search_button') }}"><i class="fa-solid fa-magnifying-glass"></i></a>
                     </div>
                 </div>
                 <div class="side-menu d-none d-lg-inline-block">

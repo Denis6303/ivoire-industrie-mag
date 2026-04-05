@@ -9,12 +9,13 @@
     @include('front.partials.header')
     @include('front.partials.offcanvas')
     @include('front.partials.search-overlay')
+    @include('front.partials.breaking-news')
 
     @if (session('success'))
         <div class="container pt-3">
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('app.close') }}"></button>
             </div>
         </div>
     @endif

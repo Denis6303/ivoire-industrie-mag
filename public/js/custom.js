@@ -260,23 +260,30 @@ POTENZA.isSticky = function () {
 *************************/
 POTENZA.searchbox = function () {
   if ($("#search").exists()) {
-    $('a[href="#search"]').on('click', function(event) {
-        event.preventDefault();
-        $('#search').addClass('open');
-        $('#search > form > input[type="search"]').focus();
+    $('a[href="#search"]').on('click', function (event) {
+      event.preventDefault();
+      $('#search').addClass('open');
+      $('#search input[type="search"]').first().trigger('focus');
     });
-    $('#search, #search button.close').on('click keyup', function(event) {
-        if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
-            $(this).removeClass('open');
-        }
+    $('#search button.close').on('click', function (event) {
+      event.preventDefault();
+      $('#search').removeClass('open');
     });
-    //Do not include! This prevents the form from submitting for DEMO purposes only!
-    $('form').submit(function(event) {
-        event.preventDefault();
-        return false;
-    })
-   }
-}
+    $('#search').on('click', function (event) {
+      if (event.target === this) {
+        $('#search').removeClass('open');
+      }
+    });
+    $('#search form').on('click', function (event) {
+      event.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      if (event.key === 'Escape' || event.keyCode === 27) {
+        $('#search').removeClass('open');
+      }
+    });
+  }
+};
 
 /*************************
   Banner Style

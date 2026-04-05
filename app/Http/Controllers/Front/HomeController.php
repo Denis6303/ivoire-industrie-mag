@@ -12,9 +12,8 @@ class HomeController extends Controller
     {
         $featured = Article::with(['category', 'author'])->published()->featured()->latest('published_at')->first();
         $latest = Article::with(['category', 'author'])->published()->latest('published_at')->take(6)->get();
-        $breaking = Article::published()->breaking()->latest('published_at')->take(8)->get();
         $companies = Company::where('is_active', true)->latest()->take(5)->get();
 
-        return view('front.home', compact('featured', 'latest', 'breaking', 'companies'));
+        return view('front.home', compact('featured', 'latest', 'companies'));
     }
 }

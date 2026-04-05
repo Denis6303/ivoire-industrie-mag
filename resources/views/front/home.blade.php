@@ -3,21 +3,6 @@
 @section('title', 'Accueil')
 
 @section('content')
-    @if ($breaking->isNotEmpty())
-        <section class="bg-dark text-white py-2">
-            <div class="container">
-                <div class="d-flex flex-wrap align-items-center gap-3">
-                    <span class="badge bg-danger text-uppercase">Flash</span>
-                    <div class="small flex-grow-1 overflow-hidden">
-                        @foreach ($breaking as $item)
-                            <a href="{{ route('articles.show', $item->slug) }}" class="text-white text-decoration-none me-4">{{ $item->title }}</a>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </section>
-    @endif
-
     <section class="space-ptb">
         <div class="container">
             <div class="row">

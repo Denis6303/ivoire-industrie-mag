@@ -5,21 +5,23 @@
                 <img class="img-fluid" src="{{ asset('images/logo-dark.png') }}" alt="{{ config('app.name') }}">
             </a>
         </h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Fermer"></button>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="{{ __('app.close') }}"></button>
     </div>
     <div class="offcanvas-body">
         <ul class="navbar-nav navbar-nav-style-03">
-            <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Accueil</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('articles.index') }}">Articles</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('sectors.index') }}">Secteurs</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('companies.index') }}">Entreprises</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('projects.index') }}">Projets</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('search') }}">Recherche</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">À propos</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">{{ __('nav.home') }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('articles.index') }}">{{ __('nav.articles') }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('sectors.index') }}">{{ __('nav.sectors') }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('companies.index') }}">{{ __('nav.companies') }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('projects.index') }}">{{ __('nav.projects') }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('search') }}">{{ __('nav.search') }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">{{ __('nav.about') }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">{{ __('nav.contact') }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('locale.switch', 'fr') }}">{{ __('lang.fr') }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('locale.switch', 'en') }}">{{ __('lang.en') }}</a></li>
             @guest
-                <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Connexion</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Inscription</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">{{ __('nav.login') }}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">{{ __('nav.register') }}</a></li>
             @endguest
         </ul>
     </div>
