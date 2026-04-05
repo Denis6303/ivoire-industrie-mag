@@ -9,7 +9,7 @@
     ])
 
     <section class="space-ptb">
-        <div class="container">
+      <div class="container">
             @if ($sector->description)
                 <p class="lead mb-4">{{ $sector->description }}</p>
             @endif
@@ -24,15 +24,15 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="sidebar">
-                        <div class="widget">
+              <div class="widget">
                             <h6 class="widget-title">Autres secteurs</h6>
                             @foreach ($otherSectors as $s)
                                 <p class="mb-2"><a href="{{ route('sectors.show', $s->slug) }}">{{ $s->name }}</a></p>
                             @endforeach
-                        </div>
-                    </div>
-                </div>
+                      </div>
             </div>
-        </div>
+          </div>
+        </div> 
+      </div>
     </section>
 @endsection

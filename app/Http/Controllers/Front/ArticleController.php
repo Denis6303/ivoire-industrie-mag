@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\Category;
 
 class ArticleController extends Controller
 {
@@ -46,6 +47,11 @@ class ArticleController extends Controller
             ->take(3)
             ->get();
 
-        return view('front.articles.show', compact('article', 'related'));
+        $sidebarCategories = Category::query()
+            ->withCount(['articles as published_articles_count' => fn ($q) => $q->published()])
+            ->orderBy('name')
+            ->get();
+
+        return view('front.articles.show', compact('article', 'related', 'sidebarCategories'));
     }
 }

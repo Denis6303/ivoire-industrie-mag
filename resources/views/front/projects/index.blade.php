@@ -6,7 +6,7 @@
     @include('front.partials.page-header', ['title' => 'Projets industriels'])
 
     <section class="space-ptb">
-        <div class="container">
+      <div class="container">
             <div class="row">
                 @forelse ($projects as $project)
                     <div class="col-md-6 mb-4" id="{{ $project->slug }}">
@@ -30,13 +30,13 @@
                             @if ($project->status)
                                 <span class="badge bg-light text-dark border">{{ $project->status }}</span>
                             @endif
-                        </div>
+                      </div>
                     </div>
                 @empty
                     <p class="text-muted">Aucun projet référencé.</p>
                 @endforelse
             </div>
             {{ $projects->links() }}
-        </div>
+      </div>
     </section>
 @endsection

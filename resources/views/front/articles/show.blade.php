@@ -21,31 +21,31 @@
                             @if ($cover)
                                 <div class="blog-post-image mb-4">
                                     <img class="img-fluid" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $article->title }}">
-                                </div>
+                    </div>
                             @endif
                             <div class="blog-post-title">
                                 <h1 class="mb-0 h3">{{ $article->title }}</h1>
                             </div>
                             <div class="blog-post post-style-07 border-0 py-4 px-0">
-                                <div class="blog-post-details">
+                            <div class="blog-post-details">
                                     <div class="blog-post-meta p-0 flex-wrap">
                                         @if ($article->author)
                                             <div class="blog-post-user">
                                                 <span>par {{ $article->author->name }}</span>
-                                            </div>
+                            </div>
                                         @endif
                                         @if ($article->published_at)
                                             <div class="blog-post-time">
                                                 <span><i class="fa-solid fa-calendar-days"></i>{{ $article->published_at->translatedFormat('j F Y') }}</span>
-                                            </div>
+                          </div>
                                         @endif
                                         @if ($article->reading_time)
-                                            <div class="blog-post-time">
+                              <div class="blog-post-time">
                                                 <span><i class="fa-regular fa-clock"></i>{{ $article->reading_time }} min</span>
-                                            </div>
+                             </div>
                                         @endif
-                                    </div>
-                                </div>
+                          </div>
+                        </div>
                             </div>
                             <div class="article-body">
                                 {!! article_body_html($article->content) !!}
@@ -55,7 +55,7 @@
                                     @foreach ($article->tags as $tag)
                                         <span class="btn btn-sm btn-outline-primary me-1 mb-1">{{ $tag->name }}</span>
                                     @endforeach
-                                </div>
+                          </div>
                             @endif
                         </div>
                     </article>
@@ -69,11 +69,11 @@
                                 <div class="col-md-6 mb-3">
                                     <input type="text" name="guest_name" class="form-control @error('guest_name') is-invalid @enderror" placeholder="Nom" value="{{ old('guest_name') }}">
                                     @error('guest_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                                </div>
+                            </div>
                                 <div class="col-md-6 mb-3">
                                     <input type="email" name="guest_email" class="form-control @error('guest_email') is-invalid @enderror" placeholder="E-mail" value="{{ old('guest_email') }}">
                                     @error('guest_email')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                                </div>
+                          </div>
                             @endguest
                             <div class="col-12 mb-3">
                                 <textarea name="content" class="form-control @error('content') is-invalid @enderror" rows="4" placeholder="Votre commentaire" required>{{ old('content') }}</textarea>
@@ -81,8 +81,8 @@
                             </div>
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary">Publier</button>
-                            </div>
-                        </form>
+        </div>
+      </form>
                     </div>
 
                     @if ($article->comments->isNotEmpty())
@@ -93,47 +93,49 @@
                                     <strong>{{ $comment->user?->name ?? $comment->guest_name ?? 'Visiteur' }}</strong>
                                     <small class="text-muted ms-2">{{ $comment->created_at?->translatedFormat('j M Y à H:i') }}</small>
                                     <p class="mb-0 mt-2">{{ $comment->content }}</p>
-                                </div>
+                  </div>
                             @endforeach
                         </div>
                     @endif
 
                     @if ($related->isNotEmpty())
                         <div class="bg-white mt-5">
-                            <div class="section-title">
+                  <div class="section-title">
                                 <h2 class="mb-0"><i class="fa-solid fa-bolt-lightning"></i> Sur le même sujet</h2>
                             </div>
                             <div class="row mt-3">
                                 @foreach ($related as $rel)
                                     <div class="col-md-4 mb-3">
                                         <x-article-card :article="$rel" style="02" />
-                                    </div>
+                          </div>
                                 @endforeach
-                            </div>
+                          </div>
                         </div>
                     @endif
                 </div>
                 <div class="col-lg-4">
-                    <div class="sidebar mt-lg-0">
-                        <div class="widget sidebar-category">
+            <div class="sidebar mt-lg-0">
+              <div class="widget sidebar-category">
                             <h6 class="widget-title">Catégories</h6>
-                            <ul>
-                                @foreach ($navCategories as $cat)
-                                    <li>
+                <ul>
+                                @forelse ($sidebarCategories as $cat)
+                  <li>
                                         <a href="{{ route('categories.show', $cat->slug) }}">
-                                            <div class="category">
-                                                <div class="category-name">
-                                                    <h6>{{ $cat->name }}</h6>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                @endforeach
+                      <div class="category">
+                         <div class="category-name">
+                                                    <h6>{{ $cat->name }} <span>{{ $cat->published_articles_count }}</span></h6>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                                @empty
+                                    <li class="text-muted small">Aucune catégorie.</li>
+                                @endforelse
                             </ul>
                         </div>
-                    </div>
-                </div>
             </div>
+          </div>
         </div>
+      </div>
     </section>
 @endsection

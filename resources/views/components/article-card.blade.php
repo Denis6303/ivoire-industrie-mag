@@ -5,7 +5,11 @@
 @php
     $cover = article_cover($article->cover_image);
 @endphp
-<div class="blog-post post-style-{{ $style }} mb-4">
+<div @class([
+        'blog-post mb-4',
+        'post-style-'.$style,
+        'post-style-02--bordered' => $style === '02',
+    ])>
     <div class="blog-image">
         @if ($cover)
             <a href="{{ route('articles.show', $article->slug) }}">
@@ -35,10 +39,10 @@
             <p>{{ \Illuminate\Support\Str::limit($article->excerpt, 180) }}</p>
         @endif
         @if ($article->author)
-            <div class="blog-post-user mt-2">
+            <div class="blog-post-user mt-2 mb-2">
                 <span>par {{ $article->author->name ?? 'Rédaction' }}</span>
             </div>
         @endif
-        <a class="btn-link" href="{{ route('articles.show', $article->slug) }}">Lire la suite</a>
+        <a class="btn-link d-inline-block mt-2" href="{{ route('articles.show', $article->slug) }}">Lire la suite</a>
     </div>
 </div>

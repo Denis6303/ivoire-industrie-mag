@@ -3605,6 +3605,26 @@ ul.current-news li span.border-end:after {
   margin-right: 10px;
 }
 
+/* Cartes articles (style 02) : même contour que la une (post-style-11) */
+.blog-post.post-style-02.post-style-02--bordered {
+  border: 1px solid #d1d8e6;
+  border-radius: 6px;
+}
+
+.blog-post.post-style-02.post-style-02--bordered .blog-image {
+  overflow: hidden;
+  border-radius: 6px 6px 0 0;
+}
+
+.blog-post.post-style-02.post-style-02--bordered .blog-image img {
+  border-radius: 6px 6px 0 0;
+}
+
+.blog-post.post-style-02.post-style-02--bordered .blog-post-details {
+  margin-top: 0;
+  padding: 20px 20px 24px;
+}
+
 /* Post Style 03 */
 .blog-post.post-style-03 {
   position: relative;

@@ -13,8 +13,8 @@
                 </div>
                 <div class="col-md-4">
                     <button type="submit" class="btn btn-primary btn-lg w-100">{{ __('search.submit') }}</button>
-                </div>
-            </form>
+        </div>
+      </form>
 
             @if ($q === '')
                 <p class="text-muted">{{ __('search.hint_empty') }}</p>
@@ -29,6 +29,6 @@
                 @endforeach
                 <div class="mt-4">{{ $articles->links() }}</div>
             @endif
-        </div>
+      </div>
     </section>
 @endsection
