@@ -4,6 +4,14 @@ return [
     'site_name' => env('APP_NAME', 'ivoireindustriemag'),
     'default_locale' => env('APP_LOCALE', 'fr'),
     'supported_locales' => ['fr', 'en'],
+    /*
+     * Longueur max du chapô « à la une » (accueil), en caractères Unicode.
+     * Référence : « Tu es un développeur senior spécialisé en architecture web et en refactoring
+     * de projets Laravel. Le projet sur lequel tu travailles est un site web d'information nommé
+     * ivoireindustriemag.com, » → 191 caractères.
+     */
+    'featured_excerpt_max_chars' => 191,
+
     'articles_per_page' => 12,
     'companies_per_page' => 12,
     'projects_per_page' => 12,

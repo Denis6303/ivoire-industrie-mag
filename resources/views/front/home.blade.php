@@ -9,7 +9,7 @@
                 <div class="col-lg-8 mb-4 mb-lg-0">
                     @if ($featured)
                         @php $f = $featured; $cover = article_cover($f->cover_image); @endphp
-                        <div class="blog-post post-style-11 mb-5">
+                        <div class="blog-post post-style-11 home-featured-la-une mb-5">
                             <div class="blog-image">
                                 @if ($cover)
                                     <a href="{{ route('articles.show', $f->slug) }}">
@@ -21,7 +21,7 @@
                             </div>
                             <div class="blog-post-details">
                                 @if ($f->category)
-                                    <span class="badge badge-medium bg-primary">{{ $f->category->name }}</span>
+                                    <span class="badge badge-medium bg-primary home-featured-la-une-badge">{{ $f->category->name }}</span>
                                 @endif
                                 <h2 class="blog-title mt-2">
                                     <a href="{{ route('articles.show', $f->slug) }}">{{ $f->title }}</a>
@@ -34,12 +34,12 @@
                                     @endif
                                 </div>
                                 @if ($f->excerpt)
-                                    <p class="mt-3">{{ $f->excerpt }}</p>
+                                    <p class="mt-3 home-featured-la-une-excerpt">{{ \Illuminate\Support\Str::limit(strip_tags($f->excerpt), (int) config('ivoireindustriemag.featured_excerpt_max_chars', 191), '…') }}</p>
                                 @endif
                                 @if ($f->author)
                                     <div class="blog-post-user mt-2"><span>par {{ $f->author->name }}</span></div>
                                 @endif
-                                <a class="btn btn-primary mt-2" href="{{ route('articles.show', $f->slug) }}">Lire l’article</a>
+                                <a class="btn btn-primary btn-sm home-featured-la-une-btn mt-3" href="{{ route('articles.show', $f->slug) }}">Lire l’article</a>
                             </div>
                         </div>
                     @endif
