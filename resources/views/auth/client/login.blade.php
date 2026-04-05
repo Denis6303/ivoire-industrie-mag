@@ -41,7 +41,7 @@
           </div>
           <div class="col-lg-6 col-xl-6 col-xxl-5">
             <div class="sign-in-box text-center">
-              <a class="navbar-brand mb-4 d-block" href="index.html">
+              <a class="navbar-brand mb-4 d-block" href="{{ route('home') }}">
                   <img class="img-fluid" src="images/logo-dark.png" alt="">
                 </a>
                 <div class="login-social-media">
@@ -76,7 +76,7 @@
                   </div>
                   <div class="col-sm-12">
                     <ul class="list-unstyled">
-                      <li class="me-1">Don't have an account? <a class="text-primary" href="sign-up.html">Signup</a></li>
+                      <li class="me-1">Pas de compte ? <a class="text-primary" href="{{ route('register') }}">Inscription</a></li>
                     </ul>
                   </div>
                 </form>

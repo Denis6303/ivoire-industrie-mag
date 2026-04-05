@@ -1,26 +1,67 @@
-@php
-    // Load the template HTML remotely (hotfix): no dependency on local decompressed folders.
-    $sourceUrl = 'https://themes.potenzaglobalsolutions.com/html/nezzy/index.html';
-    $html = @file_get_contents($sourceUrl);
-
-    if (! is_string($html)) {
-        return;
-    }
-
-    $startOffset = null;
-    $bodyEndOffset = null;
-
-    if (preg_match('/<!--=================================\s*Footer\s*-->/s', $html, $m, PREG_OFFSET_CAPTURE)) {
-        $startOffset = $m[0][1];
-    }
-
-    // Ne pas inclure les balises de fin </body></html> : le layout les gère.
-    $bodyEndOffset = strrpos($html, '</body>');
-
-    $snippet = ($startOffset !== null && $bodyEndOffset !== false)
-        ? substr($html, $startOffset, $bodyEndOffset - $startOffset)
-        : '';
-
-    echo $snippet;
-@endphp
-
+<footer class="footer">
+    <div class="main-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-7 mb-4">
+                    <div class="footer-about">
+                        <a class="footer-logo" href="{{ route('home') }}">
+                            <img class="img-fluid" src="{{ asset('images/logo-light.png') }}" alt="{{ config('app.name') }}">
+                        </a>
+                        <p>{{ config('app.name') }} vulgarise l’industrie ivoirienne : actualités, analyses et portraits d’entreprises pour décideurs et citoyens.</p>
+                        <div class="footer-social">
+                            <ul class="social-icons">
+                                <li><a href="#" class="social-icon facebook" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a></li>
+                                <li><a href="#" class="social-icon twitter" aria-label="X"><i class="fa-brands fa-twitter"></i></a></li>
+                                <li><a href="#" class="social-icon linkedin" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a></li>
+                                <li><a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-6 col-md-6 col-sm-5 mb-4">
+                    <h4 class="footer-title">Navigation</h4>
+                    <ul class="footer-menu">
+                        <li><a href="{{ route('articles.index') }}"><i class="fa-solid fa-chevron-right"></i>Articles</a></li>
+                        <li><a href="{{ route('sectors.index') }}"><i class="fa-solid fa-chevron-right"></i>Secteurs</a></li>
+                        <li><a href="{{ route('companies.index') }}"><i class="fa-solid fa-chevron-right"></i>Entreprises</a></li>
+                        <li><a href="{{ route('projects.index') }}"><i class="fa-solid fa-chevron-right"></i>Projets</a></li>
+                        <li><a href="{{ route('search') }}"><i class="fa-solid fa-chevron-right"></i>Recherche</a></li>
+                    </ul>
+                </div>
+                <div class="col-xl-3 col-lg-6 col-md-6 mb-4">
+                    <h4 class="footer-title">Informations</h4>
+                    <ul class="footer-menu">
+                        <li><a href="{{ route('about') }}"><i class="fa-solid fa-chevron-right"></i>À propos</a></li>
+                        <li><a href="{{ route('contact') }}"><i class="fa-solid fa-chevron-right"></i>Contact</a></li>
+                        <li><a href="{{ route('team') }}"><i class="fa-solid fa-chevron-right"></i>Équipe</a></li>
+                    </ul>
+                </div>
+                <div class="col-xl-3 col-lg-6 col-md-6 mb-4">
+                    <h4 class="footer-title">Newsletter</h4>
+                    <div class="newsletter">
+                        <i class="fa-solid fa-envelope-open-text"></i>
+                        <p>Recevez les temps forts de l’industrie en Côte d’Ivoire.</p>
+                        <form class="newsletter-box" method="POST" action="{{ route('newsletter.subscribe') }}">
+                            @csrf
+                            <input type="email" name="email" class="form-control" placeholder="Votre e-mail" required>
+                            <button type="submit" class="btn btn-primary">S’abonner</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row copyright justify-content-center">
+                <div class="col-md-12 text-center">
+                    <p class="mb-0">
+                        © {{ date('Y') }}
+                        <a href="{{ route('home') }}">{{ config('app.name') }}</a>
+                        — Tous droits réservés.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
