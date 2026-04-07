@@ -60,6 +60,49 @@ textarea {
     background: linear-gradient(165deg, #1d344d 0%, #142536 100%) !important;
 }
 
+.admin-brand {
+    font-family: "Zilla Slab", serif;
+    letter-spacing: 0.2px;
+}
+
+.admin-mobile-header {
+    background: linear-gradient(165deg, #1d344d 0%, #142536 100%);
+}
+
+.admin-sidebar-offcanvas {
+    --bs-offcanvas-bg: #142536;
+    --bs-offcanvas-color: #ffffff;
+    background: linear-gradient(165deg, #1d344d 0%, #142536 100%) !important;
+    background-color: #142536 !important;
+    width: 280px;
+}
+
+.admin-sidebar-offcanvas.offcanvas,
+.admin-sidebar-offcanvas .offcanvas-header,
+.admin-sidebar-offcanvas .offcanvas-body {
+    background: linear-gradient(165deg, #1d344d 0%, #142536 100%) !important;
+    background-color: #142536 !important;
+    color: #fff !important;
+}
+
+.admin-sidebar-offcanvas .offcanvas-title,
+.admin-sidebar-offcanvas .nav-link {
+    color: #fff !important;
+}
+
+.admin-offcanvas-close {
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 0.45rem;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent !important;
+    opacity: 1;
+}
+
 .admin-nav .nav-link {
     border-radius: 0.5rem;
     padding: 0.4rem 0.5rem !important;
@@ -262,13 +305,8 @@ textarea {
         flex-direction: column;
     }
 
-    .admin-sidebar {
-        width: 100% !important;
-    }
-
     .admin-nav {
-        display: grid !important;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        display: flex !important;
         gap: 0.35rem;
     }
 
@@ -283,5 +321,15 @@ textarea {
 
     .admin-quick-actions {
         flex-direction: column;
+    }
+
+    .admin-content .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .admin-content table.table {
+        min-width: 720px;
+        white-space: nowrap;
     }
 }
