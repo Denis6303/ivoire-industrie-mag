@@ -25,10 +25,8 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureRateLimiting();
-        $supportedLocales = config('ivoireindustriemag.supported_locales', ['fr', 'en']);
-        $localePattern = implode('|', $supportedLocales);
 
-        $this->routes(function () use ($localePattern) {
+        $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
@@ -37,8 +35,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
 
             Route::middleware(['web', 'auth'])
-                ->prefix('{locale}/admin')
-                ->where(['locale' => $localePattern])
+                ->prefix('admin')
                 ->as('admin.')
                 ->group(base_path('routes/admin.php'));
         });

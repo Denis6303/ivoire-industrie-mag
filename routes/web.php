@@ -76,9 +76,7 @@ Route::prefix('{locale}')
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('{locale}/admin')
-    ->where(['locale' => $localePattern])
-    ->group(function () {
+Route::prefix('admin')->group(function () {
         Route::middleware('guest')->group(function () {
             Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
             Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.post');

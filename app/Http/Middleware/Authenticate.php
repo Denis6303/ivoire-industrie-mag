@@ -16,13 +16,13 @@ class Authenticate extends Middleware
             return null;
         }
 
+        if ($request->is('admin') || $request->is('admin/*')) {
+            return route('admin.login');
+        }
+
         $locale = (string) ($request->route('locale')
             ?? $request->segment(1)
             ?? config('app.locale', 'fr'));
-
-        if ($request->is($locale.'/admin') || $request->is($locale.'/admin/*')) {
-            return route('admin.login', ['locale' => $locale]);
-        }
 
         return route('login', ['locale' => $locale]);
     }

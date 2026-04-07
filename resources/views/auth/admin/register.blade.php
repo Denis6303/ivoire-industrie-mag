@@ -6,13 +6,16 @@
     <title>Création de compte Admin</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-light">
-<div class="container py-5">
-    <div class="row justify-content-center">
+<body class="bg-white">
+<div class="container min-vh-100 d-flex align-items-center">
+    <div class="row justify-content-center w-100" style="margin-top: -24px;">
         <div class="col-md-7 col-lg-6">
-            <div class="card card-mag">
+            <div class="text-center mb-3">
+                <img src="{{ asset('images/logo-dark.png') }}" alt="{{ config('app.name') }}" class="img-fluid" style="max-width: 220px;">
+            </div>
+            <div class="card border-0 shadow-lg" style="box-shadow: 0 22px 50px rgba(17, 24, 39, 0.22) !important;">
                 <div class="card-body p-4">
-                    <h1 class="h4 mb-3">Créer un compte utilisateur</h1>
+                    <h1 class="h4 mb-3 text-center">Créer un compte utilisateur</h1>
                     <form method="POST" action="{{ route('admin.register.post') }}" class="row g-3">
                         @csrf
                         <div class="col-12">
