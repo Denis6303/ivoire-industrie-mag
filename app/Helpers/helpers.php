@@ -79,6 +79,40 @@ if (! function_exists('article_cover')) {
      */
     function article_cover(?string $url): ?string
     {
-        return $url ?: null;
+        if ($url === null || trim($url) === '') {
+            return null;
+        }
+
+        $url = trim($url);
+
+        // URL absolue distante (CDN, autre domaine): on conserve.
+        if (preg_match('/^https?:\/\//i', $url) === 1) {
+            $parts = parse_url($url);
+            $path = $parts['path'] ?? '';
+
+            // Si l'image pointe vers /storage/... sur un ancien host local,
+            // on recale vers le host courant.
+            if (str_starts_with($path, '/storage/')) {
+                return url($path);
+            }
+
+            return $url;
+        }
+
+        // Chemins locaux relatifs/absolus vers storage.
+        if (str_starts_with($url, '/storage/')) {
+            return url($url);
+        }
+
+        if (str_starts_with($url, 'storage/')) {
+            return asset($url);
+        }
+
+        // Chemin média brut (ex: media/abc.jpg) -> /storage/media/abc.jpg
+        if (str_starts_with($url, 'media/')) {
+            return asset('storage/'.$url);
+        }
+
+        return asset(ltrim($url, '/'));
     }
 }

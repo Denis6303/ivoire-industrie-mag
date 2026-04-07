@@ -20,8 +20,10 @@
                             @php $cover = article_cover($article->cover_image); @endphp
                             @if ($cover)
                                 <div class="blog-post-image mb-4">
-                                    <img class="img-fluid" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $article->title }}">
-                    </div>
+                                    <div class="overflow-hidden rounded" style="height: 360px;">
+                                        <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $article->title }}">
+                                    </div>
+                                </div>
                             @endif
                             <div class="blog-post-title">
                                 <h1 class="mb-0 h3">{{ $article->title }}</h1>

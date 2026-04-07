@@ -12,13 +12,25 @@
     ])>
     <div class="blog-image">
         @if ($cover)
-            <a href="{{ route('articles.show', $article->slug) }}">
-                <img class="img-fluid" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $article->title }}">
-            </a>
+            @if ($style === '02')
+                <a href="{{ route('articles.show', $article->slug) }}" class="d-block overflow-hidden rounded" style="height: 210px;">
+                    <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $article->title }}">
+                </a>
+            @else
+                <a href="{{ route('articles.show', $article->slug) }}" class="d-block ratio ratio-16x9 overflow-hidden rounded">
+                    <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $article->title }}">
+                </a>
+            @endif
         @else
-            <a href="{{ route('articles.show', $article->slug) }}" class="d-block ratio ratio-16x9 bg-light align-items-center justify-content-center text-muted">
-                <span class="position-absolute top-50 start-50 translate-middle small">{{ config('app.name') }}</span>
-            </a>
+            @if ($style === '02')
+                <a href="{{ route('articles.show', $article->slug) }}" class="d-block bg-light rounded position-relative" style="height: 210px;">
+                    <span class="position-absolute top-50 start-50 translate-middle small text-muted">{{ config('app.name') }}</span>
+                </a>
+            @else
+                <a href="{{ route('articles.show', $article->slug) }}" class="d-block ratio ratio-16x9 bg-light align-items-center justify-content-center text-muted">
+                    <span class="position-absolute top-50 start-50 translate-middle small">{{ config('app.name') }}</span>
+                </a>
+            @endif
         @endif
     </div>
     <div class="blog-post-details">
