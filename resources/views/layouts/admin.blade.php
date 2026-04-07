@@ -16,7 +16,7 @@
     <div class="d-flex min-vh-100 admin-layout">
         <aside class="bg-dark text-white p-3 p-lg-4 admin-sidebar" style="width: 280px;">
             <a href="{{ route('admin.dashboard') }}" class="d-block mb-4 h5 text-white text-decoration-none fw-bold">
-                IvoireIndustrieMag Admin
+                IvoireIndustrieMag
             </a>
 
             <nav class="nav flex-column gap-2 admin-nav">

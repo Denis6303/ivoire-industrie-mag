@@ -52,7 +52,7 @@ class ArticleController extends Controller
             'featured' => (clone $statsQuery)->where('is_featured', true)->count(),
         ];
 
-        $articles = $query->paginate(15)->withQueryString();
+        $articles = $query->paginate(6)->withQueryString();
         $categories = Category::orderBy('name')->get(['id', 'name']);
 
         return view('admin.articles.index', compact('articles', 'categories', 'stats', 'search', 'status', 'categoryId'));

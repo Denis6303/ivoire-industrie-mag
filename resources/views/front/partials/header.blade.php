@@ -18,14 +18,6 @@
                                 </div>
                             </div>
                             <div class="topbar-right ms-auto justify-content-center">
-                                @auth
-                                    <span class="user">
-                                        <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                                            @csrf
-                                            <button type="submit" class="btn btn-link btn-sm p-0 text-body">{{ __('nav.logout') }}</button>
-                                        </form>
-                                    </span>
-                                @endauth
                                 <div class="dropdown right-menu d-inline-flex news-language">
                                     <a class="dropdown-toggle" href="#" id="langMenu" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
                                         <img class="img-fluid country-flag" src="{{ asset('images/flags/'.app()->getLocale().'.svg') }}" width="20" height="14" alt="">

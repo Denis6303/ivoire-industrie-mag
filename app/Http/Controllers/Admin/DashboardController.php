@@ -18,6 +18,7 @@ class DashboardController extends Controller
             ->count();
 
         $draftArticles = Article::where('status', 'draft')->count();
+        $totalArticles = Article::count();
         $totalViews = (int) Article::sum('view_count');
         $avgViews = max(0, (int) round(Article::avg('view_count') ?? 0));
         $pendingRate = Comment::count() > 0
@@ -34,7 +35,15 @@ class DashboardController extends Controller
             'total_views' => $totalViews,
             'avg_views_per_article' => $avgViews,
             'pending_comments_rate' => $pendingRate,
+            'total_articles' => $totalArticles,
         ];
+
+        $stats['published_rate'] = $stats['total_articles'] > 0
+            ? round(($stats['published_articles'] / $stats['total_articles']) * 100, 1)
+            : 0;
+        $stats['draft_rate'] = $stats['total_articles'] > 0
+            ? round(($stats['draft_articles'] / $stats['total_articles']) * 100, 1)
+            : 0;
 
         $labels = [];
         $publishedSeries = [];

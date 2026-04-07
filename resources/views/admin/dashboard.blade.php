@@ -59,8 +59,26 @@
     </div>
 
     <div class="row g-3 mb-4">
-        <div class="col-12 col-xl-8">
-            <div class="card card-mag admin-table-card h-100">
+        <div class="col-12">
+            <div class="card card-mag">
+                <div class="card-body">
+                    <h3 class="h6 mb-3">Actions rapides</h3>
+                    <div class="admin-quick-actions">
+                        <a href="{{ route('admin.articles.create') }}" class="btn btn-sm admin-quick-btn admin-quick-btn-orange">Nouveau contenu</a>
+                        @if(in_array(auth()->user()->role, ['super_admin', 'admin'], true))
+                            <a href="{{ route('admin.commentaires.index') }}" class="btn btn-sm admin-quick-btn admin-quick-btn-blue">Modérer les commentaires</a>
+                            <a href="{{ route('admin.newsletter.index') }}" class="btn btn-sm admin-quick-btn admin-quick-btn-green">Gérer la newsletter</a>
+                            <a href="{{ route('admin.settings') }}" class="btn btn-sm admin-quick-btn admin-quick-btn-navy">Mettre à jour les paramètres</a>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4 align-items-start">
+        <div class="col-12">
+            <div class="card card-mag admin-table-card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h2 class="h6 mb-0">Performance éditoriale (7 derniers jours)</h2>
@@ -71,10 +89,38 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-xl-4">
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-xl-6">
             <div class="card card-mag h-100">
                 <div class="card-body">
-                    <h2 class="h6 mb-3">Indicateurs clés</h2>
+                    <h3 class="h6 mb-3">Répartition des contenus</h3>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between small mb-1">
+                            <span>Publié</span>
+                            <span>{{ number_format($stats['published_rate'], 1, ',', ' ') }}%</span>
+                        </div>
+                        <div class="progress" role="progressbar" aria-label="Taux publié" aria-valuenow="{{ $stats['published_rate'] }}" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-success" style="width: {{ $stats['published_rate'] }}%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-between small mb-1">
+                            <span>Brouillon</span>
+                            <span>{{ number_format($stats['draft_rate'], 1, ',', ' ') }}%</span>
+                        </div>
+                        <div class="progress" role="progressbar" aria-label="Taux brouillon" aria-valuenow="{{ $stats['draft_rate'] }}" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-warning" style="width: {{ $stats['draft_rate'] }}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-6">
+            <div class="card card-mag h-100">
+                <div class="card-body">
+                    <h3 class="h6 mb-3">Indicateurs clés</h3>
                     <div class="admin-kpi-list">
                         <div class="admin-kpi-item">
                             <span>Articles publiés ce mois</span>

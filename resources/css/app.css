@@ -145,7 +145,12 @@ textarea {
 
 .admin-chart-wrap {
     position: relative;
-    min-height: 340px;
+    height: 300px;
+}
+
+.admin-chart-wrap canvas {
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .admin-kpi-list {
@@ -171,6 +176,87 @@ textarea {
     font-size: 1.05rem;
 }
 
+.admin-quick-actions {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.admin-quick-btn {
+    color: #fff !important;
+    border: none;
+    border-radius: 0.55rem;
+    padding: 0.45rem 0.9rem;
+    font-weight: 600;
+}
+
+.admin-quick-btn:hover,
+.admin-quick-btn:focus,
+.admin-quick-btn:active {
+    color: #fff !important;
+    opacity: 0.92;
+}
+
+.admin-quick-btn-orange {
+    background-color: var(--ivm-orange);
+    border-color: var(--ivm-orange);
+}
+
+.admin-quick-btn-blue {
+    background-color: #4e6ef2;
+    border-color: #4e6ef2;
+}
+
+.admin-quick-btn-green {
+    background-color: #16a34a;
+    border-color: #16a34a;
+}
+
+.admin-quick-btn-navy {
+    background-color: var(--ivm-navy);
+    border-color: var(--ivm-navy);
+}
+
+.admin-quick-btn-orange:hover,
+.admin-quick-btn-orange:focus,
+.admin-quick-btn-orange:active {
+    background-color: #e06d00 !important;
+    border-color: #e06d00 !important;
+}
+
+.admin-quick-btn-blue:hover,
+.admin-quick-btn-blue:focus,
+.admin-quick-btn-blue:active {
+    background-color: #3f5dd7 !important;
+    border-color: #3f5dd7 !important;
+}
+
+.admin-quick-btn-green:hover,
+.admin-quick-btn-green:focus,
+.admin-quick-btn-green:active {
+    background-color: #15803d !important;
+    border-color: #15803d !important;
+}
+
+.admin-quick-btn-navy:hover,
+.admin-quick-btn-navy:focus,
+.admin-quick-btn-navy:active {
+    background-color: #1b3048 !important;
+    border-color: #1b3048 !important;
+}
+
+.pagination {
+    --bs-pagination-color: var(--ivm-orange);
+    --bs-pagination-hover-color: #fff;
+    --bs-pagination-hover-bg: var(--ivm-orange);
+    --bs-pagination-hover-border-color: var(--ivm-orange);
+    --bs-pagination-focus-color: var(--ivm-orange);
+    --bs-pagination-focus-box-shadow: 0 0 0 0.2rem rgba(255, 120, 0, 0.25);
+    --bs-pagination-active-color: #fff;
+    --bs-pagination-active-bg: var(--ivm-orange);
+    --bs-pagination-active-border-color: var(--ivm-orange);
+}
+
 @media (max-width: 991.98px) {
     .admin-layout {
         flex-direction: column;
@@ -192,6 +278,10 @@ textarea {
     }
 
     .admin-chart-wrap {
-        min-height: 280px;
+        height: 260px;
+    }
+
+    .admin-quick-actions {
+        flex-direction: column;
     }
 }
