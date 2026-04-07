@@ -37,7 +37,7 @@
                                     <p class="mt-3 home-featured-la-une-excerpt">{{ \Illuminate\Support\Str::limit(strip_tags($f->excerpt), (int) config('ivoireindustriemag.featured_excerpt_max_chars', 191), '…') }}</p>
                                 @endif
                                 @if ($f->author)
-                                    <div class="blog-post-user mt-2"><span>par {{ $f->author->name }}</span></div>
+                                    <div class="blog-post-user mt-2"><span>par <span style="color:#243e5d;">{{ $f->signature ?: $f->author->name }}</span></span></div>
                                 @endif
                                 <a class="btn btn-primary btn-sm home-featured-la-une-btn mt-3" href="{{ route('articles.show', $f->slug) }}">Lire l’article</a>
                             </div>

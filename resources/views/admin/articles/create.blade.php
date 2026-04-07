@@ -17,6 +17,11 @@
                 </div>
 
                 <div class="col-12">
+                    <label class="form-label">Signature auteur</label>
+                    <input name="signature" class="form-control" placeholder="Ex: Jean Dupont" value="{{ old('signature') }}">
+                </div>
+
+                <div class="col-12">
                     <label class="form-label">Excerpt</label>
                     <textarea name="excerpt" class="form-control" rows="3" placeholder="Résumé...">{{ old('excerpt') }}</textarea>
                 </div>

@@ -33,7 +33,7 @@
                                     <div class="blog-post-meta p-0 flex-wrap">
                                         @if ($article->author)
                                             <div class="blog-post-user">
-                                                <span>par {{ $article->author->name }}</span>
+                                                <span>par <span style="color:#243e5d;">{{ $article->signature ?: $article->author->name }}</span></span>
                             </div>
                                         @endif
                                         @if ($article->published_at)

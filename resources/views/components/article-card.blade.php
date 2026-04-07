@@ -52,7 +52,7 @@
         @endif
         @if ($article->author)
             <div class="blog-post-user mt-2 mb-2">
-                <span>par {{ $article->author->name ?? 'Rédaction' }}</span>
+                <span>par <span style="color:#243e5d;">{{ $article->signature ?: ($article->author->name ?? 'Rédaction') }}</span></span>
             </div>
         @endif
         <a class="btn-link d-inline-block mt-2" href="{{ route('articles.show', $article->slug) }}">Lire la suite</a>

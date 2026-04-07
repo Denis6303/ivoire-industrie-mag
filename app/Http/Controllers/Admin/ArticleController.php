@@ -74,6 +74,7 @@ class ArticleController extends Controller
     {
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
+            'signature' => ['nullable', 'string', 'max:255'],
             'excerpt' => ['required', 'string'],
             'content' => ['required', 'string'],
             'category_id' => ['required', 'exists:categories,id'],
@@ -136,6 +137,7 @@ class ArticleController extends Controller
         $this->ensureEditorOwnsArticle($article);
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
+            'signature' => ['nullable', 'string', 'max:255'],
             'excerpt' => ['required', 'string'],
             'content' => ['required', 'string'],
             'category_id' => ['required', 'exists:categories,id'],

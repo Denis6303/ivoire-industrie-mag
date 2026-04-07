@@ -18,6 +18,11 @@
                 </div>
 
                 <div class="col-12">
+                    <label class="form-label">Signature auteur</label>
+                    <input name="signature" class="form-control" value="{{ old('signature', $article->signature) }}">
+                </div>
+
+                <div class="col-12">
                     <label class="form-label">Excerpt</label>
                     <textarea name="excerpt" class="form-control" rows="3">{{ old('excerpt', $article->excerpt) }}</textarea>
                 </div>
