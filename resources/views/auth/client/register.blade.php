@@ -11,17 +11,17 @@
     <title>Nezzy - News and Magazine HTML Template</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="images/favicon.ico" />
+    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" />
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
 
     <!-- CSS Global Compulsory (Do not remove)-->
-    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/fontawesome/all.min.css" />
+    <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/fontawesome/all.min.css') }}" />
 
     <!-- Template Style -->
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
   </head>
   <body class="bg-light">
      <!--=================================
@@ -43,7 +43,7 @@
               <div class="sign-in-box">
                 <div class="text-center">
                   <a class="navbar-brand mb-4 d-block " href="{{ route('home') }}">
-                    <img class="img-fluid" src="images/logo-dark.png" alt="">
+                    <img class="img-fluid" src="{{ asset('images/logo-dark.png') }}" alt="">
                   </a>
                   <div class="login-social-media">
                     <a class="btn google mb-3" href="#"><i class="fa-brands fa-google me-3"></i>Google</a>
@@ -109,12 +109,12 @@
     <!--=================================
     Javascript -->
     <!-- JS Global Compulsory (Do not remove)-->
-    <script src="js/jquery-3.6.0.min.js"></script>
-    <script src="js/jquery.appear.js"></script>
-    <script src="js/popper/popper.min.js"></script>
-    <script src="js/bootstrap/bootstrap.min.js"></script>
+    <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.appear.js') }}"></script>
+    <script src="{{ asset('js/popper/popper.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
     <!-- Template Scripts (Do not remove)-->
-    <script src="js/custom.js"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
   </body>
 
 <!-- Mirrored from themes.potenzaglobalsolutions.com/html/nezzy/sign-up.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Mar 2026 09:39:34 GMT -->

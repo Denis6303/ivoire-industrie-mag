@@ -1,4 +1,5 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800&display=swap');
 
 :root {
     --ivm-navy: #243e5d;
@@ -8,6 +9,18 @@
 
 body {
     background-color: var(--ivm-paper);
+    font-family: "Red Hat Display", sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+.admin-shell {
+    font-family: "Red Hat Display", sans-serif;
 }
 
 .brand-title {
@@ -41,4 +54,144 @@ body {
     background-color: #e06d00;
     border-color: #e06d00;
     color: #fff;
+}
+
+.admin-sidebar {
+    background: linear-gradient(165deg, #1d344d 0%, #142536 100%) !important;
+}
+
+.admin-nav .nav-link {
+    border-radius: 0.5rem;
+    padding: 0.4rem 0.5rem !important;
+    opacity: 0.9;
+}
+
+.admin-nav .nav-link:hover,
+.admin-nav .nav-link.active {
+    background: rgba(255, 255, 255, 0.14);
+    opacity: 1;
+}
+
+.admin-topbar {
+    border-left: 4px solid var(--ivm-orange);
+    border-radius: 0;
+    margin-bottom: 0 !important;
+}
+
+.admin-hero {
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 0.75rem;
+    padding: 1rem 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-stat-card {
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(31, 42, 55, 0.08);
+}
+
+.admin-stat-primary {
+    border-top: 3px solid #4e6ef2;
+}
+
+.admin-stat-info {
+    border-top: 3px solid #0ea5e9;
+}
+
+.admin-stat-success {
+    border-top: 3px solid #16a34a;
+}
+
+.admin-stat-warning {
+    border-top: 3px solid #f97316;
+}
+
+.admin-stat-icon {
+    font-size: 1.1rem;
+    color: #7a8797;
+}
+
+.admin-table-card {
+    border: none;
+}
+
+.admin-table thead th {
+    color: #6b7280;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.admin-table tbody tr:hover {
+    background: #fbfcff;
+}
+
+.admin-main {
+    min-width: 0;
+}
+
+.admin-content {
+    width: 100%;
+}
+
+.admin-chart-wrap {
+    position: relative;
+    min-height: 340px;
+}
+
+.admin-kpi-list {
+    display: grid;
+    gap: 0.7rem;
+}
+
+.admin-kpi-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ebeff4;
+    border-radius: 0.65rem;
+    padding: 0.7rem 0.8rem;
+}
+
+.admin-kpi-item span {
+    color: #5c6675;
+    font-size: 0.92rem;
+}
+
+.admin-kpi-item strong {
+    font-size: 1.05rem;
+}
+
+@media (max-width: 991.98px) {
+    .admin-layout {
+        flex-direction: column;
+    }
+
+    .admin-sidebar {
+        width: 100% !important;
+    }
+
+    .admin-nav {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.35rem;
+    }
+
+    .admin-hero {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-chart-wrap {
+        min-height: 280px;
+    }
 }

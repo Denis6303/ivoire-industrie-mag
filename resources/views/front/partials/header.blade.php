@@ -25,10 +25,6 @@
                                             <button type="submit" class="btn btn-link btn-sm p-0 text-body">{{ __('nav.logout') }}</button>
                                         </form>
                                     </span>
-                                @else
-                                    <span class="user">
-                                        <a href="{{ route('login') }}"><img src="{{ asset('images/user.png') }}" alt=""> {{ __('nav.login') }}</a>
-                                    </span>
                                 @endauth
                                 <div class="dropdown right-menu d-inline-flex news-language">
                                     <a class="dropdown-toggle" href="#" id="langMenu" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">

@@ -26,6 +26,7 @@
                         </div>
                         <button class="btn btn-dark">Se connecter</button>
                     </form>
+                    <a href="{{ route('admin.register') }}" class="small d-inline-block mt-3 me-3">Créer un compte admin</a>
                     <a href="{{ route('home') }}" class="small d-inline-block mt-3">Retour au site public</a>
                 </div>
             </div>

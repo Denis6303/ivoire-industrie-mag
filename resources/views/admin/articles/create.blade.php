@@ -8,7 +8,7 @@
 
     <div class="card card-mag">
         <div class="card-body">
-            <form id="article-form" method="POST" action="{{ route('admin.articles.store') }}" class="row g-3">
+            <form id="article-form" method="POST" action="{{ route('admin.articles.store') }}" enctype="multipart/form-data" class="row g-3">
                 @csrf
 
                 <div class="col-12">

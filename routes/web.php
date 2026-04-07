@@ -76,9 +76,15 @@ Route::prefix('{locale}')
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('guest')->group(function () {
-    Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
-    Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
-});
+Route::prefix('{locale}/admin')
+    ->where(['locale' => $localePattern])
+    ->group(function () {
+        Route::middleware('guest')->group(function () {
+            Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+            Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
+            Route::get('/register', [AdminAuthController::class, 'showRegister'])->name('admin.register');
+            Route::post('/register', [AdminAuthController::class, 'register'])->name('admin.register.post');
+        });
 
-Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->middleware('auth')->name('admin.logout');
+        Route::post('/logout', [AdminAuthController::class, 'logout'])->middleware('auth')->name('admin.logout');
+    });

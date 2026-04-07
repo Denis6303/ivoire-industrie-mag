@@ -8,7 +8,7 @@
 
     <div class="card card-mag">
         <div class="card-body">
-            <form id="article-form" method="POST" action="{{ route('admin.articles.update', $article) }}" class="row g-3">
+            <form id="article-form" method="POST" action="{{ route('admin.articles.update', $article) }}" enctype="multipart/form-data" class="row g-3">
                 @csrf
                 @method('PUT')
 
@@ -26,7 +26,7 @@
                     <label class="form-label">Catégorie</label>
                     <select name="category_id" class="form-select">
                         @foreach($categories ?? [] as $category)
-                            <option value="{{ $category->id }}" @selected($article->category_id === $category->id)>{{ $category->name }}</option>
+                            <option value="{{ $category->id }}" @selected((int) old('category_id', $article->category_id) === (int) $category->id)>{{ $category->name }}</option>
                         @endforeach
                     </select>
                 </div>

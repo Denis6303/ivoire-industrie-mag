@@ -15,10 +15,47 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::with(['author', 'category'])->latest()->paginate(15);
-        return view('admin.articles.index', compact('articles'));
+        $query = Article::with(['author', 'category'])->latest();
+        if (auth()->user()?->role === 'editor') {
+            $query->where('author_id', auth()->id());
+        }
+
+        $search = trim((string) $request->string('q'));
+        if ($search !== '') {
+            $query->where(function ($builder) use ($search) {
+                $builder->where('title', 'like', "%{$search}%")
+                    ->orWhere('slug', 'like', "%{$search}%");
+            });
+        }
+
+        $status = (string) $request->string('status');
+        if (in_array($status, ['published', 'draft'], true)) {
+            $query->where('status', $status);
+        }
+
+        $categoryId = (int) $request->integer('category_id');
+        if ($categoryId > 0) {
+            $query->where('category_id', $categoryId);
+        }
+
+        $statsQuery = Article::query();
+        if (auth()->user()?->role === 'editor') {
+            $statsQuery->where('author_id', auth()->id());
+        }
+
+        $stats = [
+            'total' => (clone $statsQuery)->count(),
+            'published' => (clone $statsQuery)->where('status', 'published')->count(),
+            'draft' => (clone $statsQuery)->where('status', 'draft')->count(),
+            'featured' => (clone $statsQuery)->where('is_featured', true)->count(),
+        ];
+
+        $articles = $query->paginate(15)->withQueryString();
+        $categories = Category::orderBy('name')->get(['id', 'name']);
+
+        return view('admin.articles.index', compact('articles', 'categories', 'stats', 'search', 'status', 'categoryId'));
     }
 
     /**
@@ -77,6 +114,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
+        $this->ensureEditorOwnsArticle($article);
         return view('admin.articles.edit', compact('article'));
     }
 
@@ -85,6 +123,7 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
+        $this->ensureEditorOwnsArticle($article);
         $categories = Category::orderBy('name')->get();
         return view('admin.articles.edit', compact('article', 'categories'));
     }
@@ -94,6 +133,7 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
+        $this->ensureEditorOwnsArticle($article);
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'excerpt' => ['required', 'string'],
@@ -133,13 +173,29 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
+        $this->ensureEditorOwnsArticle($article);
         $article->delete();
         return back()->with('success', 'Article supprimé.');
     }
 
     public function publish(Article $article)
     {
+        $this->ensureEditorOwnsArticle($article);
         $article->update(['status' => 'published', 'published_at' => now()]);
         return back()->with('success', 'Article publié.');
+    }
+
+    public function unpublish(Article $article)
+    {
+        $this->ensureEditorOwnsArticle($article);
+        $article->update(['status' => 'draft', 'published_at' => null]);
+        return back()->with('success', 'Article remis en brouillon.');
+    }
+
+    private function ensureEditorOwnsArticle(Article $article): void
+    {
+        if (auth()->user()?->role === 'editor' && $article->author_id !== auth()->id()) {
+            abort(403, 'Vous ne pouvez gérer que vos propres contenus.');
+        }
     }
 }
