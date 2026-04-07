@@ -67,6 +67,7 @@ textarea {
 
 .admin-mobile-header {
     background: linear-gradient(165deg, #1d344d 0%, #142536 100%);
+    min-height: 64px;
 }
 
 .admin-sidebar-offcanvas {
@@ -90,9 +91,14 @@ textarea {
     color: #fff !important;
 }
 
+.admin-mobile-header .admin-brand,
+.admin-sidebar-offcanvas .offcanvas-title {
+    background: transparent !important;
+}
+
 .admin-offcanvas-close {
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 0.45rem;
+    border: none !important;
+    border-radius: 0;
     width: 34px;
     height: 34px;
     padding: 0;
@@ -100,6 +106,7 @@ textarea {
     align-items: center;
     justify-content: center;
     background-color: transparent !important;
+    box-shadow: none !important;
     opacity: 1;
 }
 
@@ -300,6 +307,19 @@ textarea {
     --bs-pagination-active-border-color: var(--ivm-orange);
 }
 
+.admin-content nav[role="navigation"] p.small.text-muted,
+.admin-content nav[role="navigation"] .small.text-muted {
+    display: none !important;
+}
+
+.admin-content nav[role="navigation"] .d-none.d-sm-flex > div:first-child {
+    display: none !important;
+}
+
+.admin-content nav[role="navigation"] .d-none.d-sm-flex > div:last-child {
+    margin-left: auto !important;
+}
+
 @media (max-width: 991.98px) {
     .admin-layout {
         flex-direction: column;
@@ -331,5 +351,21 @@ textarea {
     .admin-content table.table {
         min-width: 720px;
         white-space: nowrap;
+    }
+}
+
+@media (max-width: 575.98px) {
+    /* Force full Laravel bootstrap pagination on mobile */
+    .d-sm-none + .d-none.d-sm-flex {
+        display: flex !important;
+    }
+
+    .d-sm-none {
+        display: none !important;
+    }
+
+    .pagination {
+        flex-wrap: wrap;
+        row-gap: 0.35rem;
     }
 }

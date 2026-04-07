@@ -12,7 +12,7 @@
     </div>
 
     <div class="row g-3 mb-4">
-        <div class="col-12 col-md-6 col-xl-3">
+        <div class="col-6 col-md-6 col-xl-3">
             <div class="card card-mag h-100 admin-stat-card admin-stat-primary">
                 <div class="card-body">
                     <div class="text-muted small mb-1">Total articles</div>
@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-6 col-xl-3">
+        <div class="col-6 col-md-6 col-xl-3">
             <div class="card card-mag h-100 admin-stat-card admin-stat-success">
                 <div class="card-body">
                     <div class="text-muted small mb-1">Publiés</div>
@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-6 col-xl-3">
+        <div class="col-6 col-md-6 col-xl-3">
             <div class="card card-mag h-100 admin-stat-card admin-stat-warning">
                 <div class="card-body">
                     <div class="text-muted small mb-1">Brouillons</div>
@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-6 col-xl-3">
+        <div class="col-6 col-md-6 col-xl-3">
             <div class="card card-mag h-100 admin-stat-card admin-stat-info">
                 <div class="card-body">
                     <div class="text-muted small mb-1">Mis en avant</div>
