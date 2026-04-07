@@ -185,6 +185,12 @@ textarea {
     background: #fbfcff;
 }
 
+.admin-filter-row .form-control,
+.admin-filter-row .form-select,
+.admin-filter-row .btn {
+    min-height: 42px;
+}
+
 .admin-main {
     min-width: 0;
 }

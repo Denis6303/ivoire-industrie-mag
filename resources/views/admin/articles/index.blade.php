@@ -48,12 +48,12 @@
 
     <div class="card card-mag mb-3">
         <div class="card-body">
-            <form method="GET" action="{{ route('admin.articles.index') }}" class="row g-2 align-items-end">
-                <div class="col-12 col-lg-5">
+            <form method="GET" action="{{ route('admin.articles.index') }}" class="row g-2 align-items-end admin-filter-row">
+                <div class="col-12 col-md-4 col-lg-5">
                     <label class="form-label mb-1">Recherche</label>
                     <input type="text" name="q" value="{{ $search }}" class="form-control" placeholder="Titre ou slug">
                 </div>
-                <div class="col-12 col-md-4 col-lg-3">
+                <div class="col-6 col-md-3 col-lg-3">
                     <label class="form-label mb-1">Statut</label>
                     <select name="status" class="form-select">
                         <option value="">Tous</option>
@@ -61,7 +61,7 @@
                         <option value="draft" @selected($status === 'draft')>Brouillon</option>
                     </select>
                 </div>
-                <div class="col-12 col-md-4 col-lg-3">
+                <div class="col-6 col-md-2 col-lg-2">
                     <label class="form-label mb-1">Catégorie</label>
                     <select name="category_id" class="form-select">
                         <option value="">Toutes</option>
@@ -70,8 +70,13 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-12 col-md-4 col-lg-1 d-grid">
+                <div class="col-6 col-md-1 col-lg-1 d-grid">
                     <button class="btn btn-dark" type="submit">OK</button>
+                </div>
+                <div class="col-6 col-md-1 col-lg-1 d-grid">
+                    <a href="{{ route('admin.articles.index') }}" class="btn btn-outline-secondary" title="Réinitialiser les filtres" aria-label="Réinitialiser les filtres">
+                        <i class="fa-solid fa-rotate-left"></i>
+                    </a>
                 </div>
             </form>
         </div>
