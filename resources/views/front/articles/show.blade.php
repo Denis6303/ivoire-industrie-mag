@@ -21,7 +21,7 @@
                             @if ($cover)
                                 <div class="blog-post-image mb-4">
                                     <div class="overflow-hidden rounded" style="height: 360px;">
-                                        <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $article->title }}">
+                                        <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $article->title }}" loading="eager" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-16x9.svg') }}';">
                                     </div>
                                 </div>
                             @endif

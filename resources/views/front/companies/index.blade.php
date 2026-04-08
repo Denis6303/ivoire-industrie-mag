@@ -13,7 +13,7 @@
                         <div class="blog-post post-style-02 h-100 border rounded p-3">
                             <div class="d-flex align-items-start mb-3">
                                 @if ($company->logo)
-                                    <img src="{{ $company->logo }}" alt="" class="me-3 rounded" style="width:64px;height:64px;object-fit:contain;">
+                                    <img src="{{ $company->logo }}" alt="{{ $company->name }}" class="me-3 rounded bg-white" style="width:64px;height:64px;object-fit:contain;" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
                                 @endif
                                 <div>
                                     <h4 class="blog-title h6 mb-1">

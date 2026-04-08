@@ -87,6 +87,10 @@
     </style>
 @endpush
 
+@php
+    $fallbackSquare = asset('images/ivm-placeholder-square.svg');
+@endphp
+
 <div class="widget post-widget">
     <h6 class="widget-title">{{ __('sidebar.related_posts') }}</h6>
     <div class="news-tab sidebar-home-news-tab">
@@ -114,7 +118,9 @@
                             <div class="post-image">
                                 @if ($cover)
                                     <a href="{{ route('articles.show', $article->slug) }}">
-                                        <img class="img-fluid" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $article->title }}">
+                                        <span class="d-block ratio ratio-1x1 overflow-hidden rounded">
+                                            <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $article->title }}" loading="lazy" onerror="this.onerror=null;this.src='{{ $fallbackSquare }}';">
+                                        </span>
                                     </a>
                                 @else
                                     <a href="{{ route('articles.show', $article->slug) }}" class="d-block bg-light ratio ratio-1x1 rounded"></a>
@@ -122,7 +128,11 @@
                             </div>
                             <div class="blog-post-details">
                                 @if ($article->category)
-                                    <a class="sidebar-post-category" href="{{ route('categories.show', $article->category->slug) }}">{{ $article->category->name }}</a>
+                                    <a
+                                        class="sidebar-post-category"
+                                        href="{{ route('categories.show', $article->category->slug) }}"
+                                        style="background: {{ $article->category->color ?: '#0d6efd' }}; color: #fff; padding: 2px 10px; border-radius: 999px;"
+                                    >{{ $article->category->name }}</a>
                                 @endif
                                 <h6 class="blog-title">
                                     <a href="{{ route('articles.show', $article->slug) }}">{{ $article->title }}</a>

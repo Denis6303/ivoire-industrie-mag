@@ -143,7 +143,7 @@
                                     <div class="news-image">
                                         @php $img = article_cover($article->cover_image); @endphp
                                         @if ($img)
-                                            <img class="img-fluid" src="{{ $img }}" alt="">
+                                            <img class="w-100 h-100" style="object-fit: cover;" src="{{ $img }}" alt="" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
                                         @else
                                             <span class="d-block w-100 h-100 bg-secondary"></span>
                                         @endif

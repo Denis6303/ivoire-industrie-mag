@@ -14,7 +14,7 @@
                 <div class="col-lg-8">
                     <div class="d-flex align-items-start mb-4">
                         @if ($company->logo)
-                            <img src="{{ $company->logo }}" alt="{{ $company->name }}" class="me-4 rounded" style="max-width:120px;">
+                            <img src="{{ $company->logo }}" alt="{{ $company->name }}" class="me-4 rounded bg-white" style="width:120px;height:120px;object-fit:contain;" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
                         @endif
                         <div>
                             @if ($company->sector)

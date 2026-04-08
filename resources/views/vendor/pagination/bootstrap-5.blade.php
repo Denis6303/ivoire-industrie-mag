@@ -1,4 +1,25 @@
 @if ($paginator->hasPages())
+    <style>
+        .pagination .page-link {
+            color: #ff7800;
+        }
+        .pagination .page-link:hover {
+            color: #ff7800;
+            border-color: rgba(255, 120, 0, 0.35);
+            background: rgba(255, 120, 0, 0.08);
+        }
+        .pagination .page-item.active .page-link {
+            background-color: #ff7800;
+            border-color: #ff7800;
+            color: #fff;
+        }
+        .pagination .page-item.disabled .page-link {
+            color: rgba(255, 120, 0, 0.5);
+        }
+        .pagination .page-link:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 120, 0, 0.25);
+        }
+    </style>
     <nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="d-flex justify-content-end">
         <ul class="pagination mb-0">
             @if ($paginator->onFirstPage())

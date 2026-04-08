@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Company;
+use App\Models\IndustrialProject;
+use App\Models\IndustrySector;
 use App\Models\Tag;
 
 class HomeController extends Controller
@@ -15,6 +17,46 @@ class HomeController extends Controller
         $featured = Article::with(['category', 'author'])->published()->featured()->latest('published_at')->first();
         $latest = Article::with(['category', 'author'])->published()->latest('published_at')->take(6)->get();
         $companies = Company::where('is_active', true)->latest()->take(5)->get();
+        $featuredCompanies = Company::query()
+            ->where('is_active', true)
+            ->where('is_featured', true)
+            ->latest()
+            ->take(8)
+            ->get();
+
+        $projects = IndustrialProject::query()
+            ->latest()
+            ->take(6)
+            ->get();
+
+        $sectors = IndustrySector::query()
+            ->where('is_active', true)
+            ->withCount(['articles', 'companies', 'projects'])
+            ->orderBy('order')
+            ->orderBy('name')
+            ->take(12)
+            ->get();
+
+        $editorsPicks = Article::with(['category'])
+            ->published()
+            ->orderByDesc('view_count')
+            ->latest('published_at')
+            ->take(4)
+            ->get();
+
+        $moreArticles = Article::with(['category', 'author'])
+            ->published()
+            ->latest('published_at')
+            ->skip(6)
+            ->take(18)
+            ->get();
+
+        $dataPosts = Article::with(['category'])
+            ->published()
+            ->byType('data')
+            ->latest('published_at')
+            ->take(4)
+            ->get();
 
         $sidebarLatest = Article::with('category')->published()->latest('published_at')->take(3)->get();
 
@@ -78,6 +120,12 @@ class HomeController extends Controller
             'featured',
             'latest',
             'companies',
+            'featuredCompanies',
+            'projects',
+            'sectors',
+            'editorsPicks',
+            'moreArticles',
+            'dataPosts',
             'sidebarLatest',
             'sidebarTrending',
             'sidebarPopular',

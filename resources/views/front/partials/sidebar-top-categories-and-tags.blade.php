@@ -1,5 +1,8 @@
 <div class="widget sidebar-top-category-posts mt-4">
     <h6 class="widget-title">{{ __('sidebar.top_category_posts') }}</h6>
+    @php
+        $fallbackSquare = asset('images/ivm-placeholder-square.svg');
+    @endphp
     <div class="sidebar-home-posts">
         @forelse ($topCategoryPosts as $row)
             @php
@@ -11,14 +14,20 @@
                 <div class="post-image">
                     @if ($cover)
                         <a href="{{ route('articles.show', $article->slug) }}">
-                            <img class="img-fluid" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $article->title }}">
+                            <span class="d-block ratio ratio-1x1 overflow-hidden rounded">
+                                <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $article->title }}" loading="lazy" onerror="this.onerror=null;this.src='{{ $fallbackSquare }}';">
+                            </span>
                         </a>
                     @else
                         <a href="{{ route('articles.show', $article->slug) }}" class="d-block bg-light ratio ratio-1x1 rounded"></a>
                     @endif
                 </div>
                 <div class="blog-post-details">
-                    <a class="sidebar-post-category" href="{{ route('categories.show', $category->slug) }}">{{ $category->name }}</a>
+                    <a
+                        class="sidebar-post-category"
+                        href="{{ route('categories.show', $category->slug) }}"
+                        style="background: {{ $category->color ?: '#0d6efd' }}; color: #fff; padding: 2px 10px; border-radius: 999px;"
+                    >{{ $category->name }}</a>
                     <h6 class="blog-title">
                         <a href="{{ route('articles.show', $article->slug) }}">{{ $article->title }}</a>
                     </h6>

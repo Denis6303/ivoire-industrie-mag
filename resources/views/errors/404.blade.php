@@ -7,7 +7,7 @@
         <div class="container text-center">
             <h1 class="display-4 mb-3">404</h1>
             <p class="lead mb-4">{{ __('errors.not_found_lead') }}</p>
-            <a href="{{ route('home') }}" class="btn btn-primary">{{ __('nav.home') }}</a>
+            <a href="{{ route('home', app()->getLocale()) }}" class="btn btn-primary">{{ __('nav.home') }}</a>
       </div>
     </section>
 @endsection
