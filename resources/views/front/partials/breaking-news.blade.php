@@ -150,7 +150,7 @@
                                     </div>
                                     <div class="news-post-details">
                                         <h6 class="news-title">
-                                            <a href="{{ route('articles.show', $article->slug) }}">{{ $article->title }}</a>
+                                            <a href="{{ route('articles.show', ['slug' => $article->slug]) }}">{{ $article->title }}</a>
                                         </h6>
                                     </div>
                                 </div>

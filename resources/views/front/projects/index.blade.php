@@ -37,7 +37,7 @@
                                         <span><i class="fa-solid fa-location-dot me-1"></i>{{ $project->location }}</span>
                                     @endif
                                     @if ($project->company)
-                                        <span><i class="fa-solid fa-building me-1"></i><a class="text-muted text-decoration-none" href="{{ route('companies.show', $project->company->slug) }}">{{ $project->company->name }}</a></span>
+                                        <span><i class="fa-solid fa-building me-1"></i><a class="text-muted text-decoration-none" href="{{ route('companies.show', ['slug' => $project->company->slug]) }}">{{ $project->company->name }}</a></span>
                                     @endif
                                 </div>
                             </div>
@@ -69,7 +69,7 @@
                             <div class="px-4 pb-4">
                                 <a class="btn btn-sm btn-outline-primary" href="{{ route('projects.index') }}#{{ $project->slug }}">Voir le projet</a>
                                 @if ($project->company)
-                                    <a class="btn btn-sm btn-primary ms-2" href="{{ route('companies.show', $project->company->slug) }}">Voir l’entreprise</a>
+                                    <a class="btn btn-sm btn-primary ms-2" href="{{ route('companies.show', ['slug' => $project->company->slug]) }}">Voir l’entreprise</a>
                                 @endif
                             </div>
                         </div>

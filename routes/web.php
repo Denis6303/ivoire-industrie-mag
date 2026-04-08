@@ -68,6 +68,11 @@ Route::prefix('{locale}')
         });
 
         Route::post('/deconnexion', [ClientAuthController::class, 'logout'])->middleware('auth')->name('logout');
+
+        // Fallback dans le scope localisé pour éviter les 500 sur /fr/xxx inconnus
+        Route::fallback(function () {
+            return response()->view('errors.404', [], 404);
+        });
     });
 
 /*

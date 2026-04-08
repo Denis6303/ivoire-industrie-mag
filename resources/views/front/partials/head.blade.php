@@ -57,4 +57,44 @@
         transition: none !important;
         transform: none !important;
     }
+
+    /* Mega menu Industrie (dropdown horizontal) */
+    .ivm-mega-menu {
+        width: min(980px, calc(100vw - 2rem));
+        border-radius: 12px;
+        border: 1px solid rgba(0,0,0,.06);
+        box-shadow: 0 10px 30px rgba(2, 6, 23, 0.10);
+    }
+    @media (min-width: 992px) {
+        .navbar .ivm-mega .dropdown-menu {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+    .ivm-mega-menu .dropdown-item {
+        white-space: normal;
+        border-radius: 8px;
+        padding: 8px 10px;
+    }
+    .ivm-mega-menu .dropdown-item:hover {
+        background: rgba(255, 120, 0, 0.10);
+    }
+
+    /* Homepage sections spacing + dot alignment + pink CTA */
+    .ivm-section-sep {
+        margin-top: 44px;
+        margin-bottom: 26px;
+        border-top: 1px solid rgba(2, 6, 23, 0.08);
+    }
+    .ivm-section-title {
+        line-height: 1.2;
+    }
+    .ivm-section-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        flex: 0 0 12px;
+        transform: translateY(1px);
+    }
+    /* CTA uniformes: on utilise le orange du thème (btn-primary) */
 </style>

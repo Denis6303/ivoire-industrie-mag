@@ -142,7 +142,7 @@
                                                 <i class="fa-regular fa-trash-can"></i>
                                             </button>
                                         </form>
-                                        <a href="{{ route('articles.show', $article->slug) }}" target="_blank" class="btn btn-sm btn-outline-dark">
+                                        <a href="{{ route('articles.show', [config('app.locale', 'fr'), $article->slug]) }}" target="_blank" class="btn btn-sm btn-outline-dark">
                                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                         </a>
                                     </div>

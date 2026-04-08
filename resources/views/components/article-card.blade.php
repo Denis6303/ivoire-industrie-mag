@@ -10,7 +10,7 @@
 @if ($style === '11')
     <div class="blog-post post-style-11 mb-4 border rounded overflow-hidden">
         <div class="blog-image">
-            <a href="{{ route('articles.show', $article->slug) }}" class="d-block overflow-hidden" style="height: 360px;">
+            <a href="{{ route('articles.show', ['slug' => $article->slug]) }}" class="d-block overflow-hidden" style="height: 360px;">
                 <img
                     class="w-100 h-100"
                     style="object-fit: cover;"
@@ -26,12 +26,12 @@
                 <span class="badge badge-medium" style="background: {{ $catColor }}; color: #fff;">{{ $article->category->name }}</span>
             @endif
             <h4 class="blog-title mt-2 mb-2">
-                <a href="{{ route('articles.show', $article->slug) }}">{{ $article->title }}</a>
+                <a href="{{ route('articles.show', ['slug' => $article->slug]) }}">{{ $article->title }}</a>
             </h4>
             <div class="blog-post-meta">
                 @if ($article->published_at)
                     <div class="blog-post-time">
-                        <a href="{{ route('articles.show', $article->slug) }}"><i class="fa-solid fa-calendar-days"></i>{{ $article->published_at->translatedFormat('j M Y') }}</a>
+                        <a href="{{ route('articles.show', ['slug' => $article->slug]) }}"><i class="fa-solid fa-calendar-days"></i>{{ $article->published_at->translatedFormat('j M Y') }}</a>
                     </div>
                 @endif
             </div>
@@ -43,7 +43,7 @@
                     <span>par <span style="color:#243e5d;">{{ $article->signature ?: ($article->author->name ?? 'Rédaction') }}</span></span>
                 </div>
             @endif
-            <a class="btn-link d-inline-block mt-3" href="{{ route('articles.show', $article->slug) }}">Lire la suite</a>
+            <a class="btn-link d-inline-block mt-3" href="{{ route('articles.show', ['slug' => $article->slug]) }}">Lire la suite</a>
         </div>
     </div>
 @else
@@ -54,11 +54,11 @@
         ])>
         <div class="blog-image">
             @if ($cover)
-                <a href="{{ route('articles.show', $article->slug) }}" class="d-block overflow-hidden rounded" style="height: 210px;">
+                <a href="{{ route('articles.show', ['slug' => $article->slug]) }}" class="d-block overflow-hidden rounded" style="height: 210px;">
                     <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $article->title }}" loading="lazy" onerror="this.onerror=null;this.src='{{ $fallback16x9 }}';">
                 </a>
             @else
-                <a href="{{ route('articles.show', $article->slug) }}" class="d-block bg-light rounded position-relative" style="height: 210px;">
+                <a href="{{ route('articles.show', ['slug' => $article->slug]) }}" class="d-block bg-light rounded position-relative" style="height: 210px;">
                     <span class="position-absolute top-50 start-50 translate-middle small text-muted">{{ config('app.name') }}</span>
                 </a>
             @endif
@@ -68,12 +68,12 @@
                 <span class="badge badge-medium" style="background: {{ $catColor }}; color: #fff;">{{ $article->category->name }}</span>
             @endif
             <h4 class="blog-title">
-                <a href="{{ route('articles.show', $article->slug) }}">{{ $article->title }}</a>
+                <a href="{{ route('articles.show', ['slug' => $article->slug]) }}">{{ $article->title }}</a>
             </h4>
             <div class="blog-post-meta">
                 @if ($article->published_at)
                     <div class="blog-post-time">
-                        <a href="{{ route('articles.show', $article->slug) }}"><i class="fa-solid fa-calendar-days"></i>{{ $article->published_at->translatedFormat('j M Y') }}</a>
+                        <a href="{{ route('articles.show', ['slug' => $article->slug]) }}"><i class="fa-solid fa-calendar-days"></i>{{ $article->published_at->translatedFormat('j M Y') }}</a>
                     </div>
                 @endif
             </div>
@@ -85,7 +85,7 @@
                     <span>par <span style="color:#243e5d;">{{ $article->signature ?: ($article->author->name ?? 'Rédaction') }}</span></span>
                 </div>
             @endif
-            <a class="btn-link d-inline-block mt-2" href="{{ route('articles.show', $article->slug) }}">Lire la suite</a>
+            <a class="btn-link d-inline-block mt-2" href="{{ route('articles.show', ['slug' => $article->slug]) }}">Lire la suite</a>
         </div>
     </div>
 @endif

@@ -17,7 +17,7 @@
                                 @endif
                                 <div>
                                     <h4 class="blog-title h6 mb-1">
-                                        <a href="{{ route('companies.show', $company->slug) }}">{{ $company->name }}</a>
+                                        <a href="{{ route('companies.show', ['slug' => $company->slug]) }}">{{ $company->name }}</a>
                                     </h4>
                                     @if ($company->sector)
                                         <span class="badge bg-primary">{{ $company->sector->name }}</span>
@@ -27,7 +27,7 @@
                             @if ($company->description)
                                 <p class="small">{{ \Illuminate\Support\Str::limit(strip_tags($company->description), 140) }}</p>
                             @endif
-                            <a class="btn-link" href="{{ route('companies.show', $company->slug) }}">Fiche entreprise</a>
+                            <a class="btn-link" href="{{ route('companies.show', ['slug' => $company->slug]) }}">Fiche entreprise</a>
                         </div>
                     </div>
                 @empty

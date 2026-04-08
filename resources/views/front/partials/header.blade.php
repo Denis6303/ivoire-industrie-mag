@@ -55,35 +55,57 @@
             </a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
+                    @php
+                        $primary = $navPrimaryCategories ?? collect();
+                        $industry = $navIndustryCategories ?? collect();
+                    @endphp
+
+                    {{-- Menus 1 mot uniquement --}}
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">{{ __('nav.home') }}</a>
+                        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Accueil</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('articles.*') ? 'active' : '' }}" href="{{ route('articles.index') }}">{{ __('nav.articles') }}</a>
-                    </li>
-                    @if (isset($navCategories) && $navCategories->isNotEmpty())
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navCategories" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ __('nav.categories') }}<i class="fas fa-chevron-down fa-xs"></i>
+
+                    @if ($industry->isNotEmpty())
+                        <li class="nav-item dropdown ivm-mega">
+                            <a class="nav-link dropdown-toggle" href="#" id="navIndustry" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Industrie <i class="fas fa-chevron-down fa-xs"></i>
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="navCategories">
-                                @foreach ($navCategories as $cat)
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('categories.show', $cat->slug) }}">{{ $cat->name }}</a>
-                                    </li>
-                                @endforeach
-                            </ul>
+                            <div class="dropdown-menu p-3 ivm-mega-menu" aria-labelledby="navIndustry">
+                                <div class="row g-2">
+                                    @foreach ($industry->chunk((int) ceil($industry->count() / 4)) as $chunk)
+                                        <div class="col-6 col-lg-3">
+                                            <ul class="list-unstyled mb-0">
+                                                @foreach ($chunk as $cat)
+                                                    <li><a class="dropdown-item" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ $cat->name }}</a></li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
                         </li>
                     @endif
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('sectors.*') ? 'active' : '' }}" href="{{ route('sectors.index') }}">{{ __('nav.sectors') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('companies.*') ? 'active' : '' }}" href="{{ route('companies.index') }}">{{ __('nav.companies') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}" href="{{ route('projects.index') }}">{{ __('nav.projects') }}</a>
-                    </li>
+
+                    @foreach ([
+                        'investissement' => 'Investissement',
+                        'usines' => 'Usines',
+                        'innovation' => 'Innovation',
+                        'international' => 'International',
+                        'districts' => 'Districts',
+                        'agenda' => 'Agenda',
+                    ] as $slug => $label)
+                        @if ($cat = $primary->firstWhere('slug', $slug))
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('categories.show') && request()->route('slug') === $cat->slug ? 'active' : '' }}" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ $label }}</a>
+                            </li>
+                        @endif
+                    @endforeach
+
+                    @if ($cat = $primary->firstWhere('slug', 'made-in-ivory-coast'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('categories.show') && request()->route('slug') === $cat->slug ? 'active' : '' }}" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">Made In Ivory Coast</a>
+                        </li>
+                    @endif
                 </ul>
             </div>
             <div class="add-listing">

@@ -7,7 +7,7 @@
     @include('front.partials.page-header', [
         'title' => \Illuminate\Support\Str::limit($article->title, 80),
         'breadcrumbItems' => $article->category
-            ? [['label' => $article->category->name, 'url' => route('categories.show', $article->category->slug)]]
+            ? [['label' => $article->category->name, 'url' => route('categories.show', ['slug' => $article->category->slug])]]
             : [],
     ])
 

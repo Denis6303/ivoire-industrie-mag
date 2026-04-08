@@ -16,7 +16,7 @@
                         <div class="blog-post post-style-11 home-featured-la-une mb-5">
                             <div class="blog-image">
                                 @if ($cover)
-                                    <a href="{{ route('articles.show', $f->slug) }}" class="d-block overflow-hidden rounded position-relative" style="height: 420px;">
+                                    <a href="{{ route('articles.show', ['slug' => $f->slug]) }}" class="d-block overflow-hidden rounded position-relative" style="height: 420px;">
                                         <span class="badge bg-danger position-absolute top-0 start-0 m-3" style="z-index: 2;">À la une</span>
                                         <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $f->cover_alt ?? $f->title }}" loading="eager" onerror="this.onerror=null;this.src='{{ $fallback16x9 }}';">
                                     </a>
@@ -29,7 +29,7 @@
                                     <span class="badge badge-medium home-featured-la-une-badge" style="background: {{ $f->category->color ?: '#0d6efd' }}; color:#fff;">{{ $f->category->name }}</span>
                                 @endif
                                 <h2 class="blog-title mt-2">
-                                    <a href="{{ route('articles.show', $f->slug) }}">{{ $f->title }}</a>
+                                    <a href="{{ route('articles.show', ['slug' => $f->slug]) }}">{{ $f->title }}</a>
                                 </h2>
                                 <div class="blog-post-meta">
                                     @if ($f->published_at)
@@ -44,7 +44,7 @@
                                 @if ($f->author)
                                     <div class="blog-post-user mt-2"><span>par <span style="color:#243e5d;">{{ $f->signature ?: $f->author->name }}</span></span></div>
                                 @endif
-                                <a class="btn btn-primary btn-sm home-featured-la-une-btn mt-3" href="{{ route('articles.show', $f->slug) }}">Lire l’article</a>
+                                <a class="btn btn-primary btn-sm home-featured-la-une-btn mt-3" href="{{ route('articles.show', ['slug' => $f->slug]) }}">Lire l’article</a>
                             </div>
                         </div>
                     @endif
@@ -63,113 +63,105 @@
                         <a href="{{ route('articles.index') }}" class="btn btn-primary">Tous les articles</a>
                     </div>
 
-                    @if (isset($editorsPicks) && $editorsPicks->isNotEmpty())
-                        <div class="section-title mb-4 mt-5">
-                            <h2 class="mb-0"><i class="fa-solid fa-star me-2"></i>Sélection de la rédaction</h2>
-                        </div>
-                        <div class="row">
-                            @foreach ($editorsPicks as $article)
-                                <div class="col-md-6 mb-4">
-                                    <x-article-card :article="$article" style="02" />
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-
-                    @if (isset($dataPosts) && $dataPosts->isNotEmpty())
-                        <div class="section-title mb-4 mt-5">
-                            <h2 class="mb-0"><i class="fa-solid fa-chart-line me-2"></i>Données & chiffres</h2>
-                        </div>
-                        <div class="row">
-                            @foreach ($dataPosts as $article)
-                                <div class="col-md-6 mb-4">
-                                    <x-article-card :article="$article" style="02" />
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-
-                    @if (isset($sectors) && $sectors->isNotEmpty())
-                        <div class="section-title mb-4 mt-5">
-                            <h2 class="mb-0"><i class="fa-solid fa-industry me-2"></i>Secteurs à surveiller</h2>
-                        </div>
-                        <div class="row g-3">
-                            @foreach ($sectors as $sector)
-                                <div class="col-md-6 col-lg-4">
-                                    <a href="{{ route('sectors.show', $sector->slug) }}" class="d-block border rounded p-3 h-100 text-decoration-none">
-                                        <div class="d-flex align-items-center justify-content-between mb-2">
-                                            <strong class="text-dark">{{ $sector->name }}</strong>
-                                            @if ($sector->color)
-                                                <span class="badge" style="background: {{ $sector->color }};">&nbsp;</span>
-                                            @endif
-                                        </div>
-                                        <div class="small text-muted">
-                                            {{ $sector->articles_count ?? 0 }} articles · {{ $sector->companies_count ?? 0 }} entreprises · {{ $sector->projects_count ?? 0 }} projets
-                                        </div>
-                                    </a>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-
-                    @if (isset($featuredCompanies) && $featuredCompanies->isNotEmpty())
-                        <div class="section-title mb-4 mt-5">
-                            <h2 class="mb-0"><i class="fa-solid fa-building me-2"></i>Entreprises mises en avant</h2>
-                        </div>
-                        <div class="row g-3">
-                            @foreach ($featuredCompanies as $company)
-                                <div class="col-md-6 col-lg-3">
-                                    <a href="{{ route('companies.show', $company->slug) }}" class="d-block border rounded p-3 h-100 text-decoration-none">
-                                        <div class="d-flex align-items-center mb-2">
-                                            @if ($company->logo)
-                                                <img src="{{ $company->logo }}" alt="{{ $company->name }}" class="rounded me-2 bg-white" style="width:42px;height:42px;object-fit:contain;" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
-                                            @endif
-                                            <strong class="text-dark">{{ \Illuminate\Support\Str::limit($company->name, 32) }}</strong>
-                                        </div>
-                                        @if ($company->description)
-                                            <div class="small text-muted">{{ \Illuminate\Support\Str::limit(strip_tags($company->description), 90) }}</div>
-                                        @endif
-                                    </a>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-
-                    @if (isset($projects) && $projects->isNotEmpty())
-                        <div class="section-title mb-4 mt-5">
-                            <h2 class="mb-0"><i class="fa-solid fa-helmet-safety me-2"></i>Projets industriels</h2>
-                        </div>
-                        <div class="row">
-                            @foreach ($projects as $project)
-                                <div class="col-md-6 mb-4">
-                                    <div class="border rounded p-4 h-100 bg-white">
-                                        <h3 class="h6 mb-2">{{ $project->name }}</h3>
-                                        @if ($project->location)
-                                            <div class="small text-muted mb-2"><i class="fa-solid fa-location-dot"></i> {{ $project->location }}</div>
-                                        @endif
-                                        @if ($project->description)
-                                            <p class="mb-0">{{ \Illuminate\Support\Str::limit(strip_tags($project->description), 170) }}</p>
-                                        @endif
+                    @if (isset($homeSections) && $homeSections->isNotEmpty())
+                        @foreach ($homeSections as $section)
+                            @php
+                                /** @var \App\Models\Category $cat */
+                                $cat = $section['category'];
+                                $posts = $section['posts'];
+                            @endphp
+                            <div class="ivm-section-sep"></div>
+                            <div class="section-title mb-4">
+                                <h2 class="mb-0 d-flex align-items-center ivm-section-title">
+                                    <span class="ivm-section-dot me-2" style="background: {{ $cat->color ?: '#ff7800' }};"></span>
+                                    <span>{{ $cat->name }}</span>
+                                </h2>
+                            </div>
+                            <div class="row">
+                                @foreach ($posts as $article)
+                                    <div class="col-md-6 mb-4">
+                                        <x-article-card :article="$article" style="02" />
                                     </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        <div class="text-center">
-                            <a href="{{ route('projects.index') }}" class="btn btn-outline-primary">Voir tous les projets</a>
-                        </div>
-                    @endif
+                                @endforeach
+                            </div>
+                            <div class="text-center mb-2">
+                                <a href="{{ route('categories.show', ['slug' => $cat->slug]) }}" class="btn btn-primary btn-sm">Voir plus</a>
+                            </div>
 
-                    @if (isset($moreArticles) && $moreArticles->isNotEmpty())
-                        <div class="section-title mb-4 mt-5">
-                            <h2 class="mb-0"><i class="fa-solid fa-layer-group me-2"></i>À lire aussi</h2>
-                        </div>
-                        <div class="row">
-                            @foreach ($moreArticles as $article)
-                                <div class="col-md-6 mb-4">
-                                    <x-article-card :article="$article" style="02" />
+                            {{-- Intercalage des blocs (ne pas les faire se suivre) --}}
+                            @if ($loop->iteration === 2 && isset($sectors) && $sectors->isNotEmpty())
+                                <div class="ivm-section-sep"></div>
+                                <div class="section-title mb-4">
+                                    <h2 class="mb-0"><i class="fa-solid fa-industry me-2"></i>Secteurs à surveiller</h2>
                                 </div>
-                            @endforeach
-                        </div>
+                                <div class="row g-3">
+                                    @foreach ($sectors as $sector)
+                                        <div class="col-md-6 col-lg-4">
+                                            <a href="{{ route('sectors.show', ['slug' => $sector->slug]) }}" class="d-block border rounded p-3 h-100 text-decoration-none">
+                                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                                    <strong class="text-dark">{{ $sector->name }}</strong>
+                                                    @if ($sector->color)
+                                                        <span class="badge" style="background: {{ $sector->color }};">&nbsp;</span>
+                                                    @endif
+                                                </div>
+                                                <div class="small text-muted">
+                                                    {{ $sector->articles_count ?? 0 }} articles · {{ $sector->companies_count ?? 0 }} entreprises · {{ $sector->projects_count ?? 0 }} projets
+                                                </div>
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            @if ($loop->iteration === 5 && isset($featuredCompanies) && $featuredCompanies->isNotEmpty())
+                                <div class="ivm-section-sep"></div>
+                                <div class="section-title mb-4">
+                                    <h2 class="mb-0"><i class="fa-solid fa-building me-2"></i>Entreprises mises en avant</h2>
+                                </div>
+                                <div class="row g-3">
+                                    @foreach ($featuredCompanies as $company)
+                                        <div class="col-md-6 col-lg-3">
+                                            <a href="{{ route('companies.show', ['slug' => $company->slug]) }}" class="d-block border rounded p-3 h-100 text-decoration-none">
+                                                <div class="d-flex align-items-center mb-2">
+                                                    @if ($company->logo)
+                                                        <img src="{{ $company->logo }}" alt="{{ $company->name }}" class="rounded me-2 bg-white" style="width:42px;height:42px;object-fit:contain;" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
+                                                    @endif
+                                                    <strong class="text-dark">{{ \Illuminate\Support\Str::limit($company->name, 32) }}</strong>
+                                                </div>
+                                                @if ($company->description)
+                                                    <div class="small text-muted">{{ \Illuminate\Support\Str::limit(strip_tags($company->description), 90) }}</div>
+                                                @endif
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            @if ($loop->last && isset($projects) && $projects->isNotEmpty())
+                                <div class="ivm-section-sep"></div>
+                                <div class="section-title mb-4">
+                                    <h2 class="mb-0"><i class="fa-solid fa-helmet-safety me-2"></i>Projets industriels</h2>
+                                </div>
+                                <div class="row">
+                                    @foreach ($projects as $project)
+                                        <div class="col-md-6 mb-4">
+                                            <div class="border rounded p-4 h-100 bg-white">
+                                                <h3 class="h6 mb-2">{{ $project->name }}</h3>
+                                                @if ($project->location)
+                                                    <div class="small text-muted mb-2"><i class="fa-solid fa-location-dot"></i> {{ $project->location }}</div>
+                                                @endif
+                                                @if ($project->description)
+                                                    <p class="mb-0">{{ \Illuminate\Support\Str::limit(strip_tags($project->description), 170) }}</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="text-center">
+                                    <a href="{{ route('projects.index') }}" class="btn btn-primary btn-sm">Voir plus</a>
+                                </div>
+                            @endif
+                        @endforeach
                     @endif
                 </div>
                 <div class="col-lg-4">
@@ -184,7 +176,7 @@
                                         <img src="{{ $company->logo }}" alt="{{ $company->name }}" class="rounded me-3 bg-white" style="width:56px;height:56px;object-fit:contain;" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
                                     @endif
                                     <div>
-                                        <h6 class="mb-0"><a href="{{ route('companies.show', $company->slug) }}">{{ $company->name }}</a></h6>
+                                        <h6 class="mb-0"><a href="{{ route('companies.show', ['slug' => $company->slug]) }}">{{ $company->name }}</a></h6>
                                         @if ($company->sector)
                                             <small class="text-muted">{{ $company->sector->name }}</small>
                                         @endif

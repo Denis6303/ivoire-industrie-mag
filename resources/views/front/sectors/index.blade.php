@@ -13,12 +13,12 @@
                         <div class="blog-post post-style-02 h-100 border rounded p-3">
                               <div class="blog-post-details">
                                 <h4 class="blog-title">
-                                    <a href="{{ route('sectors.show', $sector->slug) }}">{{ $sector->name }}</a>
+                                    <a href="{{ route('sectors.show', ['slug' => $sector->slug]) }}">{{ $sector->name }}</a>
                                 </h4>
                                 @if ($sector->description)
                                     <p class="small text-muted">{{ \Illuminate\Support\Str::limit($sector->description, 120) }}</p>
                                 @endif
-                                <a class="btn-link" href="{{ route('sectors.show', $sector->slug) }}">Voir les articles</a>
+                                <a class="btn-link" href="{{ route('sectors.show', ['slug' => $sector->slug]) }}">Voir les articles</a>
                           </div>
                         </div>
                       </div>

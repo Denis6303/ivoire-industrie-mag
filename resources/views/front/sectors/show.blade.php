@@ -27,7 +27,7 @@
               <div class="widget">
                             <h6 class="widget-title">Autres secteurs</h6>
                             @foreach ($otherSectors as $s)
-                                <p class="mb-2"><a href="{{ route('sectors.show', $s->slug) }}">{{ $s->name }}</a></p>
+                                <p class="mb-2"><a href="{{ route('sectors.show', ['slug' => $s->slug]) }}">{{ $s->name }}</a></p>
                             @endforeach
                       </div>
             </div>

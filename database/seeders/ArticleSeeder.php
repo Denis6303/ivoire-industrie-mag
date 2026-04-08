@@ -132,6 +132,65 @@ class ArticleSeeder extends Seeder
             $dayOffset++;
         }
 
+        // Assurer du contenu pour les rubriques principales (homepage organizer)
+        $mustHaveCategorySlugs = [
+            'industrie-story',
+            'investissement',
+            'zones-industrielles',
+            'usines',
+            'innovation',
+            'international',
+            'districts',
+            'agenda',
+            'made-in-ivory-coast',
+            '2im-tv',
+            'hommes-et-femmes-industriels-ivoiriens',
+        ];
+
+        $extraCovers = $covers;
+        foreach ($mustHaveCategorySlugs as $i => $slugCat) {
+            $cat = $categories->get($slugCat);
+            if (! $cat) {
+                continue;
+            }
+            for ($j = 1; $j <= 6; $j++) {
+                $title = "{$cat->name} — article démo {$j}";
+                $slug = Str::slug($title.'-'.$slugCat.'-'.$j);
+                $cover = $extraCovers[($i + $j) % count($extraCovers)];
+
+                $article = Article::updateOrCreate(
+                    ['slug' => $slug],
+                    [
+                        'title' => $title,
+                        'signature' => ['Rédaction IIM', 'Équipe Industrie', 'Correspondant Éco', 'Desk Analyse'][($j) % 4],
+                        'excerpt' => "Dans la rubrique « {$cat->name} », cet article de démonstration apporte du contexte, des enjeux et des pistes d’action. Texte factice, mais structuré pour la présentation et la lecture.",
+                        'content' => $filler,
+                        'cover_image' => $cover['url'],
+                        'cover_alt' => $cover['alt'],
+                        'status' => 'published',
+                        'type' => 'news',
+                        'is_featured' => false,
+                        'is_breaking' => false,
+                        'is_premium' => false,
+                        'view_count' => random_int(80, 9_000),
+                        'reading_time' => random_int(3, 10),
+                        'published_at' => now()->subDays(random_int(1, 90)),
+                        'author_id' => $author->id,
+                        'category_id' => $cat->id,
+                        'meta_title' => $title,
+                        'meta_description' => Str::limit(strip_tags("Rubrique {$cat->name}. ".$title), 150),
+                    ]
+                );
+
+                if ($tagIds->isNotEmpty()) {
+                    $article->tags()->syncWithoutDetaching($tagIds->random(min(4, $tagIds->count()))->all());
+                }
+                if ($sectorIds->isNotEmpty()) {
+                    $article->sectors()->syncWithoutDetaching($sectorIds->random(min(2, $sectorIds->count()))->all());
+                }
+            }
+        }
+
         // Articles liés (related_articles)
         if ($created->count() >= 6) {
             foreach ($created as $i => $article) {

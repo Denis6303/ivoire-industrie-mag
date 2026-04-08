@@ -37,27 +37,6 @@ class HomeController extends Controller
             ->take(12)
             ->get();
 
-        $editorsPicks = Article::with(['category'])
-            ->published()
-            ->orderByDesc('view_count')
-            ->latest('published_at')
-            ->take(4)
-            ->get();
-
-        $moreArticles = Article::with(['category', 'author'])
-            ->published()
-            ->latest('published_at')
-            ->skip(6)
-            ->take(18)
-            ->get();
-
-        $dataPosts = Article::with(['category'])
-            ->published()
-            ->byType('data')
-            ->latest('published_at')
-            ->take(4)
-            ->get();
-
         $sidebarLatest = Article::with('category')->published()->latest('published_at')->take(3)->get();
 
         $sidebarTrending = Article::with('category')->published()
@@ -116,6 +95,43 @@ class HomeController extends Controller
             ->limit(24)
             ->get();
 
+        // Homepage organizer (12 sections)
+        $homeSectionSlugs = [
+            'industrie-story',
+            'investissement',
+            'zones-industrielles',
+            'usines',
+            'innovation',
+            'international',
+            'districts',
+            'agenda',
+            'made-in-ivory-coast',
+            '2im-tv',
+            'hommes-et-femmes-industriels-ivoiriens',
+        ];
+
+        $homeSections = Category::query()
+            ->whereIn('slug', $homeSectionSlugs)
+            ->get()
+            ->sortBy(fn (Category $c) => array_search($c->slug, $homeSectionSlugs, true))
+            ->values()
+            ->map(function (Category $category) {
+                $posts = Article::query()
+                    ->with(['category', 'author'])
+                    ->published()
+                    ->where('category_id', $category->id)
+                    ->latest('published_at')
+                    ->take(4)
+                    ->get();
+
+                return [
+                    'category' => $category,
+                    'posts' => $posts,
+                ];
+            })
+            ->filter(fn ($row) => $row['posts']->isNotEmpty())
+            ->values();
+
         return view('front.home', compact(
             'featured',
             'latest',
@@ -123,14 +139,12 @@ class HomeController extends Controller
             'featuredCompanies',
             'projects',
             'sectors',
-            'editorsPicks',
-            'moreArticles',
-            'dataPosts',
             'sidebarLatest',
             'sidebarTrending',
             'sidebarPopular',
             'topCategoryPosts',
             'sidebarTags',
+            'homeSections',
         ));
     }
 }
