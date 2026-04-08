@@ -29,11 +29,6 @@ class AdminAuthController extends Controller
 
     public function showRegister()
     {
-        if (! $this->canSelfRegister()) {
-            return redirect()->route('admin.login')
-                ->withErrors(['email' => 'Inscription fermée. Un administrateur existe déjà.']);
-        }
-
         return view('auth.admin.register', ['roles' => self::REGISTERABLE_ROLES]);
     }
 
@@ -64,12 +59,6 @@ class AdminAuthController extends Controller
 
     public function register(Request $request): RedirectResponse
     {
-        if (! $this->canSelfRegister()) {
-            throw ValidationException::withMessages([
-                'email' => 'Inscription fermée. Un administrateur existe déjà.',
-            ]);
-        }
-
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
@@ -89,11 +78,6 @@ class AdminAuthController extends Controller
 
         return redirect()->route('admin.dashboard')
             ->with('success', 'Compte administrateur créé.');
-    }
-
-    private function canSelfRegister(): bool
-    {
-        return ! User::query()->whereIn('role', ['super_admin', 'admin'])->exists();
     }
 
     public function logout(Request $request): RedirectResponse

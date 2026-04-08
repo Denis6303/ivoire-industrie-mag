@@ -18,4 +18,16 @@
     .header .owl-nav {
         display: none !important;
     }
+
+    /* Badges: padding/align pour éviter le texte collé au bord */
+    .badge {
+        padding: 0.42em 0.72em;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        border-radius: 999px;
+    }
+    .badge.badge-medium {
+        padding: 0.5em 0.85em;
+    }
 </style>
