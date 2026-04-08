@@ -30,4 +30,31 @@
     .badge.badge-medium {
         padding: 0.5em 0.85em;
     }
+
+    /* Police unique (harmonisation globale) */
+    html, body,
+    h1, h2, h3, h4, h5, h6,
+    .blog-title, .widget-title,
+    .news-post .news-post-details .news-title,
+    .breaking-news .news-btn,
+    .navbar, .topbar, .footer {
+        font-family: "Red Hat Display", sans-serif !important;
+    }
+
+    /* Images: pas d'animation au survol (zoom/translate du thème) */
+    .blog-post .blog-image img,
+    .blog-post .post-image img,
+    .blog-post-info .blog-post-image img,
+    .news-post .news-image img,
+    .companies img {
+        transition: none !important;
+        transform: none !important;
+    }
+    .blog-post:hover img,
+    .blog-post.post-style-07:hover img,
+    .blog-post.post-style-11:hover .blog-image img,
+    .blog-post.post-style-04:hover img {
+        transition: none !important;
+        transform: none !important;
+    }
 </style>

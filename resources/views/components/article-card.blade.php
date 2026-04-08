@@ -8,12 +8,12 @@
     $fallback16x9 = asset('images/ivm-placeholder-16x9.svg');
 @endphp
 @if ($style === '11')
-    <div class="blog-post post-style-11 mb-4 border rounded overflow-hidden d-flex flex-column flex-md-row align-items-stretch">
-        <div class="flex-shrink-0" style="width: 100%; max-width: 420px;">
-            <a href="{{ route('articles.show', $article->slug) }}" class="d-block h-100">
+    <div class="blog-post post-style-11 mb-4 border rounded overflow-hidden">
+        <div class="blog-image">
+            <a href="{{ route('articles.show', $article->slug) }}" class="d-block overflow-hidden" style="height: 360px;">
                 <img
                     class="w-100 h-100"
-                    style="object-fit: cover; min-height: 230px;"
+                    style="object-fit: cover;"
                     src="{{ $cover ?: $fallback16x9 }}"
                     alt="{{ $article->cover_alt ?? $article->title }}"
                     loading="lazy"
@@ -21,11 +21,11 @@
                 >
             </a>
         </div>
-        <div class="blog-post-details p-4 flex-grow-1 d-flex flex-column">
+        <div class="blog-post-details p-4">
             @if ($article->category)
-                <span class="badge badge-medium align-self-start" style="background: {{ $catColor }}; color: #fff;">{{ $article->category->name }}</span>
+                <span class="badge badge-medium" style="background: {{ $catColor }}; color: #fff;">{{ $article->category->name }}</span>
             @endif
-            <h4 class="blog-title mt-2">
+            <h4 class="blog-title mt-2 mb-2">
                 <a href="{{ route('articles.show', $article->slug) }}">{{ $article->title }}</a>
             </h4>
             <div class="blog-post-meta">
@@ -36,14 +36,14 @@
                 @endif
             </div>
             @if ($article->excerpt)
-                <p class="mb-3">{{ \Illuminate\Support\Str::limit($article->excerpt, 260) }}</p>
+                <p class="mt-3 mb-0">{{ \Illuminate\Support\Str::limit(strip_tags($article->excerpt), 320) }}</p>
             @endif
             @if ($article->author)
-                <div class="blog-post-user mt-auto pt-2">
+                <div class="blog-post-user mt-2">
                     <span>par <span style="color:#243e5d;">{{ $article->signature ?: ($article->author->name ?? 'Rédaction') }}</span></span>
                 </div>
             @endif
-            <a class="btn-link d-inline-block mt-2" href="{{ route('articles.show', $article->slug) }}">Lire la suite</a>
+            <a class="btn-link d-inline-block mt-3" href="{{ route('articles.show', $article->slug) }}">Lire la suite</a>
         </div>
     </div>
 @else
