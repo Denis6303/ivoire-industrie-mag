@@ -42,7 +42,7 @@
           <div class="col-lg-6 col-xl-6 col-xxl-5">
             <div class="sign-in-box text-center">
               <a class="navbar-brand mb-4 d-block" href="{{ route('home') }}">
-                  <img class="img-fluid" src="{{ asset('images/logo-dark.png') }}" alt="">
+                  <img class="img-fluid" src="{{ asset('images/logo_2im_couleur.svg') }}" alt="">
                 </a>
                 <div class="login-social-media">
                   <a class="btn google mb-3" href="#"><i class="fa-brands fa-google me-3"></i>Google</a>

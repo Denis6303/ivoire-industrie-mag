@@ -11,7 +11,7 @@
     <div class="row justify-content-center w-100" style="margin-top: -24px;">
         <div class="col-md-7 col-lg-6">
             <div class="text-center mb-3">
-                <img src="{{ asset('images/logo-dark.png') }}" alt="{{ config('app.name') }}" class="img-fluid" style="max-width: 220px;">
+                <img src="{{ asset('images/logo_2im_couleur.svg') }}" alt="{{ config('app.name') }}" class="img-fluid" style="max-width: 220px;">
             </div>
             <div class="card border-0 shadow-lg" style="box-shadow: 0 22px 50px rgba(17, 24, 39, 0.22) !important;">
                 <div class="card-body p-4">

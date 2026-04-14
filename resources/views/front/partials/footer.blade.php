@@ -5,7 +5,7 @@
                 <div class="col-xl-4 col-lg-6 col-md-6 col-sm-7 mb-4">
                     <div class="footer-about">
                         <a class="footer-logo" href="{{ route('home') }}">
-                            <img class="img-fluid" src="{{ asset('images/logo-light.png') }}" alt="Ivoire Industrie Magazine">
+                            <img src="{{ asset('images/logo_2im_blanc.svg') }}" alt="Ivoire Industrie Magazine" style="width: 180px; max-width: 100%; height: auto; object-fit: contain;">
                         </a>
                         <p>Ivoire Industrie Magazine vulgarise l’industrie ivoirienne : actualités, analyses et portraits d’entreprises pour décideurs et citoyens.</p>
                         <div class="footer-social">
