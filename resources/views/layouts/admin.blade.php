@@ -26,13 +26,11 @@
                 <a class="nav-link text-white p-0 {{ request()->routeIs('admin.articles.*') ? 'active' : '' }}" href="{{ route('admin.articles.index') }}">
                     <i class="fa-regular fa-newspaper me-2"></i>Articles
                 </a>
-                <a class="nav-link text-white p-0 {{ request()->routeIs('admin.emplois.*') || request()->routeIs('admin.jobs.*') ? 'active' : '' }}" href="{{ route('admin.emplois.index') }}">
-                    <i class="fa-solid fa-briefcase me-2"></i>Emplois
-                </a>
 
                 @if(in_array(auth()->user()->role, ['super_admin', 'admin'], true))
                     <a class="nav-link text-white p-0 {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}" href="{{ route('admin.categories.index') }}"><i class="fa-solid fa-layer-group me-2"></i>Catégories</a>
                     <a class="nav-link text-white p-0 {{ request()->routeIs('admin.tags.*') ? 'active' : '' }}" href="{{ route('admin.tags.index') }}"><i class="fa-solid fa-tags me-2"></i>Tags</a>
+                    <a class="nav-link text-white p-0 {{ request()->routeIs('admin.emplois.*') || request()->routeIs('admin.jobs.*') ? 'active' : '' }}" href="{{ route('admin.emplois.index') }}"><i class="fa-solid fa-briefcase me-2"></i>Emplois</a>
                     <a class="nav-link text-white p-0 {{ request()->routeIs('admin.commentaires.*') ? 'active' : '' }}" href="{{ route('admin.commentaires.index') }}"><i class="fa-regular fa-comments me-2"></i>Commentaires</a>
                     <a class="nav-link text-white p-0 {{ request()->routeIs('admin.entreprises.*') ? 'active' : '' }}" href="{{ route('admin.entreprises.index') }}"><i class="fa-solid fa-building me-2"></i>Entreprises</a>
                     <a class="nav-link text-white p-0 {{ request()->routeIs('admin.projets.*') ? 'active' : '' }}" href="{{ route('admin.projets.index') }}"><i class="fa-solid fa-diagram-project me-2"></i>Projets</a>
@@ -131,13 +129,11 @@
             <a class="nav-link text-white p-0 {{ request()->routeIs('admin.articles.*') ? 'active' : '' }}" href="{{ route('admin.articles.index') }}">
                 <i class="fa-regular fa-newspaper me-2"></i>Articles
             </a>
-            <a class="nav-link text-white p-0 {{ request()->routeIs('admin.emplois.*') || request()->routeIs('admin.jobs.*') ? 'active' : '' }}" href="{{ route('admin.emplois.index') }}">
-                <i class="fa-solid fa-briefcase me-2"></i>Emplois
-            </a>
 
             @if(in_array(auth()->user()->role, ['super_admin', 'admin'], true))
                 <a class="nav-link text-white p-0 {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}" href="{{ route('admin.categories.index') }}"><i class="fa-solid fa-layer-group me-2"></i>Catégories</a>
                 <a class="nav-link text-white p-0 {{ request()->routeIs('admin.tags.*') ? 'active' : '' }}" href="{{ route('admin.tags.index') }}"><i class="fa-solid fa-tags me-2"></i>Tags</a>
+                <a class="nav-link text-white p-0 {{ request()->routeIs('admin.emplois.*') || request()->routeIs('admin.jobs.*') ? 'active' : '' }}" href="{{ route('admin.emplois.index') }}"><i class="fa-solid fa-briefcase me-2"></i>Emplois</a>
                 <a class="nav-link text-white p-0 {{ request()->routeIs('admin.commentaires.*') ? 'active' : '' }}" href="{{ route('admin.commentaires.index') }}"><i class="fa-regular fa-comments me-2"></i>Commentaires</a>
                 <a class="nav-link text-white p-0 {{ request()->routeIs('admin.entreprises.*') ? 'active' : '' }}" href="{{ route('admin.entreprises.index') }}"><i class="fa-solid fa-building me-2"></i>Entreprises</a>
                 <a class="nav-link text-white p-0 {{ request()->routeIs('admin.projets.*') ? 'active' : '' }}" href="{{ route('admin.projets.index') }}"><i class="fa-solid fa-diagram-project me-2"></i>Projets</a>

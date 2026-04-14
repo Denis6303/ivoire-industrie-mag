@@ -28,9 +28,22 @@
                     </select>
                 </div>
 
-                <div class="col-12">
+                <div class="col-md-6">
                     <label class="form-label">Châpeau</label>
                     <textarea name="excerpt" class="form-control" rows="3">{{ old('excerpt', $article->excerpt) }}</textarea>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Tags</label>
+                    @php
+                        $selectedTags = old('tags', $article->tags->pluck('id')->map(fn ($id) => (string) $id)->all());
+                    @endphp
+                    <select id="article-tags" name="tags[]" class="form-select" multiple>
+                        @foreach(($tags ?? []) as $tag)
+                            <option value="{{ $tag->id }}" @selected(in_array((string) $tag->id, (array) $selectedTags, true))>{{ $tag->name }}</option>
+                        @endforeach
+                    </select>
+                    <div class="form-text">Recherche rapide et sélection multiple.</div>
                 </div>
 
                 <div class="col-md-6">
@@ -63,20 +76,7 @@
                     <input type="hidden" name="content" id="content" value="{{ old('content', $article->content) }}">
                 </div>
 
-                <div class="col-md-8">
-                    <label class="form-label">Tags</label>
-                    @php
-                        $selectedTags = old('tags', $article->tags->pluck('id')->map(fn ($id) => (string) $id)->all());
-                    @endphp
-                    <select id="article-tags" name="tags[]" class="form-select" multiple>
-                        @foreach(($tags ?? []) as $tag)
-                            <option value="{{ $tag->id }}" @selected(in_array((string) $tag->id, (array) $selectedTags, true))>{{ $tag->name }}</option>
-                        @endforeach
-                    </select>
-                    <div class="form-text">Recherche rapide et sélection multiple.</div>
-                </div>
-
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="form-label">Signature auteur</label>
                     <input name="signature" class="form-control" value="{{ old('signature', $article->signature) }}">
                 </div>

@@ -94,6 +94,10 @@
                 <div class="col-lg-8 blog-single">
                     <article class="blog-post-info">
                         <div class="blog-content pb-0">
+                            <div class="blog-post-title mb-3">
+                                <h1 class="mb-0 h3">{{ $article->title }}</h1>
+                            </div>
+
                             @php $cover = article_cover($article->cover_image); @endphp
                             @if ($cover)
                                 <div class="blog-post-image mb-4">
@@ -102,17 +106,9 @@
                                     </div>
                                 </div>
                             @endif
-                            <div class="blog-post-title">
-                                <h1 class="mb-0 h3">{{ $article->title }}</h1>
-                            </div>
                             <div class="blog-post post-style-07 border-0 py-4 px-0">
                             <div class="blog-post-details">
                                     <div class="blog-post-meta p-0 flex-wrap">
-                                        @if ($article->author)
-                                            <div class="blog-post-user">
-                                                <span>par <span style="color:#243e5d;">{{ $article->signature ?: $article->author->name }}</span></span>
-                            </div>
-                                        @endif
                                         @if ($article->published_at)
                                             <div class="blog-post-time">
                                                 <span><i class="fa-solid fa-calendar-days"></i>{{ $article->published_at->translatedFormat('j F Y') }}</span>
@@ -126,9 +122,19 @@
                           </div>
                         </div>
                             </div>
+                            @if ($article->excerpt)
+                                <div class="mb-4">
+                                    <p class="lead fw-bold mb-0">{{ $article->excerpt }}</p>
+                                </div>
+                            @endif
                             <div class="article-body">
                                 {!! article_body_html($article->content) !!}
                             </div>
+                            @if ($article->author)
+                                <div class="blog-post-user mt-4 mb-2">
+                                    <span>par <span style="color:#243e5d;">{{ $article->signature ?: $article->author->name }}</span></span>
+                                </div>
+                            @endif
                             @if ($article->tags->isNotEmpty())
                                 <div class="ivm-article-tags mt-4">
                                     <span class="ivm-tag-label">Tags</span>
