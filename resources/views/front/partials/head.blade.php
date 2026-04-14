@@ -1,15 +1,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="@yield('meta_description', config('app.name') . ' — Actualités et analyses sur l\'industrie en Côte d\'Ivoire.')">
+<meta name="description" content="@yield('meta_description', 'Ivoire Industrie Magazine - Actualités et analyses sur l\'industrie en Côte d\'Ivoire.')">
 <title>
 @hasSection('title')
-    @yield('title') — {{ config('app.name') }}
+    @yield('title') - Ivoire Industrie Magazine
 @else
-    {{ config('app.name') }}
+    Ivoire Industrie Magazine
 @endif
 </title>
 <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
-<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/fontawesome/all.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -31,7 +31,7 @@
         padding: 0.5em 0.85em;
     }
 
-    /* Police unique (harmonisation globale) */
+    /* Police globale */
     html, body,
     h1, h2, h3, h4, h5, h6,
     .blog-title, .widget-title,
@@ -39,6 +39,18 @@
     .breaking-news .news-btn,
     .navbar, .topbar, .footer {
         font-family: "Red Hat Display", sans-serif !important;
+    }
+
+    /* Neutralise les styles du thème qui capitalisent artificiellement les mots */
+    .blog-title,
+    .blog-title a,
+    .widget-title,
+    .section-title h1,
+    .section-title h2,
+    .section-title h3,
+    .navbar .nav-link,
+    .offcanvas .nav-link {
+        text-transform: none !important;
     }
 
     /* Images: pas d'animation au survol (zoom/translate du thème) */
@@ -56,6 +68,29 @@
     .blog-post.post-style-04:hover img {
         transition: none !important;
         transform: none !important;
+    }
+
+    /* Le voile gradient du theme ne doit pas bloquer le clic image */
+    .blog-post .blog-image:before {
+        pointer-events: none !important;
+    }
+    .blog-post .blog-image > a {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Titre des cards d'articles: 1 ligne + ellipsis (hors "a la une") */
+    .ivm-card-title-ellipsis {
+        width: 100%;
+        max-width: 100%;
+    }
+    .ivm-card-title-ellipsis a {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 
     /* Mega menu Industrie (dropdown horizontal) */

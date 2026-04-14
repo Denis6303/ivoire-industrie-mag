@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
@@ -31,10 +30,15 @@ class AppServiceProvider extends ServiceProvider
         View::composer('front.*', function ($view) {
             $navData = request()->attributes->get('navData');
             if ($navData === null) {
-                $all = Category::query()->orderBy('name')->get()->keyBy('slug');
+                $all = Category::query()
+                    ->whereHas('articles', fn ($q) => $q->published())
+                    ->withCount(['articles as published_articles_count' => fn ($q) => $q->published()])
+                    ->orderBy('name')
+                    ->get()
+                    ->keyBy('slug');
 
                 $industrySlugs = collect([
-                    'featured', 'breve', 'agro-industrie', 'agriculture', 'petrole', 'gaz', 'mines', 'sante',
+                    'agro-industrie', 'agriculture', 'petrole', 'gaz', 'mines', 'sante',
                     'pharmaceutique', 'electronique', 'emballage-et-conditionnement', 'textile', 'bois',
                     'metallurgie', 'siderurgie', 'plasturgie', 'acteurs', 'aeronautique', 'automobile',
                     'btp', 'chimie', 'aquaculture', 'peche', 'boissons', 'electromecanique', 'energie',
@@ -49,16 +53,29 @@ class AppServiceProvider extends ServiceProvider
 
                 $primarySlugs = collect([
                     'industrie-story',
-                    'investissement',
                     'zones-industrielles',
+                    'investissement',
                     'usines',
-                    'innovation',
                     'international',
-                    'districts',
                     'agenda',
+                ]);
+
+                $hiddenSlugs = collect([
+                    'innovation',
+                    'hommes-et-femmes-industriels-ivoiriens',
+                    'dossier',
+                    'districts',
                     'made-in-ivory-coast',
                     '2im-tv',
-                    'hommes-et-femmes-industriels-ivoiriens',
+                    'magazine',
+                    'emploi',
+                ]);
+
+                $innovationChildSlugs = collect([
+                    'ingenierie',
+                    'recherche-et-dev',
+                    'technologie',
+                    'ia',
                 ]);
 
                 $primaryCategories = $primarySlugs
@@ -66,9 +83,21 @@ class AppServiceProvider extends ServiceProvider
                     ->filter()
                     ->values();
 
+                $hiddenCategories = $hiddenSlugs
+                    ->map(fn ($slug) => $all->get($slug))
+                    ->filter()
+                    ->values();
+
+                $innovationChildren = $innovationChildSlugs
+                    ->map(fn ($slug) => $all->get($slug))
+                    ->filter()
+                    ->values();
+
                 $navData = [
                     'industryCategories' => $industryCategories,
                     'primaryCategories' => $primaryCategories,
+                    'hiddenCategories' => $hiddenCategories,
+                    'innovationChildren' => $innovationChildren,
                 ];
 
                 request()->attributes->set('navData', $navData);
@@ -76,25 +105,8 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with('navIndustryCategories', $navData['industryCategories'] ?? collect());
             $view->with('navPrimaryCategories', $navData['primaryCategories'] ?? collect());
-
-            $breakingNews = request()->attributes->get('breakingNews');
-            if ($breakingNews === null) {
-                $breakingNews = Article::query()
-                    ->published()
-                    ->breaking()
-                    ->latest('published_at')
-                    ->limit(8)
-                    ->get();
-                if ($breakingNews->isEmpty()) {
-                    $breakingNews = Article::query()
-                        ->published()
-                        ->latest('published_at')
-                        ->limit(8)
-                        ->get();
-                }
-                request()->attributes->set('breakingNews', $breakingNews);
-            }
-            $view->with('breakingNews', $breakingNews);
+            $view->with('navHiddenCategories', $navData['hiddenCategories'] ?? collect());
+            $view->with('navInnovationChildren', $navData['innovationChildren'] ?? collect());
         });
     }
 }

@@ -6,16 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Company;
-use App\Models\IndustrialProject;
-use App\Models\IndustrySector;
-use App\Models\Tag;
 
 class HomeController extends Controller
 {
     public function index()
     {
         $featured = Article::with(['category', 'author'])->published()->featured()->latest('published_at')->first();
-        $latest = Article::with(['category', 'author'])->published()->latest('published_at')->take(6)->get();
+        $latest = Article::with(['category', 'author'])->published()->latest('published_at')->take(2)->get();
         $companies = Company::where('is_active', true)->latest()->take(5)->get();
         $featuredCompanies = Company::query()
             ->where('is_active', true)
@@ -24,90 +21,28 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
-        $projects = IndustrialProject::query()
-            ->latest()
-            ->take(6)
-            ->get();
-
-        $sectors = IndustrySector::query()
-            ->where('is_active', true)
-            ->withCount(['articles', 'companies', 'projects'])
-            ->orderBy('order')
-            ->orderBy('name')
-            ->take(12)
-            ->get();
-
-        $sidebarLatest = Article::with('category')->published()->latest('published_at')->take(3)->get();
-
-        $sidebarTrending = Article::with('category')->published()
-            ->where('published_at', '>=', now()->subDays(30))
-            ->orderByDesc('view_count')
-            ->take(3)
-            ->get();
-        if ($sidebarTrending->isEmpty()) {
-            $sidebarTrending = Article::with('category')->published()
-                ->orderByDesc('view_count')
-                ->take(3)
-                ->get();
-        }
-
         $sidebarPopular = Article::with('category')->published()
             ->orderByDesc('view_count')
             ->latest('published_at')
-            ->take(3)
+            ->take(6)
             ->get();
 
-        $topCategoriesForSidebar = Category::query()
-            ->whereHas('articles', fn ($q) => $q->published())
-            ->withCount(['articles as published_count' => fn ($q) => $q->published()])
-            ->orderByDesc('published_count')
-            ->take(5)
-            ->get();
-
-        $latestArticleByCategoryId = collect();
-        if ($topCategoriesForSidebar->isNotEmpty()) {
-            $latestArticleByCategoryId = Article::query()
-                ->published()
-                ->whereIn('category_id', $topCategoriesForSidebar->pluck('id'))
-                ->with('category')
-                ->orderByDesc('published_at')
-                ->get()
-                ->unique('category_id')
-                ->keyBy('category_id');
-        }
-
-        $topCategoryPosts = $topCategoriesForSidebar
-            ->map(function (Category $cat) use ($latestArticleByCategoryId) {
-                $article = $latestArticleByCategoryId->get($cat->id);
-                if (! $article) {
-                    return null;
-                }
-
-                return ['category' => $cat, 'article' => $article];
-            })
-            ->filter()
-            ->values();
-
-        $sidebarTags = Tag::query()
-            ->withCount(['articles' => fn ($q) => $q->published()])
-            ->having('articles_count', '>', 0)
-            ->orderByDesc('articles_count')
-            ->limit(24)
-            ->get();
-
-        // Homepage organizer (12 sections)
+        // Homepage organizer: ordre principal + ordre hamburger (si articles)
         $homeSectionSlugs = [
             'industrie-story',
-            'investissement',
             'zones-industrielles',
+            'investissement',
             'usines',
-            'innovation',
             'international',
-            'districts',
             'agenda',
+            'innovation',
+            'hommes-et-femmes-industriels-ivoiriens',
+            'dossier',
+            'districts',
             'made-in-ivory-coast',
             '2im-tv',
-            'hommes-et-femmes-industriels-ivoiriens',
+            'magazine',
+            'emploi',
         ];
 
         $homeSections = Category::query()
@@ -121,7 +56,7 @@ class HomeController extends Controller
                     ->published()
                     ->where('category_id', $category->id)
                     ->latest('published_at')
-                    ->take(4)
+                    ->take(2)
                     ->get();
 
                 return [
@@ -137,13 +72,7 @@ class HomeController extends Controller
             'latest',
             'companies',
             'featuredCompanies',
-            'projects',
-            'sectors',
-            'sidebarLatest',
-            'sidebarTrending',
             'sidebarPopular',
-            'topCategoryPosts',
-            'sidebarTags',
             'homeSections',
         ));
     }

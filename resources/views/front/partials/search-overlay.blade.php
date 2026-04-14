@@ -9,7 +9,6 @@
                             type="search"
                             name="q"
                             value="{{ request('q') }}"
-                            placeholder="{{ __('header.search_placeholder') }}"
                             autocomplete="off"
                         >
                         <button type="submit" class="btn btn-primary">{{ __('header.search_button') }}</button>

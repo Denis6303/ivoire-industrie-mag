@@ -7,25 +7,60 @@
 
     <section class="space-ptb">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-6 mb-5 mb-lg-0">
-                    <h2 class="h4 mb-4">Écrire à la rédaction</h2>
-                    <p class="text-muted">
-                        Pour les suggestions de sujets, les partenariats médias ou les demandes professionnelles,
-                        utilisez les coordonnées ci-dessous. Les messages sont traités sous deux à cinq jours ouvrés.
-                    </p>
-                    <ul class="list-unstyled">
-                        <li class="mb-3"><i class="fa-solid fa-envelope me-2 text-primary"></i><a href="mailto:contact@ivoireindustriemag.com">contact@ivoireindustriemag.com</a></li>
-                        <li class="mb-3"><i class="fa-solid fa-location-dot me-2 text-primary"></i>Abidjan, Côte d’Ivoire</li>
-                    </ul>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="border rounded p-3 bg-white h-100 text-center shadow-sm">
+                        <div class="mb-2 text-primary"><i class="fa-solid fa-envelope"></i></div>
+                        <div class="small text-muted mb-1">Email</div>
+                        <a href="mailto:contact@ivoireindustriemag.com">contact@ivoireindustriemag.com</a>
+                    </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="border rounded p-4 bg-light">
-                        <h3 class="h5 mb-3">Formulaire (bientôt disponible)</h3>
-                        <p class="text-muted small mb-0">
-                            Un formulaire de contact sécurisé sera branché ici (validation, anti-spam, notification équipe).
-                            En attendant, privilégiez l’e-mail.
-                        </p>
+                <div class="col-md-4">
+                    <div class="border rounded p-3 bg-white h-100 text-center shadow-sm">
+                        <div class="mb-2 text-primary"><i class="fa-solid fa-phone"></i></div>
+                        <div class="small text-muted mb-1">Téléphone</div>
+                        <a href="tel:+2250101151908">00225 01 01 151 908</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="border rounded p-3 bg-white h-100 text-center shadow-sm">
+                        <div class="mb-2 text-primary"><i class="fa-solid fa-location-dot"></i></div>
+                        <div class="small text-muted mb-1">Adresse</div>
+                        <span>Abidjan, Côte d’Ivoire</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-xl-7">
+                    <div class="border rounded p-4 bg-light shadow-sm">
+                        <h3 class="h5 mb-3">Formulaire de contact</h3>
+                        <p class="text-muted small mb-4">Nous traitons les messages sous 2 à 5 jours ouvrés.</p>
+                        <form class="row g-3" method="POST" action="#">
+                            <div class="col-md-6">
+                                <label class="form-label">Nom et prénom</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Téléphone</label>
+                                <input type="text" class="form-control" placeholder="00225 01 01 151 908">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">E-mail</label>
+                                <input type="email" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Objet</label>
+                                <input type="text" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Message</label>
+                                <textarea class="form-control" rows="5" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary px-4">Envoyer le message</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

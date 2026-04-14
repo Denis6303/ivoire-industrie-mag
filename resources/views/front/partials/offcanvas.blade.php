@@ -1,3 +1,32 @@
+@push('styles')
+    <style>
+        #offcanvasMain .offcanvas-body {
+            max-height: calc(100vh - 72px);
+            overflow-y: auto;
+        }
+        #offcanvasMain .ivm-offcanvas-nav .nav-link {
+            padding: 0.55rem 0;
+            font-weight: 600;
+            border-bottom: 1px solid #eef1f6;
+        }
+        #offcanvasMain .ivm-offcanvas-nav .collapse .nav-link {
+            font-weight: 500;
+            color: #4b5563;
+            padding: 0.35rem 0;
+            border-bottom: 0;
+        }
+        #offcanvasMain .ivm-offcanvas-nav .collapse ul {
+            border-left: 2px solid #e9edf5;
+            margin-left: 0.1rem;
+            margin-top: 0.35rem;
+            margin-bottom: 0.5rem !important;
+        }
+        #offcanvasMain .ivm-offcanvas-nav .collapse ul li {
+            padding-left: 0.6rem;
+        }
+    </style>
+@endpush
+
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMain" aria-labelledby="offcanvasMainLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasMainLabel">
@@ -11,11 +40,11 @@
         @php
             $primary = $navPrimaryCategories ?? collect();
             $industry = $navIndustryCategories ?? collect();
+            $hidden = $navHiddenCategories ?? collect();
+            $innovationChildren = $navInnovationChildren ?? collect();
         @endphp
 
-        <ul class="navbar-nav navbar-nav-style-03">
-            <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">Accueil</a></li>
-
+        <ul class="navbar-nav navbar-nav-style-03 ivm-offcanvas-nav">
             @if ($primary->isNotEmpty())
                 @if ($cat = $primary->firstWhere('slug', 'industrie-story'))
                     <li class="nav-item"><a class="nav-link" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">Industrie Story</a></li>
@@ -36,16 +65,11 @@
                 </li>
 
                 @foreach ([
-                    'investissement' => 'Investissement',
                     'zones-industrielles' => 'Zones industrielles',
-                    'usines' => 'Usines',
-                    'innovation' => 'Innovation',
+                    'investissement' => 'Investissement',
+                    'usines' => 'Usine',
                     'international' => 'International',
-                    'districts' => 'Districts',
                     'agenda' => 'Agenda',
-                    'made-in-ivory-coast' => 'Made In Ivory Coast',
-                    '2im-tv' => '2IM TV',
-                    'hommes-et-femmes-industriels-ivoiriens' => 'Hommes et Femmes',
                 ] as $slug => $label)
                     @if ($cat = $primary->firstWhere('slug', $slug))
                         <li class="nav-item"><a class="nav-link" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ $label }}</a></li>
@@ -53,19 +77,36 @@
                 @endforeach
             @endif
 
-            <hr class="my-3">
-            <li class="nav-item"><a class="nav-link" href="{{ route('articles.index') }}">Tous les articles</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('sectors.index') }}">Secteurs</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('companies.index') }}">Entreprises</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('projects.index') }}">Projets</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('search') }}">Recherche</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">À propos</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">Contact</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ route('team') }}">Équipe</a></li>
+            @if ($innovation = $hidden->firstWhere('slug', 'innovation'))
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center justify-content-between" data-bs-toggle="collapse" href="#offcanvasInnovation" role="button" aria-expanded="false" aria-controls="offcanvasInnovation">
+                        <span>Innovation</span>
+                        <i class="fas fa-chevron-down fa-xs"></i>
+                    </a>
+                    <div class="collapse" id="offcanvasInnovation">
+                        <ul class="list-unstyled ps-3 mb-2">
+                            <li><a class="nav-link py-1" href="{{ route('categories.show', ['slug' => $innovation->slug]) }}">Innovation</a></li>
+                            @foreach ($innovationChildren as $child)
+                                <li><a class="nav-link py-1" href="{{ route('categories.show', ['slug' => $child->slug]) }}">{{ $child->name }}</a></li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </li>
+            @endif
 
-            <hr class="my-3">
-            <li class="nav-item"><a class="nav-link" href="{{ switch_locale_url('fr') }}">{{ __('lang.fr') }}</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ switch_locale_url('en') }}">{{ __('lang.en') }}</a></li>
+            @foreach ([
+                'hommes-et-femmes-industriels-ivoiriens' => 'Hommes et femmes industriels',
+                'dossier' => 'Dossier',
+                'districts' => 'Districts',
+                'made-in-ivory-coast' => 'Made in Ivory Coast',
+                '2im-tv' => '2IM TV',
+                'magazine' => 'Magazine',
+                'emploi' => 'Emploi',
+            ] as $slug => $label)
+                @if ($cat = $hidden->firstWhere('slug', $slug))
+                    <li class="nav-item"><a class="nav-link" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ $label }}</a></li>
+                @endif
+            @endforeach
         </ul>
     </div>
 </div>

@@ -9,7 +9,7 @@
     @include('front.partials.header')
     @include('front.partials.offcanvas')
     @include('front.partials.search-overlay')
-    @include('front.partials.breaking-news')
+    <div class="container"><hr class="my-0"></div>
 
     @if (session('success'))
         <div class="container pt-3">

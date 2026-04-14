@@ -39,17 +39,6 @@
                     <div class="follower-btn subscriber"><a href="{{ $social['youtube']['url'] ?? '#' }}" target="_blank" rel="noopener noreferrer">{{ __('sidebar.social_subscribers') }}</a></div>
                 </div>
             </div>
-            <div class="col-6 instagram-Follower">
-                <div class="social-box">
-                    <div class="social">
-                        <a href="{{ $social['instagram']['url'] ?? '#' }}" class="instagram-icon" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                            <i class="fa-brands fa-instagram"></i>
-                        </a>
-                        <span>{{ $social['instagram']['count'] ?? '—' }}</span>
-                    </div>
-                    <div class="follower-btn instagrams"><a href="{{ $social['instagram']['url'] ?? '#' }}" target="_blank" rel="noopener noreferrer">{{ __('sidebar.social_followers') }}</a></div>
-                </div>
-            </div>
         </div>
     </div>
 </div>

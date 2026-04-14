@@ -9,13 +9,6 @@
                                 <div class="topbar-date d-inline-flex">
                                     <span class="date"><i class="fa-solid fa-calendar-days"></i> {{ now()->translatedFormat('l j F Y') }}</span>
                                 </div>
-                                <div class="me-auto d-inline-flex">
-                                    <ul class="list-unstyled top-menu">
-                                        <li><a href="{{ route('about') }}">{{ __('nav.about') }}</a></li>
-                                        <li><a href="{{ route('contact') }}">{{ __('nav.contact') }}</a></li>
-                                        <li><a href="{{ route('team') }}">{{ __('nav.team') }}</a></li>
-                                    </ul>
-                                </div>
                             </div>
                             <div class="topbar-right ms-auto justify-content-center">
                                 <div class="dropdown right-menu d-inline-flex news-language">
@@ -38,7 +31,6 @@
                                         <li><a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a></li>
                                         <li><a href="#" aria-label="X"><i class="fab fa-twitter"></i></a></li>
                                         <li><a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a></li>
-                                        <li><a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -60,10 +52,11 @@
                         $industry = $navIndustryCategories ?? collect();
                     @endphp
 
-                    {{-- Menus 1 mot uniquement --}}
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Accueil</a>
-                    </li>
+                    @if ($cat = $primary->firstWhere('slug', 'industrie-story'))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('categories.show') && request()->route('slug') === $cat->slug ? 'active' : '' }}" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">Industrie Story</a>
+                        </li>
+                    @endif
 
                     @if ($industry->isNotEmpty())
                         <li class="nav-item dropdown ivm-mega">
@@ -87,11 +80,10 @@
                     @endif
 
                     @foreach ([
+                        'zones-industrielles' => 'Zones Industrielles',
                         'investissement' => 'Investissement',
-                        'usines' => 'Usines',
-                        'innovation' => 'Innovation',
+                        'usines' => 'Usine',
                         'international' => 'International',
-                        'districts' => 'Districts',
                         'agenda' => 'Agenda',
                     ] as $slug => $label)
                         @if ($cat = $primary->firstWhere('slug', $slug))
@@ -100,12 +92,6 @@
                             </li>
                         @endif
                     @endforeach
-
-                    @if ($cat = $primary->firstWhere('slug', 'made-in-ivory-coast'))
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('categories.show') && request()->route('slug') === $cat->slug ? 'active' : '' }}" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">Made In Ivory Coast</a>
-                        </li>
-                    @endif
                 </ul>
             </div>
             <div class="add-listing">
