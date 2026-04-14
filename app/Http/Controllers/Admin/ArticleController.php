@@ -264,6 +264,9 @@ class ArticleController extends Controller
             'cover_alt_secondary' => $supportsExtraImages ? ['nullable', 'string', 'max:255'] : ['nullable'],
             'cover_file_tertiary' => $supportsExtraImages ? ['nullable', 'image', 'max:10240'] : ['nullable'],
             'cover_alt_tertiary' => $supportsExtraImages ? ['nullable', 'string', 'max:255'] : ['nullable'],
+            'remove_cover_image' => ['nullable', 'boolean'],
+            'remove_secondary_image' => ['nullable', 'boolean'],
+            'remove_tertiary_image' => ['nullable', 'boolean'],
         ]);
 
         unset($data['cover_file'], $data['cover_file_secondary'], $data['cover_file_tertiary']);
@@ -272,6 +275,20 @@ class ArticleController extends Controller
             $data['tertiary_alt'] = $data['cover_alt_tertiary'] ?? null;
         }
         unset($data['cover_alt_secondary'], $data['cover_alt_tertiary']);
+
+        if (!empty($data['remove_cover_image'])) {
+            $data['cover_image'] = null;
+            $data['cover_alt'] = null;
+        }
+        if ($supportsExtraImages && !empty($data['remove_secondary_image'])) {
+            $data['secondary_image'] = null;
+            $data['secondary_alt'] = null;
+        }
+        if ($supportsExtraImages && !empty($data['remove_tertiary_image'])) {
+            $data['tertiary_image'] = null;
+            $data['tertiary_alt'] = null;
+        }
+        unset($data['remove_cover_image'], $data['remove_secondary_image'], $data['remove_tertiary_image']);
 
         if ($request->hasFile('cover_file')) {
             $uploaded = app(MediaService::class)->upload($request->file('cover_file'), 'media', 'public');

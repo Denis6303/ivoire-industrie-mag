@@ -67,6 +67,12 @@
                             class="img-thumbnail"
                         >
                     </div>
+                    @if($article->cover_image)
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" value="1" id="remove_cover_image" name="remove_cover_image">
+                            <label class="form-check-label" for="remove_cover_image">Supprimer l'image principale</label>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="col-md-6">
@@ -89,6 +95,12 @@
                             class="img-thumbnail"
                         >
                     </div>
+                    @if(!empty($article->secondary_image))
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" value="1" id="remove_secondary_image" name="remove_secondary_image">
+                            <label class="form-check-label" for="remove_secondary_image">Supprimer l'image 2</label>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="col-md-6">
@@ -111,6 +123,12 @@
                             class="img-thumbnail"
                         >
                     </div>
+                    @if(!empty($article->tertiary_image))
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" value="1" id="remove_tertiary_image" name="remove_tertiary_image">
+                            <label class="form-check-label" for="remove_tertiary_image">Supprimer l'image 3</label>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="col-12">
