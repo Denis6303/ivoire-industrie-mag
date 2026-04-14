@@ -93,7 +93,7 @@ if (! function_exists('article_cover')) {
             // Si l'image pointe vers /storage/... sur un ancien host local,
             // on recale vers le host courant.
             if (str_starts_with($path, '/storage/')) {
-                return url($path);
+                return $path;
             }
 
             return $url;
@@ -101,16 +101,16 @@ if (! function_exists('article_cover')) {
 
         // Chemins locaux relatifs/absolus vers storage.
         if (str_starts_with($url, '/storage/')) {
-            return url($url);
+            return $url;
         }
 
         if (str_starts_with($url, 'storage/')) {
-            return asset($url);
+            return '/'.ltrim($url, '/');
         }
 
         // Chemin média brut (ex: media/abc.jpg) -> /storage/media/abc.jpg
         if (str_starts_with($url, 'media/')) {
-            return asset('storage/'.$url);
+            return '/storage/'.ltrim($url, '/');
         }
 
         return asset(ltrim($url, '/'));

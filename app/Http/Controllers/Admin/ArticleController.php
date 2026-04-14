@@ -9,6 +9,7 @@ use App\Models\Media;
 use App\Models\Tag;
 use App\Services\MediaService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class ArticleController extends Controller
@@ -79,6 +80,8 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
+        $supportsExtraImages = $this->supportsExtraArticleImages();
+
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'signature' => ['nullable', 'string', 'max:255'],
@@ -89,12 +92,21 @@ class ArticleController extends Controller
             'tags.*' => ['integer', 'exists:tags,id'],
             'cover_file' => ['nullable', 'image', 'max:10240'],
             'cover_alt' => ['nullable', 'string', 'max:255'],
+            'cover_file_secondary' => $supportsExtraImages ? ['nullable', 'image', 'max:10240'] : ['nullable'],
+            'cover_alt_secondary' => $supportsExtraImages ? ['nullable', 'string', 'max:255'] : ['nullable'],
+            'cover_file_tertiary' => $supportsExtraImages ? ['nullable', 'image', 'max:10240'] : ['nullable'],
+            'cover_alt_tertiary' => $supportsExtraImages ? ['nullable', 'string', 'max:255'] : ['nullable'],
         ]);
 
         $data['author_id'] = auth()->id();
         $data['slug'] = Str::slug($data['title']).'-'.Str::lower(Str::random(6));
 
-        unset($data['cover_file']);
+        unset($data['cover_file'], $data['cover_file_secondary'], $data['cover_file_tertiary']);
+        if ($supportsExtraImages) {
+            $data['secondary_alt'] = $data['cover_alt_secondary'] ?? null;
+            $data['tertiary_alt'] = $data['cover_alt_tertiary'] ?? null;
+        }
+        unset($data['cover_alt_secondary'], $data['cover_alt_tertiary']);
 
         if ($request->hasFile('cover_file')) {
             $uploaded = app(MediaService::class)->upload($request->file('cover_file'), 'media', 'public');
@@ -112,7 +124,45 @@ class ArticleController extends Controller
                 'uploaded_by' => auth()->id(),
             ]);
 
-            $data['cover_image'] = $media->url;
+            $data['cover_image'] = '/storage/'.ltrim($uploaded['path'], '/');
+        }
+
+        if ($supportsExtraImages && $request->hasFile('cover_file_secondary')) {
+            $uploaded = app(MediaService::class)->upload($request->file('cover_file_secondary'), 'media', 'public');
+            $media = Media::create([
+                'filename' => $uploaded['filename'],
+                'original_name' => $uploaded['original_name'],
+                'path' => $uploaded['path'],
+                'url' => $uploaded['url'],
+                'disk' => $uploaded['disk'],
+                'mime_type' => $uploaded['mime_type'],
+                'type' => 'image',
+                'size' => $uploaded['size'],
+                'alt' => $data['cover_alt_secondary'] ?? null,
+                'caption' => null,
+                'uploaded_by' => auth()->id(),
+            ]);
+
+            $data['secondary_image'] = '/storage/'.ltrim($uploaded['path'], '/');
+        }
+
+        if ($supportsExtraImages && $request->hasFile('cover_file_tertiary')) {
+            $uploaded = app(MediaService::class)->upload($request->file('cover_file_tertiary'), 'media', 'public');
+            $media = Media::create([
+                'filename' => $uploaded['filename'],
+                'original_name' => $uploaded['original_name'],
+                'path' => $uploaded['path'],
+                'url' => $uploaded['url'],
+                'disk' => $uploaded['disk'],
+                'mime_type' => $uploaded['mime_type'],
+                'type' => 'image',
+                'size' => $uploaded['size'],
+                'alt' => $data['cover_alt_tertiary'] ?? null,
+                'caption' => null,
+                'uploaded_by' => auth()->id(),
+            ]);
+
+            $data['tertiary_image'] = '/storage/'.ltrim($uploaded['path'], '/');
         }
 
         $tagIds = $data['tags'] ?? [];
@@ -164,7 +214,7 @@ class ArticleController extends Controller
                 'uploaded_by' => auth()->id(),
             ]);
 
-            $payload['cover_image'] = $media->url;
+            $payload['cover_image'] = '/storage/'.ltrim($uploaded['path'], '/');
         }
 
         Article::create($payload);
@@ -198,6 +248,8 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article)
     {
         $this->ensureEditorOwnsArticle($article);
+        $supportsExtraImages = $this->supportsExtraArticleImages();
+
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'signature' => ['nullable', 'string', 'max:255'],
@@ -208,9 +260,18 @@ class ArticleController extends Controller
             'tags.*' => ['integer', 'exists:tags,id'],
             'cover_file' => ['nullable', 'image', 'max:10240'],
             'cover_alt' => ['nullable', 'string', 'max:255'],
+            'cover_file_secondary' => $supportsExtraImages ? ['nullable', 'image', 'max:10240'] : ['nullable'],
+            'cover_alt_secondary' => $supportsExtraImages ? ['nullable', 'string', 'max:255'] : ['nullable'],
+            'cover_file_tertiary' => $supportsExtraImages ? ['nullable', 'image', 'max:10240'] : ['nullable'],
+            'cover_alt_tertiary' => $supportsExtraImages ? ['nullable', 'string', 'max:255'] : ['nullable'],
         ]);
 
-        unset($data['cover_file']);
+        unset($data['cover_file'], $data['cover_file_secondary'], $data['cover_file_tertiary']);
+        if ($supportsExtraImages) {
+            $data['secondary_alt'] = $data['cover_alt_secondary'] ?? null;
+            $data['tertiary_alt'] = $data['cover_alt_tertiary'] ?? null;
+        }
+        unset($data['cover_alt_secondary'], $data['cover_alt_tertiary']);
 
         if ($request->hasFile('cover_file')) {
             $uploaded = app(MediaService::class)->upload($request->file('cover_file'), 'media', 'public');
@@ -228,7 +289,45 @@ class ArticleController extends Controller
                 'uploaded_by' => auth()->id(),
             ]);
 
-            $data['cover_image'] = $media->url;
+            $data['cover_image'] = '/storage/'.ltrim($uploaded['path'], '/');
+        }
+
+        if ($supportsExtraImages && $request->hasFile('cover_file_secondary')) {
+            $uploaded = app(MediaService::class)->upload($request->file('cover_file_secondary'), 'media', 'public');
+            $media = Media::create([
+                'filename' => $uploaded['filename'],
+                'original_name' => $uploaded['original_name'],
+                'path' => $uploaded['path'],
+                'url' => $uploaded['url'],
+                'disk' => $uploaded['disk'],
+                'mime_type' => $uploaded['mime_type'],
+                'type' => 'image',
+                'size' => $uploaded['size'],
+                'alt' => $data['cover_alt_secondary'] ?? null,
+                'caption' => null,
+                'uploaded_by' => auth()->id(),
+            ]);
+
+            $data['secondary_image'] = '/storage/'.ltrim($uploaded['path'], '/');
+        }
+
+        if ($supportsExtraImages && $request->hasFile('cover_file_tertiary')) {
+            $uploaded = app(MediaService::class)->upload($request->file('cover_file_tertiary'), 'media', 'public');
+            $media = Media::create([
+                'filename' => $uploaded['filename'],
+                'original_name' => $uploaded['original_name'],
+                'path' => $uploaded['path'],
+                'url' => $uploaded['url'],
+                'disk' => $uploaded['disk'],
+                'mime_type' => $uploaded['mime_type'],
+                'type' => 'image',
+                'size' => $uploaded['size'],
+                'alt' => $data['cover_alt_tertiary'] ?? null,
+                'caption' => null,
+                'uploaded_by' => auth()->id(),
+            ]);
+
+            $data['tertiary_image'] = '/storage/'.ltrim($uploaded['path'], '/');
         }
 
         $tagIds = $data['tags'] ?? [];
@@ -281,5 +380,13 @@ class ArticleController extends Controller
                 'order' => 0,
             ]
         );
+    }
+
+    private function supportsExtraArticleImages(): bool
+    {
+        return Schema::hasColumn('articles', 'secondary_image')
+            && Schema::hasColumn('articles', 'secondary_alt')
+            && Schema::hasColumn('articles', 'tertiary_image')
+            && Schema::hasColumn('articles', 'tertiary_alt');
     }
 }

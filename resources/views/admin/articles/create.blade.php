@@ -58,6 +58,38 @@
                     </div>
                 </div>
 
+                <div class="col-md-6">
+                    <label class="form-label">Image 2 (après 2 paragraphes)</label>
+                    <div class="admin-upload-zone">
+                        <input type="file" name="cover_file_secondary" id="cover_file_secondary" class="form-control" accept="image/*">
+                        <div class="small text-muted mt-2">Insertion automatique après 2 paragraphes.</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Texte alternatif image 2 (optionnel)</label>
+                    <input type="text" name="cover_alt_secondary" class="form-control" value="{{ old('cover_alt_secondary') }}">
+                    <div class="mt-2">
+                        <img id="cover-preview-secondary" alt="" style="display:none; max-height:160px;" class="img-thumbnail">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Image 3 (après 4 paragraphes)</label>
+                    <div class="admin-upload-zone">
+                        <input type="file" name="cover_file_tertiary" id="cover_file_tertiary" class="form-control" accept="image/*">
+                        <div class="small text-muted mt-2">Insertion automatique après 4 paragraphes.</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Texte alternatif image 3 (optionnel)</label>
+                    <input type="text" name="cover_alt_tertiary" class="form-control" value="{{ old('cover_alt_tertiary') }}">
+                    <div class="mt-2">
+                        <img id="cover-preview-tertiary" alt="" style="display:none; max-height:160px;" class="img-thumbnail">
+                    </div>
+                </div>
+
                 <div class="col-12">
                     <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
                     <div class="mb-2">Contenu (HTML riche)</div>
@@ -108,12 +140,32 @@
             const form = document.getElementById('article-form');
             const coverFile = document.getElementById('cover_file');
             const coverPreview = document.getElementById('cover-preview');
+            const coverFileSecondary = document.getElementById('cover_file_secondary');
+            const coverPreviewSecondary = document.getElementById('cover-preview-secondary');
+            const coverFileTertiary = document.getElementById('cover_file_tertiary');
+            const coverPreviewTertiary = document.getElementById('cover-preview-tertiary');
             if (coverFile && coverPreview) {
                 coverFile.addEventListener('change', function () {
                     if (!this.files || !this.files[0]) return;
                     const url = URL.createObjectURL(this.files[0]);
                     coverPreview.src = url;
                     coverPreview.style.display = 'block';
+                });
+            }
+            if (coverFileSecondary && coverPreviewSecondary) {
+                coverFileSecondary.addEventListener('change', function () {
+                    if (!this.files || !this.files[0]) return;
+                    const url = URL.createObjectURL(this.files[0]);
+                    coverPreviewSecondary.src = url;
+                    coverPreviewSecondary.style.display = 'block';
+                });
+            }
+            if (coverFileTertiary && coverPreviewTertiary) {
+                coverFileTertiary.addEventListener('change', function () {
+                    if (!this.files || !this.files[0]) return;
+                    const url = URL.createObjectURL(this.files[0]);
+                    coverPreviewTertiary.src = url;
+                    coverPreviewTertiary.style.display = 'block';
                 });
             }
 

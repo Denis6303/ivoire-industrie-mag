@@ -77,6 +77,15 @@
             color: #fff;
             background: #1f2b4d;
         }
+        .ivm-inline-article-image {
+            margin: 1.5rem 0;
+        }
+        .ivm-inline-article-image img {
+            width: 100%;
+            max-height: 420px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+        }
     </style>
 @endpush
 
@@ -127,8 +136,40 @@
                                     <p class="lead fw-bold mb-0">{{ $article->excerpt }}</p>
                                 </div>
                             @endif
+                            @php
+                                $articleBodyHtml = article_body_html($article->content);
+                                $secondaryImage = article_cover($article->secondary_image);
+                                $tertiaryImage = article_cover($article->tertiary_image);
+
+                                $injectAfterParagraph = function (string $html, string $block, int $targetParagraph) {
+                                    if ($targetParagraph < 1 || $block === '') {
+                                        return $html;
+                                    }
+
+                                    $paragraphCount = preg_match_all('/<\/p>/i', $html);
+                                    if ($paragraphCount < $targetParagraph) {
+                                        return $html.$block;
+                                    }
+
+                                    $seen = 0;
+                                    return preg_replace_callback('/<\/p>/i', function ($match) use (&$seen, $targetParagraph, $block) {
+                                        $seen++;
+                                        return $match[0].($seen === $targetParagraph ? $block : '');
+                                    }, $html);
+                                };
+
+                                if ($secondaryImage) {
+                                    $secondaryBlock = '<figure class="ivm-inline-article-image"><img src="'.$secondaryImage.'" alt="'.e($article->secondary_alt ?: $article->title).'" loading="lazy"></figure>';
+                                    $articleBodyHtml = $injectAfterParagraph($articleBodyHtml, $secondaryBlock, 2);
+                                }
+
+                                if ($tertiaryImage) {
+                                    $tertiaryBlock = '<figure class="ivm-inline-article-image"><img src="'.$tertiaryImage.'" alt="'.e($article->tertiary_alt ?: $article->title).'" loading="lazy"></figure>';
+                                    $articleBodyHtml = $injectAfterParagraph($articleBodyHtml, $tertiaryBlock, 4);
+                                }
+                            @endphp
                             <div class="article-body">
-                                {!! article_body_html($article->content) !!}
+                                {!! $articleBodyHtml !!}
                             </div>
                             @if ($article->author)
                                 <div class="blog-post-user mt-4 mb-2">

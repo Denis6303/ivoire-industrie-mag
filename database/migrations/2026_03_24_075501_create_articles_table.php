@@ -19,8 +19,12 @@ return new class extends Migration
             $table->longText('content');
             $table->string('cover_image')->nullable();
             $table->string('cover_alt')->nullable();
+            $table->string('secondary_image')->nullable();
+            $table->string('secondary_alt')->nullable();
+            $table->string('tertiary_image')->nullable();
+            $table->string('tertiary_alt')->nullable();
             $table->enum('status', ['draft', 'review', 'published', 'archived'])->default('draft');
-            $table->enum('type', ['news', 'analysis', 'interview', 'report', 'press_release', 'opinion', 'data'])->default('news');
+            $table->enum('type', ['news', 'analysis', 'interview', 'report', 'press_release', 'opinion', 'data', 'breve'])->default('news');
             $table->boolean('is_featured')->default(false);
             $table->boolean('is_breaking')->default(false);
             $table->boolean('is_premium')->default(false);
