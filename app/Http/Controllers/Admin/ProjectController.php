@@ -17,7 +17,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = IndustrialProject::with(['sector', 'company'])->latest()->paginate(20);
+        $projects = IndustrialProject::with(['sector', 'company'])->latest()->paginate(10);
         return view('admin.projets.index', compact('projects'));
     }
 

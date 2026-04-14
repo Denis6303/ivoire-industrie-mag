@@ -61,19 +61,50 @@
                 </div>
             </div>
 
-            @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
+            <div class="px-3 px-md-4 pt-3 pt-md-4 pb-0">
+                @if (session('success'))
+                    <div class="alert alert-success admin-alert admin-alert-success alert-dismissible fade show mb-3" role="alert">
+                        <div class="d-flex align-items-start gap-2">
+                            <i class="fa-solid fa-circle-check mt-1"></i>
+                            <div>
+                                <div class="fw-bold">Succès</div>
+                                <div>{{ session('success') }}</div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                    </div>
+                @endif
 
-            @if($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0 ps-3">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+                @if (session('error'))
+                    <div class="alert alert-danger admin-alert admin-alert-danger alert-dismissible fade show mb-3" role="alert">
+                        <div class="d-flex align-items-start gap-2">
+                            <i class="fa-solid fa-circle-xmark mt-1"></i>
+                            <div>
+                                <div class="fw-bold">Erreur</div>
+                                <div>{{ session('error') }}</div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="alert alert-danger admin-alert admin-alert-danger alert-dismissible fade show mb-3" role="alert">
+                        <div class="d-flex align-items-start gap-2">
+                            <i class="fa-solid fa-triangle-exclamation mt-1"></i>
+                            <div class="w-100">
+                                <div class="fw-bold mb-1">Veuillez corriger les points suivants</div>
+                                <ul class="mb-0 ps-3">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                    </div>
+                @endif
+            </div>
 
             <div class="admin-content p-3 p-md-4">
                 @yield('content')
@@ -119,5 +150,27 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const successAlerts = document.querySelectorAll('.admin-alert-success.alert');
+        successAlerts.forEach((alertEl) => {
+            window.setTimeout(() => {
+                if (!alertEl || !alertEl.parentNode) return;
+
+                // Fallback-safe auto close (works even if bootstrap JS is not global)
+                alertEl.classList.remove('show');
+                alertEl.classList.add('fade');
+                alertEl.style.opacity = '0';
+                alertEl.style.transition = 'opacity 0.25s ease';
+
+                window.setTimeout(() => {
+                    if (alertEl && alertEl.parentNode) {
+                        alertEl.remove();
+                    }
+                }, 280);
+            }, 4000);
+        });
+    });
+</script>
 </body>
 </html>

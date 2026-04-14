@@ -15,7 +15,7 @@ class SectorController extends Controller
      */
     public function index()
     {
-        $sectors = IndustrySector::orderBy('order')->paginate(20);
+        $sectors = IndustrySector::orderBy('order')->paginate(10);
         return view('admin.secteurs.index', compact('sectors'));
     }
 

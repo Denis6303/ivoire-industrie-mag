@@ -14,7 +14,7 @@ class AdvertisementController extends Controller
      */
     public function index()
     {
-        $ads = Advertisement::orderByDesc('is_active')->orderByDesc('id')->paginate(20);
+        $ads = Advertisement::orderByDesc('is_active')->orderByDesc('id')->paginate(10);
         return view('admin.publicites.index', compact('ads'));
     }
 

@@ -2,6 +2,83 @@
 
 @section('title', e($article->meta_title ?? $article->title))
 @section('meta_description', e($article->meta_description ?? \Illuminate\Support\Str::limit(strip_tags($article->excerpt ?? $article->content), 160)))
+@push('styles')
+    <style>
+        .sidebar-home-posts .blog-post.post-style-07 {
+            padding: 12px;
+            margin-bottom: 12px;
+            align-items: center;
+            justify-content: flex-start;
+            column-gap: 0;
+        }
+        .sidebar-home-posts .blog-post.post-style-07 .post-image {
+            flex: 0 0 88px;
+            margin-right: 18px;
+        }
+        .sidebar-home-posts .blog-post.post-style-07 .blog-post-details {
+            width: auto;
+            flex: 1;
+            min-width: 0;
+            padding-left: 0;
+        }
+        .sidebar-home-posts .blog-post.post-style-07 .blog-post-details .blog-title {
+            font-size: 16px;
+            line-height: 1.3;
+            padding-top: 0;
+            margin-bottom: 0;
+        }
+        .sidebar-home-posts .blog-post.post-style-07 .blog-post-details .blog-post-meta {
+            padding-top: 8px;
+        }
+        .sidebar-home-posts .blog-post.post-style-07 .sidebar-post-category {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #ff7800;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 4px;
+        }
+
+        .ivm-article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+        .ivm-tag-label {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #fff;
+            background: #1f2b4d;
+            border: 1px solid #1f2b4d;
+            padding: 5px 10px;
+            border-radius: 2px;
+            line-height: 1.2;
+        }
+        .ivm-article-tag {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            color: #1f2b4d;
+            border: 1px solid #1f2b4d;
+            padding: 5px 10px;
+            border-radius: 2px;
+            text-decoration: none;
+            line-height: 1.2;
+            background: #fff;
+        }
+        .ivm-article-tag:hover {
+            color: #fff;
+            background: #1f2b4d;
+        }
+    </style>
+@endpush
 
 @section('content')
     @include('front.partials.page-header', [
@@ -53,12 +130,14 @@
                                 {!! article_body_html($article->content) !!}
                             </div>
                             @if ($article->tags->isNotEmpty())
-                                <div class="badges mt-4">
+                                <div class="ivm-article-tags mt-4">
+                                    <span class="ivm-tag-label">Tags</span>
                                     @foreach ($article->tags as $tag)
-                                        <span class="btn btn-sm btn-outline-primary me-1 mb-1">{{ $tag->name }}</span>
+                                        <a class="ivm-article-tag" href="{{ route('search', ['q' => $tag->name]) }}">{{ $tag->name }}</a>
                                     @endforeach
                           </div>
                             @endif
+                            <hr class="my-4">
                         </div>
                     </article>
 
@@ -117,10 +196,48 @@
                 </div>
                 <div class="col-lg-4">
             <div class="sidebar mt-lg-0">
-                        @include('front.partials.sidebar-category-list', [
-                            'categories' => $sidebarCategories,
-                            'title' => __('sidebar.categories_widget_title'),
-                        ])
+                        <div class="widget post-widget">
+                            <h6 class="widget-title">Les plus récents</h6>
+                            <div class="sidebar-home-posts pt-2">
+                                @forelse ($recentArticles as $recent)
+                                    @php $recentCover = article_cover($recent->cover_image); @endphp
+                                    <div class="blog-post post-style-07">
+                                        <div class="post-image">
+                                            @if ($recentCover)
+                                                <a href="{{ route('articles.show', ['slug' => $recent->slug]) }}">
+                                                    <span class="d-block ratio ratio-1x1 overflow-hidden rounded">
+                                                        <img class="w-100 h-100" style="object-fit: cover;" src="{{ $recentCover }}" alt="{{ $recent->cover_alt ?? $recent->title }}" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
+                                                    </span>
+                                                </a>
+                                            @else
+                                                <a href="{{ route('articles.show', ['slug' => $recent->slug]) }}" class="d-block bg-light ratio ratio-1x1 rounded"></a>
+                                            @endif
+                                        </div>
+                                        <div class="blog-post-details">
+                                            @if ($recent->category)
+                                                <a
+                                                    class="sidebar-post-category"
+                                                    href="{{ route('categories.show', ['slug' => $recent->category->slug]) }}"
+                                                    style="background: {{ $recent->category->color ?: '#0d6efd' }}; color: #fff; padding: 2px 10px; border-radius: 999px;"
+                                                >{{ $recent->category->name }}</a>
+                                            @endif
+                                            <h6 class="blog-title">
+                                                <a href="{{ route('articles.show', ['slug' => $recent->slug]) }}">{{ $recent->title }}</a>
+                                            </h6>
+                                            @if ($recent->published_at)
+                                                <div class="blog-post-meta">
+                                                    <div class="blog-post-time">
+                                                        <a href="{{ route('articles.show', ['slug' => $recent->slug]) }}"><i class="fa-solid fa-calendar-days"></i>{{ $recent->published_at->translatedFormat('j M Y') }}</a>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @empty
+                                    <p class="text-muted small mb-0">Aucun article récent.</p>
+                                @endforelse
+                            </div>
+                        </div>
             </div>
           </div>
         </div>

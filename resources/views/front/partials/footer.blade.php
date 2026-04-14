@@ -5,9 +5,9 @@
                 <div class="col-xl-4 col-lg-6 col-md-6 col-sm-7 mb-4">
                     <div class="footer-about">
                         <a class="footer-logo" href="{{ route('home') }}">
-                            <img class="img-fluid" src="{{ asset('images/logo-light.png') }}" alt="{{ config('app.name') }}">
+                            <img class="img-fluid" src="{{ asset('images/logo-light.png') }}" alt="Ivoire Industrie Magazine">
                         </a>
-                        <p>{{ config('app.name') }} vulgarise l’industrie ivoirienne : actualités, analyses et portraits d’entreprises pour décideurs et citoyens.</p>
+                        <p>Ivoire Industrie Magazine vulgarise l’industrie ivoirienne : actualités, analyses et portraits d’entreprises pour décideurs et citoyens.</p>
                         <div class="footer-social">
                             <ul class="social-icons">
                                 <li><a href="#" class="social-icon facebook" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a></li>

@@ -16,7 +16,7 @@ class CommentController extends Controller
         $comments = Comment::with('article')
             ->where('is_approved', false)
             ->latest()
-            ->paginate(20);
+            ->paginate(10);
         return view('admin.comments.index', compact('comments'));
     }
 

@@ -27,7 +27,7 @@ class UserController extends Controller
         $users = User::query()
             ->select(['id', 'name', 'email', 'role', 'created_at'])
             ->latest()
-            ->paginate(15);
+            ->paginate(10);
 
         return view('admin.users.index', compact('users'));
     }

@@ -17,7 +17,7 @@ class MediaController extends Controller
      */
     public function index()
     {
-        $medias = Media::orderByDesc('created_at')->paginate(24);
+        $medias = Media::orderByDesc('created_at')->paginate(10);
         return view('admin.medias.index', compact('medias'));
     }
 

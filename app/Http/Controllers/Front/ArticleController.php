@@ -49,8 +49,12 @@ class ArticleController extends Controller
             ->take(3)
             ->get();
 
-        $sidebarCategories = Category::sidebarListWithPublishedCounts();
+        $recentArticles = Article::published()
+            ->where('id', '!=', $article->id)
+            ->latest('published_at')
+            ->take(6)
+            ->get();
 
-        return view('front.articles.show', compact('article', 'related', 'sidebarCategories'));
+        return view('front.articles.show', compact('article', 'related', 'recentArticles'));
     }
 }

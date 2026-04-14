@@ -19,7 +19,7 @@ class NewsletterController extends Controller
         $subscriptions = NewsletterSubscription::query()
             ->where('status', 'active')
             ->orderByDesc('id')
-            ->paginate(20);
+            ->paginate(10);
 
         return view('admin.newsletter.index', compact('subscriptions'));
     }

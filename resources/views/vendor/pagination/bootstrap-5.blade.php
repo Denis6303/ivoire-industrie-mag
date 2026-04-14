@@ -19,9 +19,37 @@
         .pagination .page-link:focus {
             box-shadow: 0 0 0 0.2rem rgba(255, 120, 0, 0.25);
         }
+        .ivm-pagination-nav {
+            display: flex !important;
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge legacy */
+        }
+        .ivm-pagination-nav::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+        .ivm-pagination-nav .pagination {
+            display: inline-flex;
+            flex-wrap: nowrap !important;
+            min-width: max-content;
+            white-space: nowrap;
+            margin-left: auto;
+        }
+        @media (max-width: 767.98px) {
+            .ivm-pagination-nav {
+                display: block !important;
+                justify-content: flex-start !important;
+            }
+            .ivm-pagination-nav .pagination {
+                margin-left: 0 !important;
+            }
+        }
     </style>
-    <nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="d-flex justify-content-end">
-        <ul class="pagination mb-0">
+    <nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="ivm-pagination-nav d-flex justify-content-end">
+        <ul class="pagination mb-0 flex-nowrap">
             @if ($paginator->onFirstPage())
                 <li class="page-item disabled" aria-disabled="true" aria-label="{{ __('pagination.previous') }}">
                     <span class="page-link" aria-hidden="true">&lsaquo;</span>
