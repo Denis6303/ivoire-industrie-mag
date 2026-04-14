@@ -24,6 +24,16 @@
         #offcanvasMain .ivm-offcanvas-nav .collapse ul li {
             padding-left: 0.6rem;
         }
+        #offcanvasMain .offcanvas-title .navbar-brand {
+            display: block;
+            line-height: 1;
+        }
+        #offcanvasMain .offcanvas-title .ivm-offcanvas-logo {
+            display: block;
+            height: 42px;
+            width: auto;
+            max-width: 220px;
+        }
     </style>
 @endpush
 
@@ -31,7 +41,7 @@
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasMainLabel">
             <a class="navbar-brand" href="{{ route('home') }}">
-                <img class="img-fluid" src="{{ asset('images/logo_2im_couleur.svg') }}" alt="{{ config('app.name') }}">
+                <img class="ivm-offcanvas-logo" src="{{ asset('images/logo_2im_couleur.svg') }}" alt="{{ config('app.name') }}" onerror="this.onerror=null;this.src='{{ asset('images/2im_couleur.svg') }}';">
             </a>
         </h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="{{ __('app.close') }}"></button>
