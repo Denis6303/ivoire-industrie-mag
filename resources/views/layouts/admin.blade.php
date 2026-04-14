@@ -17,7 +17,7 @@
     <div class="d-flex min-vh-100 admin-layout">
         <aside class="bg-dark text-white p-3 p-lg-4 admin-sidebar d-none d-lg-block" style="width: 280px;">
             <a href="{{ route('admin.dashboard') }}" class="d-block mb-4 h5 text-white text-decoration-none fw-bold admin-brand">
-                IvoireIndustrieMag
+                <img src="{{ asset('images/logo_2im_blanc.svg') }}" alt="Ivoire Industrie Magazine" style="width: 100%; max-width: 220px; height: auto; object-fit: contain;">
             </a>
 
             <nav class="nav flex-column gap-2 admin-nav">
@@ -44,7 +44,9 @@
 
         <main class="flex-grow-1 admin-main">
             <div class="admin-mobile-header d-flex d-lg-none align-items-center justify-content-between px-3 py-2">
-                <a href="{{ route('admin.dashboard') }}" class="h5 mb-0 text-white text-decoration-none fw-bold admin-brand">IvoireIndustrieMag</a>
+                <a href="{{ route('admin.dashboard') }}" class="mb-0 text-white text-decoration-none fw-bold admin-brand">
+                    <img src="{{ asset('images/logo_2im_blanc.svg') }}" alt="Ivoire Industrie Magazine" style="height: 34px; width: auto; max-width: 100%; object-fit: contain;">
+                </a>
                 <button class="btn btn-outline-light btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminSidebarMobile" aria-controls="adminSidebarMobile">
                     <i class="fa-solid fa-bars"></i>
                 </button>
@@ -117,7 +119,9 @@
 
 <div class="offcanvas offcanvas-start admin-sidebar-offcanvas text-white" tabindex="-1" id="adminSidebarMobile" aria-labelledby="adminSidebarMobileLabel" style="--bs-offcanvas-bg:#142536;background:#142536;">
     <div class="offcanvas-header border-bottom border-light-subtle">
-        <h5 class="offcanvas-title fw-bold mb-0 admin-brand" id="adminSidebarMobileLabel">IvoireIndustrieMag</h5>
+        <h5 class="offcanvas-title fw-bold mb-0 admin-brand" id="adminSidebarMobileLabel">
+            <img src="{{ asset('images/logo_2im_blanc.svg') }}" alt="Ivoire Industrie Magazine" style="width: 100%; max-width: none; height: auto; object-fit: contain;">
+        </h5>
         <button type="button" class="btn admin-offcanvas-close text-white ms-auto" data-bs-dismiss="offcanvas" aria-label="Close">
             <i class="fa-solid fa-xmark"></i>
         </button>
