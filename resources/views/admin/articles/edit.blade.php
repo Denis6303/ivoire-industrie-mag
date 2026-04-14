@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 
 @section('content')
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+
     <div class="d-flex align-items-center justify-content-between mb-3">
         <h1 class="h4 mb-0">Éditer l'article</h1>
         <a href="{{ route('admin.articles.index') }}" class="btn btn-outline-secondary btn-sm">Retour</a>
@@ -12,22 +14,12 @@
                 @csrf
                 @method('PUT')
 
-                <div class="col-12">
+                <div class="col-md-8">
                     <label class="form-label">Titre</label>
                     <input name="title" class="form-control" value="{{ old('title', $article->title) }}">
                 </div>
 
-                <div class="col-12">
-                    <label class="form-label">Signature auteur</label>
-                    <input name="signature" class="form-control" value="{{ old('signature', $article->signature) }}">
-                </div>
-
-                <div class="col-12">
-                    <label class="form-label">Excerpt</label>
-                    <textarea name="excerpt" class="form-control" rows="3">{{ old('excerpt', $article->excerpt) }}</textarea>
-                </div>
-
-                <div class="col-12">
+                <div class="col-md-4">
                     <label class="form-label">Catégorie</label>
                     <select name="category_id" class="form-select">
                         @foreach($categories ?? [] as $category)
@@ -37,10 +29,20 @@
                 </div>
 
                 <div class="col-12">
-                    <label class="form-label">Image de couverture (optionnel)</label>
-                    <input type="file" name="cover_file" id="cover_file" class="form-control" accept="image/*">
+                    <label class="form-label">Châpeau</label>
+                    <textarea name="excerpt" class="form-control" rows="3">{{ old('excerpt', $article->excerpt) }}</textarea>
+                </div>
 
-                    <label class="form-label mt-2">Texte alternatif (optionnel)</label>
+                <div class="col-md-6">
+                    <label class="form-label">Image de couverture (optionnel)</label>
+                    <div class="admin-upload-zone">
+                        <input type="file" name="cover_file" id="cover_file" class="form-control" accept="image/*">
+                        <div class="small text-muted mt-2">Formats recommandés : JPG/PNG/WebP, max 10 MB.</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Texte alternatif (optionnel)</label>
                     <input type="text" name="cover_alt" class="form-control" value="{{ old('cover_alt', $article->cover_alt) }}">
 
                     <div class="mt-2">
@@ -61,6 +63,24 @@
                     <input type="hidden" name="content" id="content" value="{{ old('content', $article->content) }}">
                 </div>
 
+                <div class="col-md-8">
+                    <label class="form-label">Tags</label>
+                    @php
+                        $selectedTags = old('tags', $article->tags->pluck('id')->map(fn ($id) => (string) $id)->all());
+                    @endphp
+                    <select id="article-tags" name="tags[]" class="form-select" multiple>
+                        @foreach(($tags ?? []) as $tag)
+                            <option value="{{ $tag->id }}" @selected(in_array((string) $tag->id, (array) $selectedTags, true))>{{ $tag->name }}</option>
+                        @endforeach
+                    </select>
+                    <div class="form-text">Recherche rapide et sélection multiple.</div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Signature auteur</label>
+                    <input name="signature" class="form-control" value="{{ old('signature', $article->signature) }}">
+                </div>
+
                 <div class="col-12">
                     <button class="btn btn-ivm" type="submit">Mettre à jour</button>
                 </div>
@@ -69,8 +89,16 @@
     </div>
 
     <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            new TomSelect('#article-tags', {
+                plugins: ['remove_button'],
+                hideSelected: true,
+                closeAfterSelect: false,
+                placeholder: 'Choisir un ou plusieurs tags...'
+            });
+
             const quill = new Quill('#quill-editor', {
                 theme: 'snow',
                 modules: {

@@ -12,7 +12,14 @@ class HomeController extends Controller
     public function index()
     {
         $featured = Article::with(['category', 'author'])->published()->featured()->latest('published_at')->first();
-        $latest = Article::with(['category', 'author'])->published()->latest('published_at')->take(2)->get();
+        $latest = Article::with(['category', 'author'])->published()->where('type', '!=', 'breve')->latest('published_at')->take(2)->get();
+        $breves = Article::with(['category', 'author'])
+            ->published()
+            ->where('type', 'breve')
+            ->latest('published_at')
+            ->take(4)
+            ->get();
+        $brevesTotal = Article::published()->where('type', 'breve')->count();
         $companies = Company::where('is_active', true)->latest()->take(5)->get();
         $featuredCompanies = Company::query()
             ->where('is_active', true)
@@ -51,6 +58,11 @@ class HomeController extends Controller
             ->sortBy(fn (Category $c) => array_search($c->slug, $homeSectionSlugs, true))
             ->values()
             ->map(function (Category $category) {
+                $totalPosts = Article::query()
+                    ->published()
+                    ->where('category_id', $category->id)
+                    ->count();
+
                 $posts = Article::query()
                     ->with(['category', 'author'])
                     ->published()
@@ -62,6 +74,7 @@ class HomeController extends Controller
                 return [
                     'category' => $category,
                     'posts' => $posts,
+                    'total_posts' => $totalPosts,
                 ];
             })
             ->filter(fn ($row) => $row['posts']->isNotEmpty())
@@ -70,6 +83,8 @@ class HomeController extends Controller
         return view('front.home', compact(
             'featured',
             'latest',
+            'breves',
+            'brevesTotal',
             'companies',
             'featuredCompanies',
             'sidebarPopular',

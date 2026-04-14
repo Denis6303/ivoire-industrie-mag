@@ -101,12 +101,12 @@
                 'made-in-ivory-coast' => 'Made in Ivory Coast',
                 '2im-tv' => '2IM TV',
                 'magazine' => 'Magazine',
-                'emploi' => 'Emploi',
             ] as $slug => $label)
                 @if ($cat = $hidden->firstWhere('slug', $slug))
                     <li class="nav-item"><a class="nav-link" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ $label }}</a></li>
                 @endif
             @endforeach
+            <li class="nav-item"><a class="nav-link" href="{{ route('jobs.index') }}">Emploi</a></li>
         </ul>
     </div>
 </div>

@@ -6,9 +6,14 @@
             <h1 class="h3 mb-1">Articles</h1>
             <p class="text-muted mb-0">Pilotez les contenus, le statut de publication et les mises à jour.</p>
         </div>
-        <a href="{{ route('admin.articles.create') }}" class="btn btn-ivm">
-            <i class="fa-solid fa-plus me-2"></i>Nouvel article
-        </a>
+        <div class="d-flex gap-2">
+            <a href="{{ route('admin.articles.breves.create') }}" class="btn btn-outline-primary">
+                <i class="fa-solid fa-bolt me-2"></i>Nouvelle brève
+            </a>
+            <a href="{{ route('admin.articles.create') }}" class="btn btn-ivm">
+                <i class="fa-solid fa-plus me-2"></i>Nouvel article
+            </a>
+        </div>
     </div>
 
     <div class="row g-3 mb-4">
@@ -101,7 +106,7 @@
                             <tr>
                                 <td class="fw-semibold">
                                     <div>{{ $article->title }}</div>
-                                    <div class="small text-muted">{{ $article->slug }}</div>
+                                    <div class="small text-muted">{{ $article->slug }} · {{ $article->type === 'breve' ? 'Brève' : 'Article' }}</div>
                                 </td>
                                 <td>{{ optional($article->category)->name ?? '-' }}</td>
                                 <td>{{ optional($article->author)->name ?? '-' }}</td>

@@ -62,12 +62,35 @@
                         <a href="{{ route('articles.index') }}" class="btn btn-primary">Tous les articles</a>
                     </div>
 
+                    @if (isset($breves) && $breves->isNotEmpty())
+                        <div class="ivm-section-sep"></div>
+                        <div class="section-title mb-4">
+                            <h2 class="mb-0 d-flex align-items-center ivm-section-title">
+                                <span class="ivm-section-dot me-2" style="background:#ff7800;"></span>
+                                <span>Brèves</span>
+                            </h2>
+                        </div>
+                        <div class="row">
+                            @foreach ($breves as $article)
+                                <div class="col-md-6 mb-4">
+                                    <x-article-card :article="$article" style="02" />
+                                </div>
+                            @endforeach
+                        </div>
+                        @if (($brevesTotal ?? 0) > $breves->count())
+                            <div class="text-center mb-2">
+                                <a href="{{ route('categories.show', ['slug' => 'breve']) }}" class="btn btn-primary btn-sm">Voir plus</a>
+                            </div>
+                        @endif
+                    @endif
+
                     @if (isset($homeSections) && $homeSections->isNotEmpty())
                         @foreach ($homeSections as $section)
                             @php
                                 /** @var \App\Models\Category $cat */
                                 $cat = $section['category'];
                                 $posts = $section['posts'];
+                                $totalPosts = $section['total_posts'] ?? $posts->count();
                             @endphp
                             <div class="ivm-section-sep"></div>
                             <div class="section-title mb-4">
@@ -83,9 +106,11 @@
                                     </div>
                                 @endforeach
                             </div>
-                            <div class="text-center mb-2">
-                                <a href="{{ route('categories.show', ['slug' => $cat->slug]) }}" class="btn btn-primary btn-sm">Voir plus</a>
-                            </div>
+                            @if ($totalPosts >= 3)
+                                <div class="text-center mb-2">
+                                    <a href="{{ route('categories.show', ['slug' => $cat->slug]) }}" class="btn btn-primary btn-sm">Voir plus</a>
+                                </div>
+                            @endif
 
                         @endforeach
                     @endif

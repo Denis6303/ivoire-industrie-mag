@@ -26,6 +26,9 @@
                 <a class="nav-link text-white p-0 {{ request()->routeIs('admin.articles.*') ? 'active' : '' }}" href="{{ route('admin.articles.index') }}">
                     <i class="fa-regular fa-newspaper me-2"></i>Articles
                 </a>
+                <a class="nav-link text-white p-0 {{ request()->routeIs('admin.emplois.*') || request()->routeIs('admin.jobs.*') ? 'active' : '' }}" href="{{ route('admin.emplois.index') }}">
+                    <i class="fa-solid fa-briefcase me-2"></i>Emplois
+                </a>
 
                 @if(in_array(auth()->user()->role, ['super_admin', 'admin'], true))
                     <a class="nav-link text-white p-0 {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}" href="{{ route('admin.categories.index') }}"><i class="fa-solid fa-layer-group me-2"></i>Catégories</a>
@@ -127,6 +130,9 @@
             </a>
             <a class="nav-link text-white p-0 {{ request()->routeIs('admin.articles.*') ? 'active' : '' }}" href="{{ route('admin.articles.index') }}">
                 <i class="fa-regular fa-newspaper me-2"></i>Articles
+            </a>
+            <a class="nav-link text-white p-0 {{ request()->routeIs('admin.emplois.*') || request()->routeIs('admin.jobs.*') ? 'active' : '' }}" href="{{ route('admin.emplois.index') }}">
+                <i class="fa-solid fa-briefcase me-2"></i>Emplois
             </a>
 
             @if(in_array(auth()->user()->role, ['super_admin', 'admin'], true))

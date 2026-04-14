@@ -8,6 +8,7 @@ use App\Http\Controllers\Front\CategoryController;
 use App\Http\Controllers\Front\CommentController;
 use App\Http\Controllers\Front\CompanyController;
 use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Front\JobOfferController;
 use App\Http\Controllers\Front\NewsletterController;
 use App\Http\Controllers\Front\ProjectController;
 use App\Http\Controllers\Front\SearchController;
@@ -51,6 +52,8 @@ Route::prefix('{locale}')
         Route::get('/projets', [ProjectController::class, 'index'])->name('projects.index');
 
         Route::get('/recherche', [SearchController::class, 'index'])->name('search');
+        Route::get('/emplois', [JobOfferController::class, 'index'])->name('jobs.index');
+        Route::get('/emplois/{slug}', [JobOfferController::class, 'show'])->name('jobs.show');
 
         Route::view('/a-propos', 'front.about')->name('about');
         Route::view('/contact', 'front.contact')->name('contact');

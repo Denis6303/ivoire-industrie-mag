@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Media;
+use App\Models\Tag;
 use App\Services\MediaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -64,7 +65,13 @@ class ArticleController extends Controller
     public function create()
     {
         $categories = Category::orderBy('name')->get();
-        return view('admin.articles.create', compact('categories'));
+        $tags = Tag::orderBy('name')->get(['id', 'name']);
+        return view('admin.articles.create', compact('categories', 'tags'));
+    }
+
+    public function createBreve()
+    {
+        return view('admin.articles.create-breve');
     }
 
     /**
@@ -78,6 +85,8 @@ class ArticleController extends Controller
             'excerpt' => ['required', 'string'],
             'content' => ['required', 'string'],
             'category_id' => ['required', 'exists:categories,id'],
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['integer', 'exists:tags,id'],
             'cover_file' => ['nullable', 'image', 'max:10240'],
             'cover_alt' => ['nullable', 'string', 'max:255'],
         ]);
@@ -106,8 +115,61 @@ class ArticleController extends Controller
             $data['cover_image'] = $media->url;
         }
 
-        Article::create($data);
+        $tagIds = $data['tags'] ?? [];
+        unset($data['tags']);
+
+        $article = Article::create($data);
+        $article->tags()->sync($tagIds);
         return redirect()->route('admin.articles.index')->with('success', 'Article créé.');
+    }
+
+    public function storeBreve(Request $request)
+    {
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'signature' => ['nullable', 'string', 'max:255'],
+            'content' => ['required', 'string'],
+            'cover_file' => ['nullable', 'image', 'max:10240'],
+            'cover_alt' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $breveCategory = $this->resolveBreveCategory();
+
+        $payload = [
+            'title' => $data['title'],
+            'signature' => $data['signature'] ?? null,
+            'content' => $data['content'],
+            'excerpt' => Str::limit(strip_tags($data['content']), 220),
+            'type' => 'breve',
+            'status' => 'draft',
+            'author_id' => auth()->id(),
+            'category_id' => $breveCategory->id,
+            'slug' => Str::slug($data['title']).'-'.Str::lower(Str::random(6)),
+            'cover_alt' => $data['cover_alt'] ?? null,
+        ];
+
+        if ($request->hasFile('cover_file')) {
+            $uploaded = app(MediaService::class)->upload($request->file('cover_file'), 'media', 'public');
+            $media = Media::create([
+                'filename' => $uploaded['filename'],
+                'original_name' => $uploaded['original_name'],
+                'path' => $uploaded['path'],
+                'url' => $uploaded['url'],
+                'disk' => $uploaded['disk'],
+                'mime_type' => $uploaded['mime_type'],
+                'type' => 'image',
+                'size' => $uploaded['size'],
+                'alt' => $payload['cover_alt'],
+                'caption' => null,
+                'uploaded_by' => auth()->id(),
+            ]);
+
+            $payload['cover_image'] = $media->url;
+        }
+
+        Article::create($payload);
+
+        return redirect()->route('admin.articles.index')->with('success', 'Brève enregistrée en brouillon.');
     }
 
     /**
@@ -126,7 +188,8 @@ class ArticleController extends Controller
     {
         $this->ensureEditorOwnsArticle($article);
         $categories = Category::orderBy('name')->get();
-        return view('admin.articles.edit', compact('article', 'categories'));
+        $tags = Tag::orderBy('name')->get(['id', 'name']);
+        return view('admin.articles.edit', compact('article', 'categories', 'tags'));
     }
 
     /**
@@ -141,6 +204,8 @@ class ArticleController extends Controller
             'excerpt' => ['required', 'string'],
             'content' => ['required', 'string'],
             'category_id' => ['required', 'exists:categories,id'],
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['integer', 'exists:tags,id'],
             'cover_file' => ['nullable', 'image', 'max:10240'],
             'cover_alt' => ['nullable', 'string', 'max:255'],
         ]);
@@ -166,7 +231,11 @@ class ArticleController extends Controller
             $data['cover_image'] = $media->url;
         }
 
+        $tagIds = $data['tags'] ?? [];
+        unset($data['tags']);
+
         $article->update($data);
+        $article->tags()->sync($tagIds);
         return redirect()->route('admin.articles.index')->with('success', 'Article mis à jour.');
     }
 
@@ -199,5 +268,18 @@ class ArticleController extends Controller
         if (auth()->user()?->role === 'editor' && $article->author_id !== auth()->id()) {
             abort(403, 'Vous ne pouvez gérer que vos propres contenus.');
         }
+    }
+
+    private function resolveBreveCategory(): Category
+    {
+        return Category::firstOrCreate(
+            ['slug' => 'breve'],
+            [
+                'name' => 'Brève',
+                'description' => 'Articles au format brève.',
+                'color' => '#ff7800',
+                'order' => 0,
+            ]
+        );
     }
 }

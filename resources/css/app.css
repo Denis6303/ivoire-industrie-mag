@@ -241,6 +241,17 @@ textarea {
     min-height: 42px;
 }
 
+.admin-upload-zone {
+    border: 1.5px dashed #cfd8e6;
+    border-radius: 0.75rem;
+    background: #f8fbff;
+    padding: 0.85rem;
+}
+
+.admin-upload-zone .form-control[type="file"] {
+    background: #fff;
+}
+
 .admin-main {
     min-width: 0;
 }

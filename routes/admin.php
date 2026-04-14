@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\NewsletterController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\JobOfferController;
 use App\Http\Controllers\Admin\SectorController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TagController;
@@ -20,9 +21,14 @@ Route::get('/', [DashboardController::class, 'index'])
     ->name('dashboard');
 
 Route::middleware('role:super_admin,admin,editor')->group(function () {
+    Route::get('articles/breves/create', [ArticleController::class, 'createBreve'])->name('articles.breves.create');
+    Route::post('articles/breves', [ArticleController::class, 'storeBreve'])->name('articles.breves.store');
     Route::resource('articles', ArticleController::class);
     Route::patch('articles/{article}/publish', [ArticleController::class, 'publish'])->name('articles.publish');
     Route::patch('articles/{article}/unpublish', [ArticleController::class, 'unpublish'])->name('articles.unpublish');
+    Route::resource('emplois', JobOfferController::class)->parameters(['emplois' => 'job'])->except(['show']);
+    Route::patch('emplois/{job}/publish', [JobOfferController::class, 'publish'])->name('jobs.publish');
+    Route::patch('emplois/{job}/unpublish', [JobOfferController::class, 'unpublish'])->name('jobs.unpublish');
 });
 
 Route::middleware('role:super_admin,admin')->group(function () {
