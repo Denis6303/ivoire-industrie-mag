@@ -87,6 +87,42 @@ if (! function_exists('article_route_slug')) {
     }
 }
 
+if (! function_exists('category_i18n')) {
+    function category_i18n(?\App\Models\Category $category): string
+    {
+        if (! $category) {
+            return '';
+        }
+
+        if (app()->getLocale() !== 'en') {
+            return (string) $category->name;
+        }
+
+        $map = [
+            'industrie-story' => 'nav.industry_story',
+            'industrie' => 'nav.industry',
+            'zones-industrielles' => 'nav.industrial_zones',
+            'investissement' => 'nav.investment',
+            'usines' => 'nav.factory',
+            'international' => 'nav.international',
+            'agenda' => 'nav.agenda',
+            'innovation' => 'nav.innovation',
+            'hommes-et-femmes-industriels-ivoiriens' => 'nav.industrial_leaders',
+            'dossier' => 'nav.dossier',
+            'districts' => 'nav.districts',
+            'made-in-ivory-coast' => 'nav.made_in_ivory_coast',
+            '2im-tv' => 'nav.tv',
+            'magazine' => 'nav.magazine',
+            'emploi' => 'nav.jobs',
+            'breve' => 'front.briefs',
+        ];
+
+        $key = $map[$category->slug] ?? null;
+
+        return $key ? __($key) : (string) $category->name;
+    }
+}
+
 if (! function_exists('article_body_html')) {
     /**
      * Corps d’article WYSIWYG : retire une enveloppe <!DOCTYPE>/<html>/<head>/<body>

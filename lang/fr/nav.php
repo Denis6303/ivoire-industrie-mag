@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'industry_story' => 'Industrie Story',
+    'industry_story' => 'Industrie story',
     'industry' => 'Industrie',
     'industrial_zones' => 'Zones industrielles',
     'investment' => 'Investissement',

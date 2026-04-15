@@ -26,7 +26,7 @@
         </div>
         <div class="blog-post-details p-4">
             @if ($article->category)
-                <span class="badge badge-medium" style="background: {{ $catColor }}; color: #fff;">{{ $article->category->name }}</span>
+                <span class="badge badge-medium" style="background: {{ $catColor }}; color: #fff;">{{ category_i18n($article->category) }}</span>
             @endif
             <h4 class="blog-title mt-2 mb-2">
                 <a href="{{ route('articles.show', ['slug' => $articleSlug]) }}">{{ $articleTitle }}</a>
@@ -68,7 +68,7 @@
         </div>
         <div class="blog-post-details">
             @if ($article->category)
-                <span class="badge badge-medium" style="background: {{ $catColor }}; color: #fff;">{{ $article->category->name }}</span>
+                <span class="badge badge-medium" style="background: {{ $catColor }}; color: #fff;">{{ category_i18n($article->category) }}</span>
             @endif
             <h4 class="blog-title ivm-card-title-ellipsis">
                 <a href="{{ route('articles.show', ['slug' => $articleSlug]) }}" title="{{ $articleTitle }}">{{ $articleTitle }}</a>

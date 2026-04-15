@@ -28,7 +28,7 @@
                             </div>
                             <div class="blog-post-details">
                                 @if ($f->category)
-                                    <span class="badge badge-medium home-featured-la-une-badge" style="background: {{ $f->category->color ?: '#0d6efd' }}; color:#fff;">{{ $f->category->name }}</span>
+                                    <span class="badge badge-medium home-featured-la-une-badge" style="background: {{ $f->category->color ?: '#0d6efd' }}; color:#fff;">{{ category_i18n($f->category) }}</span>
                                 @endif
                                 <h2 class="blog-title mt-2">
                                     <a href="{{ route('articles.show', ['slug' => $featuredSlug]) }}">{{ $featuredTitle }}</a>
@@ -99,7 +99,7 @@
                             <div class="section-title mb-4">
                                 <h2 class="mb-0 d-flex align-items-center ivm-section-title">
                                     <span class="ivm-section-dot me-2" style="background: {{ $cat->color ?: '#ff7800' }};"></span>
-                                    <span>{{ $cat->name }}</span>
+                                    <span>{{ category_i18n($cat) }}</span>
                                 </h2>
                             </div>
                             <div class="row">

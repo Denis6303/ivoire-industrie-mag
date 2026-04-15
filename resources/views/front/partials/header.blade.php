@@ -54,7 +54,7 @@
 
                     @if ($cat = $primary->firstWhere('slug', 'industrie-story'))
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('categories.show') && request()->route('slug') === $cat->slug ? 'active' : '' }}" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">Industrie Story</a>
+                            <a class="nav-link {{ request()->routeIs('categories.show') && request()->route('slug') === $cat->slug ? 'active' : '' }}" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ __('nav.industry_story') }}</a>
                         </li>
                     @endif
 
