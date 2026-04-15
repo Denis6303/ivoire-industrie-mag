@@ -28,7 +28,7 @@ class DashboardController extends Controller
         $stats = [
             'published_articles' => Article::where('status', 'published')->count(),
             'views_today' => Article::whereDate('updated_at', today())->sum('view_count'),
-            'newsletter_subscribers' => NewsletterSubscription::where('status', 'active')->count(),
+            'newsletter_subscribers' => NewsletterSubscription::whereIn('status', ['pending', 'active'])->count(),
             'pending_comments' => Comment::where('is_approved', false)->count(),
             'published_this_month' => $publishedThisMonth,
             'draft_articles' => $draftArticles,

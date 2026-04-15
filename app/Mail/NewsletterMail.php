@@ -10,9 +10,13 @@ class NewsletterMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public string $subjectLine, public string $bodyLine)
+    public function __construct(
+        public string $editionLine,
+        public string $subjectLine,
+        public string $bodyLine,
+        public ?string $unsubscribeUrl = null
+    )
     {
-        //
     }
 
     public function build(): static
@@ -20,8 +24,10 @@ class NewsletterMail extends Mailable
         return $this->subject($this->subjectLine)
             ->view('emails.newsletter')
             ->with([
+                'editionLine' => $this->editionLine,
                 'subjectLine' => $this->subjectLine,
                 'bodyLine' => $this->bodyLine,
+                'unsubscribeUrl' => $this->unsubscribeUrl,
             ]);
     }
 }

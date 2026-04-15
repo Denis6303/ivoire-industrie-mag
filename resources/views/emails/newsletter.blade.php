@@ -8,16 +8,25 @@
 <body style="margin:0;padding:0;background:#f8f9fa;font-family:Arial,Helvetica,sans-serif;">
     <div style="max-width:600px;margin:0 auto;padding:24px;">
         <div style="background:#243e5d;color:#fff;padding:16px;border-radius:8px 8px 0 0;">
-            <div style="font-size:18px;font-weight:700;">ivoireindustrie<span style="color:#ff7800;">mag</span></div>
+            <div style="font-size:18px;font-weight:700;">Ivoire Industrie Magazine</div>
         </div>
         <div style="background:#fff;padding:20px;border-radius:0 0 8px 8px;">
+            <div style="display:inline-block;margin:0 0 10px;padding:4px 10px;border-radius:999px;background:#eef4ff;color:#243e5d;font-size:12px;font-weight:700;">
+                Édition : {{ $editionLine }}
+            </div>
             <h2 style="margin:0 0 14px;font-size:20px;">{{ $subjectLine }}</h2>
-            <div style="white-space:pre-wrap;color:#333;line-height:1.5;font-size:14px;">
-                {{ $bodyLine }}
+            <div style="color:#333;line-height:1.6;font-size:14px;">
+                {!! $bodyLine !!}
             </div>
             <div style="margin-top:18px;color:#777;font-size:12px;">
                 Vous recevez ce message car vous êtes inscrit à notre newsletter.
             </div>
+            @if(!empty($unsubscribeUrl))
+                <div style="margin-top:8px;color:#777;font-size:12px;">
+                    Vous pouvez vous désinscrire à tout moment :
+                    <a href="{{ $unsubscribeUrl }}" style="color:#0d6efd;text-decoration:underline;">se désinscrire</a>.
+                </div>
+            @endif
         </div>
     </div>
 </body>

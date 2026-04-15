@@ -17,11 +17,18 @@ class NewsletterController extends Controller
     public function index()
     {
         $subscriptions = NewsletterSubscription::query()
-            ->where('status', 'active')
+            ->whereIn('status', ['pending', 'active'])
             ->orderByDesc('id')
             ->paginate(10);
 
-        return view('admin.newsletter.index', compact('subscriptions'));
+        $counts = [
+            'total' => NewsletterSubscription::whereIn('status', ['pending', 'active'])->count(),
+            'active' => NewsletterSubscription::where('status', 'active')->count(),
+            'pending' => NewsletterSubscription::where('status', 'pending')->count(),
+            'unsubscribed' => NewsletterSubscription::where('status', 'unsubscribed')->count(),
+        ];
+
+        return view('admin.newsletter.index', compact('subscriptions', 'counts'));
     }
 
     /**
@@ -38,25 +45,30 @@ class NewsletterController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
+            'edition' => ['required', 'string', 'max:100'],
             'subject' => ['required', 'string', 'max:255'],
             'body' => ['required', 'string'],
         ]);
 
-        $emails = NewsletterSubscription::query()
+        $subscriptions = NewsletterSubscription::query()
             ->where('status', 'active')
-            ->pluck('email')
-            ->filter()
-            ->values();
+            ->whereNotNull('token')
+            ->get(['email', 'token']);
 
-        if ($emails->isEmpty()) {
+        if ($subscriptions->isEmpty()) {
             return back()->with('success', 'Aucun abonné actif à contacter.');
         }
 
-        $fromEmail = config('mail.from.address') ?: null;
-        $mail = new NewsletterMail($data['subject'], $data['body']);
-
-        Mail::to($emails->all())
-            ->send($mail);
+        foreach ($subscriptions as $subscription) {
+            Mail::to($subscription->email)->send(
+                new NewsletterMail(
+                    $data['edition'],
+                    $data['subject'],
+                    $data['body'],
+                    route('newsletter.unsubscribe', ['token' => $subscription->token])
+                )
+            );
+        }
 
         return redirect()->route('admin.newsletter.index')->with('success', 'Newsletter envoyée.');
     }
