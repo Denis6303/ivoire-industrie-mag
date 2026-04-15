@@ -256,11 +256,6 @@
                 </div>
                 <div class="col-lg-4">
             <div class="sidebar mt-lg-0">
-                        @if (!empty($adSidebar))
-                            <div class="widget mb-4">
-                                @include('front.partials.ad-banner', ['ad' => $adSidebar, 'variant' => 'vertical'])
-                            </div>
-                        @endif
                         <div class="widget post-widget">
                             <h6 class="widget-title">{{ __('sidebar.latest_posts') }}</h6>
                             <div class="sidebar-home-posts pt-2">
@@ -307,6 +302,11 @@
                                 @endforelse
                             </div>
                         </div>
+                        @if (!empty($adSidebar))
+                            <div class="widget mb-4">
+                                @include('front.partials.ad-banner', ['ad' => $adSidebar, 'variant' => 'vertical'])
+                            </div>
+                        @endif
             </div>
           </div>
         </div>
