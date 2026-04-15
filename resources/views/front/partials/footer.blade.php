@@ -7,7 +7,7 @@
                         <a class="footer-logo" href="{{ route('home') }}">
                             <img src="{{ asset('images/logo_2im_blanc.svg') }}" alt="Ivoire Industrie Magazine" style="width: 180px; max-width: 100%; height: auto; object-fit: contain;">
                         </a>
-                        <p>{{ __('front.footer_pitch') }}</p>
+                        <p>{!! str_replace('Ivoire Industrie Magazine', '<span style="color:#ff7800;">Ivoire Industrie Magazine</span>', e(__('front.footer_pitch'))) !!}</p>
                         <div class="footer-social">
                             <ul class="social-icons">
                                 <li><a href="#" class="social-icon facebook" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a></li>
@@ -52,7 +52,7 @@
             <div class="row copyright justify-content-center">
                 <div class="col-md-12 text-center">
                     <p class="mb-0">
-                        {{ __('front.copyright') }}
+                        {!! str_replace('Ivoire Industrie Magazine', '<span style="color:#ff7800;">Ivoire Industrie Magazine</span>', e(__('front.copyright'))) !!}
                     </p>
                 </div>
             </div>
