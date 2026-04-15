@@ -112,12 +112,23 @@
                                 </div>
                             @endif
 
+                            @if ($cat->slug === 'zones-industrielles' && !empty($adInArticle))
+                                <div class="my-4">
+                                    @include('front.partials.ad-banner', ['ad' => $adInArticle, 'variant' => 'horizontal'])
+                                </div>
+                            @endif
+
                         @endforeach
                     @endif
                 </div>
                 <div class="col-lg-4">
                     <div class="sidebar">
                         @include('front.partials.sidebar-home-related-posts')
+                        @if (!empty($adSidebar))
+                            <div class="widget mb-4">
+                                @include('front.partials.ad-banner', ['ad' => $adSidebar, 'variant' => 'vertical'])
+                            </div>
+                        @endif
                         <div class="widget mt-4">
                             <h6 class="widget-title">Entreprises qui bougent</h6>
                             @forelse ($companies as $company)

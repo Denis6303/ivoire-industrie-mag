@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Advertisement;
 use App\Models\Category;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
@@ -107,6 +108,43 @@ class AppServiceProvider extends ServiceProvider
             $view->with('navPrimaryCategories', $navData['primaryCategories'] ?? collect());
             $view->with('navHiddenCategories', $navData['hiddenCategories'] ?? collect());
             $view->with('navInnovationChildren', $navData['innovationChildren'] ?? collect());
+
+            $adsData = request()->attributes->get('adsData');
+            if ($adsData === null) {
+                $adsData = [
+                    'header' => null,
+                    'sidebar' => null,
+                    'in_article' => null,
+                    'footer' => null,
+                ];
+
+                if (Schema::hasTable('advertisements')) {
+                    $activeAds = Advertisement::query()
+                        ->where('is_active', true)
+                        ->where(function ($q) {
+                            $q->whereNull('start_date')
+                                ->orWhere('start_date', '<=', now());
+                        })
+                        ->where(function ($q) {
+                            $q->whereNull('end_date')
+                                ->orWhere('end_date', '>=', now());
+                        })
+                        ->orderByDesc('id')
+                        ->get();
+
+                    $adsData['header'] = $activeAds->firstWhere('position', 'header');
+                    $adsData['sidebar'] = $activeAds->firstWhere('position', 'sidebar');
+                    $adsData['in_article'] = $activeAds->firstWhere('position', 'in_article');
+                    $adsData['footer'] = $activeAds->firstWhere('position', 'footer');
+                }
+
+                request()->attributes->set('adsData', $adsData);
+            }
+
+            $view->with('adHeader', $adsData['header'] ?? null);
+            $view->with('adSidebar', $adsData['sidebar'] ?? null);
+            $view->with('adInArticle', $adsData['in_article'] ?? null);
+            $view->with('adFooter', $adsData['footer'] ?? null);
         });
     }
 }

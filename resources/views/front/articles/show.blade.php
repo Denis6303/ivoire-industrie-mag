@@ -171,6 +171,11 @@
                             <div class="article-body">
                                 {!! $articleBodyHtml !!}
                             </div>
+                            @if (!empty($adInArticle))
+                                <div class="my-4">
+                                    @include('front.partials.ad-banner', ['ad' => $adInArticle, 'variant' => 'horizontal'])
+                                </div>
+                            @endif
                             @if ($article->author)
                                 <div class="blog-post-user mt-4 mb-2">
                                     <span>par <span style="color:#243e5d;">{{ $article->signature ?: $article->author->name }}</span></span>
@@ -243,6 +248,11 @@
                 </div>
                 <div class="col-lg-4">
             <div class="sidebar mt-lg-0">
+                        @if (!empty($adSidebar))
+                            <div class="widget mb-4">
+                                @include('front.partials.ad-banner', ['ad' => $adSidebar, 'variant' => 'vertical'])
+                            </div>
+                        @endif
                         <div class="widget post-widget">
                             <h6 class="widget-title">Les plus récents</h6>
                             <div class="sidebar-home-posts pt-2">

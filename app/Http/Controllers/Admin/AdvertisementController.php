@@ -34,7 +34,7 @@ class AdvertisementController extends Controller
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'image_url' => ['nullable', 'string', 'max:1024'],
-            'image_file' => ['nullable', 'image', 'max:10240'],
+            'image_file' => ['nullable', 'image', 'max:2048'],
             'link_url' => ['required', 'string', 'max:1024'],
             'position' => ['required', 'in:header,sidebar,in_article,footer'],
             'is_active' => ['nullable', 'boolean'],
@@ -84,7 +84,7 @@ class AdvertisementController extends Controller
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'image_url' => ['nullable', 'string', 'max:1024'],
-            'image_file' => ['nullable', 'image', 'max:10240'],
+            'image_file' => ['nullable', 'image', 'max:2048'],
             'link_url' => ['nullable', 'string', 'max:1024'],
             'position' => ['required', 'in:header,sidebar,in_article,footer'],
             'is_active' => ['nullable', 'boolean'],
