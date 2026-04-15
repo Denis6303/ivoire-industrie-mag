@@ -80,11 +80,11 @@
                     @endif
 
                     @foreach ([
-                        'zones-industrielles' => 'Zones Industrielles',
-                        'investissement' => 'Investissement',
-                        'usines' => 'Usine',
-                        'international' => 'International',
-                        'agenda' => 'Agenda',
+                        'zones-industrielles' => __('nav.industrial_zones'),
+                        'investissement' => __('nav.investment'),
+                        'usines' => __('nav.factory'),
+                        'international' => __('nav.international'),
+                        'agenda' => __('nav.agenda'),
                     ] as $slug => $label)
                         @if ($cat = $primary->firstWhere('slug', $slug))
                             <li class="nav-item">

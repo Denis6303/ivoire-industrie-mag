@@ -14,11 +14,11 @@ class Article extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'title', 'signature', 'slug', 'excerpt', 'content',
+        'title', 'title_en', 'signature', 'slug', 'slug_en', 'excerpt', 'excerpt_en', 'content', 'content_en',
         'cover_image', 'cover_alt', 'secondary_image', 'secondary_alt', 'tertiary_image', 'tertiary_alt',
         'status', 'type',
         'is_featured', 'is_breaking', 'is_premium', 'view_count', 'reading_time',
-        'published_at', 'scheduled_at', 'meta_title', 'meta_description', 'author_id', 'category_id',
+        'published_at', 'scheduled_at', 'meta_title', 'meta_title_en', 'meta_description', 'meta_description_en', 'author_id', 'category_id',
     ];
 
     protected $casts = [

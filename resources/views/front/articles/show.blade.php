@@ -1,7 +1,15 @@
 @extends('layouts.front')
 
-@section('title', e($article->meta_title ?? $article->title))
-@section('meta_description', e($article->meta_description ?? \Illuminate\Support\Str::limit(strip_tags($article->excerpt ?? $article->content), 160)))
+@php
+    $articleTitle = article_i18n($article, 'title') ?: $article->title;
+    $articleExcerpt = article_i18n($article, 'excerpt') ?: $article->excerpt;
+    $articleContent = article_i18n($article, 'content') ?: $article->content;
+    $articleMetaTitle = article_i18n($article, 'meta_title') ?: ($article->meta_title ?? $articleTitle);
+    $articleMetaDescription = article_i18n($article, 'meta_description')
+        ?: ($article->meta_description ?? \Illuminate\Support\Str::limit(strip_tags($articleExcerpt ?: $articleContent), 160));
+@endphp
+@section('title', e($articleMetaTitle))
+@section('meta_description', e($articleMetaDescription))
 @push('styles')
     <style>
         .sidebar-home-posts .blog-post.post-style-07 {
@@ -91,7 +99,7 @@
 
 @section('content')
     @include('front.partials.page-header', [
-        'title' => \Illuminate\Support\Str::limit($article->title, 80),
+        'title' => \Illuminate\Support\Str::limit($articleTitle, 80),
         'breadcrumbItems' => $article->category
             ? [['label' => $article->category->name, 'url' => route('categories.show', ['slug' => $article->category->slug])]]
             : [],
@@ -104,14 +112,14 @@
                     <article class="blog-post-info">
                         <div class="blog-content pb-0">
                             <div class="blog-post-title mb-3">
-                                <h1 class="mb-0 h3">{{ $article->title }}</h1>
+                                <h1 class="mb-0 h3">{{ $articleTitle }}</h1>
                             </div>
 
                             @php $cover = article_cover($article->cover_image); @endphp
                             @if ($cover)
                                 <div class="blog-post-image mb-4">
                                     <div class="overflow-hidden rounded" style="height: 360px;">
-                                        <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $article->title }}" loading="eager" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-16x9.svg') }}';">
+                                        <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $articleTitle }}" loading="eager" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-16x9.svg') }}';">
                                     </div>
                                 </div>
                             @endif
@@ -131,13 +139,13 @@
                           </div>
                         </div>
                             </div>
-                            @if ($article->excerpt)
+                            @if ($articleExcerpt)
                                 <div class="mb-4">
-                                    <p class="lead fw-bold mb-0">{{ $article->excerpt }}</p>
+                                    <p class="lead fw-bold mb-0">{{ $articleExcerpt }}</p>
                                 </div>
                             @endif
                             @php
-                                $articleBodyHtml = article_body_html($article->content);
+                                $articleBodyHtml = article_body_html($articleContent);
                                 $secondaryImage = article_cover($article->secondary_image);
                                 $tertiaryImage = article_cover($article->tertiary_image);
 
@@ -159,12 +167,12 @@
                                 };
 
                                 if ($secondaryImage) {
-                                    $secondaryBlock = '<figure class="ivm-inline-article-image"><img src="'.$secondaryImage.'" alt="'.e($article->secondary_alt ?: $article->title).'" loading="lazy"></figure>';
+                                    $secondaryBlock = '<figure class="ivm-inline-article-image"><img src="'.$secondaryImage.'" alt="'.e($article->secondary_alt ?: $articleTitle).'" loading="lazy"></figure>';
                                     $articleBodyHtml = $injectAfterParagraph($articleBodyHtml, $secondaryBlock, 2);
                                 }
 
                                 if ($tertiaryImage) {
-                                    $tertiaryBlock = '<figure class="ivm-inline-article-image"><img src="'.$tertiaryImage.'" alt="'.e($article->tertiary_alt ?: $article->title).'" loading="lazy"></figure>';
+                                    $tertiaryBlock = '<figure class="ivm-inline-article-image"><img src="'.$tertiaryImage.'" alt="'.e($article->tertiary_alt ?: $articleTitle).'" loading="lazy"></figure>';
                                     $articleBodyHtml = $injectAfterParagraph($articleBodyHtml, $tertiaryBlock, 4);
                                 }
                             @endphp
@@ -178,7 +186,7 @@
                             @endif
                             @if ($article->author)
                                 <div class="blog-post-user mt-4 mb-2">
-                                    <span>par <span style="color:#243e5d;">{{ $article->signature ?: $article->author->name }}</span></span>
+                                    <span>{{ __('app.by') }} <span style="color:#243e5d;">{{ $article->signature ?: $article->author->name }}</span></span>
                                 </div>
                             @endif
                             @if ($article->tags->isNotEmpty())
@@ -194,7 +202,7 @@
                     </article>
 
                     <div class="bg-white mb-4 mt-5">
-                        <h6 class="widget-title text-uppercase fw-bolder">Laisser un commentaire</h6>
+                        <h6 class="widget-title text-uppercase fw-bolder">{{ __('front.leave_comment') }}</h6>
                         <div class="blog-sidebar-post-divider mb-4"></div>
                         <form class="row" method="POST" action="{{ route('comments.store', $article) }}">
                             @csrf
@@ -213,14 +221,14 @@
                                 @error('content')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary">Publier</button>
+                                <button type="submit" class="btn btn-primary">{{ __('front.publish') }}</button>
         </div>
       </form>
                     </div>
 
                     @if ($article->comments->isNotEmpty())
                         <div class="mt-4">
-                            <h6 class="widget-title">Commentaires</h6>
+                            <h6 class="widget-title">{{ __('front.comments') }}</h6>
                             @foreach ($article->comments as $comment)
                                 <div class="border-bottom py-3">
                                     <strong>{{ $comment->user?->name ?? $comment->guest_name ?? 'Visiteur' }}</strong>
@@ -234,7 +242,7 @@
                     @if ($related->isNotEmpty())
                         <div class="bg-white mt-5">
                   <div class="section-title">
-                                <h2 class="mb-0"><i class="fa-solid fa-bolt-lightning"></i> Sur le même sujet</h2>
+                                <h2 class="mb-0"><i class="fa-solid fa-bolt-lightning"></i> {{ __('front.related_topic') }}</h2>
                             </div>
                             <div class="row mt-3">
                                 @foreach ($related as $rel)
@@ -254,20 +262,24 @@
                             </div>
                         @endif
                         <div class="widget post-widget">
-                            <h6 class="widget-title">Les plus récents</h6>
+                            <h6 class="widget-title">{{ __('sidebar.latest_posts') }}</h6>
                             <div class="sidebar-home-posts pt-2">
                                 @forelse ($recentArticles as $recent)
-                                    @php $recentCover = article_cover($recent->cover_image); @endphp
+                                    @php
+                                        $recentCover = article_cover($recent->cover_image);
+                                        $recentTitle = article_i18n($recent, 'title') ?: $recent->title;
+                                        $recentSlug = article_route_slug($recent);
+                                    @endphp
                                     <div class="blog-post post-style-07">
                                         <div class="post-image">
                                             @if ($recentCover)
-                                                <a href="{{ route('articles.show', ['slug' => $recent->slug]) }}">
+                                                <a href="{{ route('articles.show', ['slug' => $recentSlug]) }}">
                                                     <span class="d-block ratio ratio-1x1 overflow-hidden rounded">
-                                                        <img class="w-100 h-100" style="object-fit: cover;" src="{{ $recentCover }}" alt="{{ $recent->cover_alt ?? $recent->title }}" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
+                                                        <img class="w-100 h-100" style="object-fit: cover;" src="{{ $recentCover }}" alt="{{ $recent->cover_alt ?? $recentTitle }}" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
                                                     </span>
                                                 </a>
                                             @else
-                                                <a href="{{ route('articles.show', ['slug' => $recent->slug]) }}" class="d-block bg-light ratio ratio-1x1 rounded"></a>
+                                                <a href="{{ route('articles.show', ['slug' => $recentSlug]) }}" class="d-block bg-light ratio ratio-1x1 rounded"></a>
                                             @endif
                                         </div>
                                         <div class="blog-post-details">
@@ -279,19 +291,19 @@
                                                 >{{ $recent->category->name }}</a>
                                             @endif
                                             <h6 class="blog-title">
-                                                <a href="{{ route('articles.show', ['slug' => $recent->slug]) }}">{{ $recent->title }}</a>
+                                                <a href="{{ route('articles.show', ['slug' => $recentSlug]) }}">{{ $recentTitle }}</a>
                                             </h6>
                                             @if ($recent->published_at)
                                                 <div class="blog-post-meta">
                                                     <div class="blog-post-time">
-                                                        <a href="{{ route('articles.show', ['slug' => $recent->slug]) }}"><i class="fa-solid fa-calendar-days"></i>{{ $recent->published_at->translatedFormat('j M Y') }}</a>
+                                                        <a href="{{ route('articles.show', ['slug' => $recentSlug]) }}"><i class="fa-solid fa-calendar-days"></i>{{ $recent->published_at->translatedFormat('j M Y') }}</a>
                                                     </div>
                                                 </div>
                                             @endif
                                         </div>
                                     </div>
                                 @empty
-                                    <p class="text-muted small mb-0">Aucun article récent.</p>
+                                    <p class="text-muted small mb-0">{{ __('sidebar.no_recent_posts') }}</p>
                                 @endforelse
                             </div>
                         </div>

@@ -138,6 +138,10 @@
                         data-autoheight="true"
                     >
                         @foreach ($breakingNews as $article)
+                            @php
+                                $breakingTitle = article_i18n($article, 'title') ?: $article->title;
+                                $breakingSlug = article_route_slug($article);
+                            @endphp
                             <div class="item">
                                 <div class="news-post">
                                     <div class="news-image">
@@ -150,7 +154,7 @@
                                     </div>
                                     <div class="news-post-details">
                                         <h6 class="news-title">
-                                            <a href="{{ route('articles.show', ['slug' => $article->slug]) }}">{{ $article->title }}</a>
+                                            <a href="{{ route('articles.show', ['slug' => $breakingSlug]) }}">{{ $breakingTitle }}</a>
                                         </h6>
                                     </div>
                                 </div>

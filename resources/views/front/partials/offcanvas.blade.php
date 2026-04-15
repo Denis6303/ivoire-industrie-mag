@@ -60,12 +60,12 @@
         <ul class="navbar-nav navbar-nav-style-03 ivm-offcanvas-nav">
             @if ($primary->isNotEmpty())
                 @if ($cat = $primary->firstWhere('slug', 'industrie-story'))
-                    <li class="nav-item"><a class="nav-link" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">Industrie Story</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ __('nav.industry_story') }}</a></li>
                 @endif
 
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center justify-content-between" data-bs-toggle="collapse" href="#offcanvasIndustry" role="button" aria-expanded="false" aria-controls="offcanvasIndustry">
-                        <span>Industrie</span>
+                        <span>{{ __('nav.industry') }}</span>
                         <i class="fas fa-chevron-down fa-xs"></i>
                     </a>
                     <div class="collapse" id="offcanvasIndustry">
@@ -78,11 +78,11 @@
                 </li>
 
                 @foreach ([
-                    'zones-industrielles' => 'Zones industrielles',
-                    'investissement' => 'Investissement',
-                    'usines' => 'Usine',
-                    'international' => 'International',
-                    'agenda' => 'Agenda',
+                    'zones-industrielles' => __('nav.industrial_zones'),
+                    'investissement' => __('nav.investment'),
+                    'usines' => __('nav.factory'),
+                    'international' => __('nav.international'),
+                    'agenda' => __('nav.agenda'),
                 ] as $slug => $label)
                     @if ($cat = $primary->firstWhere('slug', $slug))
                         <li class="nav-item"><a class="nav-link" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ $label }}</a></li>
@@ -93,12 +93,12 @@
             @if ($innovation = $hidden->firstWhere('slug', 'innovation'))
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center justify-content-between" data-bs-toggle="collapse" href="#offcanvasInnovation" role="button" aria-expanded="false" aria-controls="offcanvasInnovation">
-                        <span>Innovation</span>
+                        <span>{{ __('nav.innovation') }}</span>
                         <i class="fas fa-chevron-down fa-xs"></i>
                     </a>
                     <div class="collapse" id="offcanvasInnovation">
                         <ul class="list-unstyled ps-3 mb-2">
-                            <li><a class="nav-link py-1" href="{{ route('categories.show', ['slug' => $innovation->slug]) }}">Innovation</a></li>
+                            <li><a class="nav-link py-1" href="{{ route('categories.show', ['slug' => $innovation->slug]) }}">{{ __('nav.innovation') }}</a></li>
                             @foreach ($innovationChildren as $child)
                                 <li><a class="nav-link py-1" href="{{ route('categories.show', ['slug' => $child->slug]) }}">{{ $child->name }}</a></li>
                             @endforeach
@@ -108,18 +108,18 @@
             @endif
 
             @foreach ([
-                'hommes-et-femmes-industriels-ivoiriens' => 'Hommes et femmes industriels',
-                'dossier' => 'Dossier',
-                'districts' => 'Districts',
-                'made-in-ivory-coast' => 'Made in Ivory Coast',
-                '2im-tv' => '2IM TV',
-                'magazine' => 'Magazine',
+                'hommes-et-femmes-industriels-ivoiriens' => __('nav.industrial_leaders'),
+                'dossier' => __('nav.dossier'),
+                'districts' => __('nav.districts'),
+                'made-in-ivory-coast' => __('nav.made_in_ivory_coast'),
+                '2im-tv' => __('nav.tv'),
+                'magazine' => __('nav.magazine'),
             ] as $slug => $label)
                 @if ($cat = $hidden->firstWhere('slug', $slug))
                     <li class="nav-item"><a class="nav-link" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ $label }}</a></li>
                 @endif
             @endforeach
-            <li class="nav-item"><a class="nav-link" href="{{ route('jobs.index') }}">Emploi</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('jobs.index') }}">{{ __('nav.jobs') }}</a></li>
         </ul>
     </div>
 </div>

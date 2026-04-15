@@ -22,7 +22,7 @@ class ArticleController extends Controller
 
     public function show(string $locale, string $slug)
     {
-        $article = Article::with([
+        $articleQuery = Article::with([
             'author',
             'category',
             'tags',
@@ -38,9 +38,20 @@ class ArticleController extends Controller
                     ]);
             },
         ])
-            ->published()
-            ->where('slug', $slug)
-            ->firstOrFail();
+            ->published();
+
+        if ($locale === 'en') {
+            $articleQuery->where(function ($query) use ($slug) {
+                $query->where('slug_en', $slug)
+                    ->orWhere(function ($fallbackQuery) use ($slug) {
+                        $fallbackQuery->whereNull('slug_en')->where('slug', $slug);
+                    });
+            });
+        } else {
+            $articleQuery->where('slug', $slug);
+        }
+
+        $article = $articleQuery->firstOrFail();
 
         $related = Article::published()
             ->where('id', '!=', $article->id)

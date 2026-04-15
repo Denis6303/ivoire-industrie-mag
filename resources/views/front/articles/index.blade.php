@@ -1,9 +1,9 @@
 @extends('layouts.front')
 
-@section('title', 'Articles')
+@section('title', __('front.articles_title'))
 
 @section('content')
-    @include('front.partials.page-header', ['title' => 'Articles'])
+    @include('front.partials.page-header', ['title' => __('front.articles_title')])
 
     <section class="space-ptb">
         <div class="container">
@@ -12,7 +12,7 @@
                     @forelse ($articles as $article)
                         <x-article-card :article="$article" style="11" />
                     @empty
-                        <p class="text-muted">Aucun article publié pour le moment.</p>
+                        <p class="text-muted">{{ __('sidebar.no_recent_posts') }}</p>
                     @endforelse
                     <div class="mt-4">
                         {{ $articles->links() }}

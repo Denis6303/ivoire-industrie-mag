@@ -84,9 +84,12 @@ class ArticleController extends Controller
 
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
+            'title_en' => ['nullable', 'string', 'max:255'],
             'signature' => ['nullable', 'string', 'max:255'],
             'excerpt' => ['required', 'string'],
+            'excerpt_en' => ['nullable', 'string'],
             'content' => ['required', 'string'],
+            'content_en' => ['nullable', 'string'],
             'category_id' => ['required', 'exists:categories,id'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['integer', 'exists:tags,id'],
@@ -100,6 +103,9 @@ class ArticleController extends Controller
 
         $data['author_id'] = auth()->id();
         $data['slug'] = Str::slug($data['title']).'-'.Str::lower(Str::random(6));
+        $data['slug_en'] = !empty($data['title_en'])
+            ? Str::slug($data['title_en']).'-'.Str::lower(Str::random(6))
+            : null;
 
         unset($data['cover_file'], $data['cover_file_secondary'], $data['cover_file_tertiary']);
         if ($supportsExtraImages) {
@@ -252,9 +258,12 @@ class ArticleController extends Controller
 
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
+            'title_en' => ['nullable', 'string', 'max:255'],
             'signature' => ['nullable', 'string', 'max:255'],
             'excerpt' => ['required', 'string'],
+            'excerpt_en' => ['nullable', 'string'],
             'content' => ['required', 'string'],
+            'content_en' => ['nullable', 'string'],
             'category_id' => ['required', 'exists:categories,id'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['integer', 'exists:tags,id'],
@@ -270,6 +279,12 @@ class ArticleController extends Controller
         ]);
 
         unset($data['cover_file'], $data['cover_file_secondary'], $data['cover_file_tertiary']);
+        if (!empty($data['title_en']) && empty($article->slug_en)) {
+            $data['slug_en'] = Str::slug($data['title_en']).'-'.Str::lower(Str::random(6));
+        }
+        if (empty($data['title_en'])) {
+            $data['slug_en'] = null;
+        }
         if ($supportsExtraImages) {
             $data['secondary_alt'] = $data['cover_alt_secondary'] ?? null;
             $data['tertiary_alt'] = $data['cover_alt_tertiary'] ?? null;

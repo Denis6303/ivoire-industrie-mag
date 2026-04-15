@@ -9,17 +9,19 @@
                 $article = $row['article'];
                 $category = $row['category'];
                 $cover = article_cover($article->cover_image);
+                $articleTitle = article_i18n($article, 'title') ?: $article->title;
+                $articleSlug = article_route_slug($article);
             @endphp
             <div class="blog-post post-style-07">
                 <div class="post-image">
                     @if ($cover)
-                        <a href="{{ route('articles.show', ['slug' => $article->slug]) }}">
+                        <a href="{{ route('articles.show', ['slug' => $articleSlug]) }}">
                             <span class="d-block ratio ratio-1x1 overflow-hidden rounded">
-                                <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $article->title }}" loading="lazy" onerror="this.onerror=null;this.src='{{ $fallbackSquare }}';">
+                                <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $articleTitle }}" loading="lazy" onerror="this.onerror=null;this.src='{{ $fallbackSquare }}';">
                             </span>
                         </a>
                     @else
-                        <a href="{{ route('articles.show', ['slug' => $article->slug]) }}" class="d-block bg-light ratio ratio-1x1 rounded"></a>
+                        <a href="{{ route('articles.show', ['slug' => $articleSlug]) }}" class="d-block bg-light ratio ratio-1x1 rounded"></a>
                     @endif
                 </div>
                 <div class="blog-post-details">
@@ -29,12 +31,12 @@
                         style="background: {{ $category->color ?: '#0d6efd' }}; color: #fff; padding: 2px 10px; border-radius: 999px;"
                     >{{ $category->name }}</a>
                     <h6 class="blog-title">
-                        <a href="{{ route('articles.show', ['slug' => $article->slug]) }}">{{ $article->title }}</a>
+                        <a href="{{ route('articles.show', ['slug' => $articleSlug]) }}">{{ $articleTitle }}</a>
                     </h6>
                     @if ($article->published_at)
                         <div class="blog-post-meta">
                             <div class="blog-post-time">
-                                <a href="{{ route('articles.show', ['slug' => $article->slug]) }}"><i class="fa-solid fa-calendar-days"></i>{{ $article->published_at->translatedFormat('j M Y') }}</a>
+                                <a href="{{ route('articles.show', ['slug' => $articleSlug]) }}"><i class="fa-solid fa-calendar-days"></i>{{ $article->published_at->translatedFormat('j M Y') }}</a>
                             </div>
                         </div>
                     @endif

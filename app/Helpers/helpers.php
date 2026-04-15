@@ -31,12 +31,59 @@ if (! function_exists('switch_locale_url')) {
         $segments = $path === '' ? [] : explode('/', $path);
 
         if (count($segments) > 0 && in_array($segments[0], $supported, true)) {
+            // Article detail: remap slug to locale-specific slug when available.
+            if (($segments[1] ?? null) === 'articles' && ! empty($segments[2])) {
+                $currentSlug = $segments[2];
+                $article = \App\Models\Article::query()
+                    ->where('slug', $currentSlug)
+                    ->orWhere('slug_en', $currentSlug)
+                    ->first();
+
+                if ($article) {
+                    $segments[2] = $locale === 'en'
+                        ? ($article->slug_en ?: $article->slug)
+                        : $article->slug;
+                }
+            }
+
             $segments[0] = $locale;
 
             return url(implode('/', $segments));
         }
 
         return url($locale);
+    }
+}
+
+if (! function_exists('article_i18n')) {
+    function article_i18n(\App\Models\Article $article, string $field): ?string
+    {
+        $locale = app()->getLocale();
+        $englishField = $field.'_en';
+
+        if (
+            $locale === 'en'
+            && isset($article->{$englishField})
+            && is_string($article->{$englishField})
+            && trim($article->{$englishField}) !== ''
+        ) {
+            return $article->{$englishField};
+        }
+
+        $value = $article->{$field} ?? null;
+
+        return is_string($value) ? $value : null;
+    }
+}
+
+if (! function_exists('article_route_slug')) {
+    function article_route_slug(\App\Models\Article $article): string
+    {
+        if (app()->getLocale() === 'en' && ! empty($article->slug_en)) {
+            return $article->slug_en;
+        }
+
+        return $article->slug;
     }
 }
 

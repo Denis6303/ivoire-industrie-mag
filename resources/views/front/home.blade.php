@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('title', 'Accueil')
+@section('title', __('front.home_title'))
 
 @section('content')
     <section class="space-ptb">
@@ -12,12 +12,15 @@
                             $f = $featured;
                             $cover = article_cover($f->cover_image);
                             $fallback16x9 = asset('images/ivm-placeholder-16x9.svg');
+                            $featuredTitle = article_i18n($f, 'title') ?: $f->title;
+                            $featuredExcerpt = article_i18n($f, 'excerpt') ?: $f->excerpt;
+                            $featuredSlug = article_route_slug($f);
                         @endphp
                         <div class="blog-post post-style-11 home-featured-la-une mb-5">
                             <div class="blog-image">
                                 @if ($cover)
-                                    <a href="{{ route('articles.show', ['slug' => $f->slug]) }}" class="d-block overflow-hidden rounded position-relative" style="height: 420px;">
-                                        <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $f->cover_alt ?? $f->title }}" loading="eager" onerror="this.onerror=null;this.src='{{ $fallback16x9 }}';">
+                                    <a href="{{ route('articles.show', ['slug' => $featuredSlug]) }}" class="d-block overflow-hidden rounded position-relative" style="height: 420px;">
+                                        <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $f->cover_alt ?? $featuredTitle }}" loading="eager" onerror="this.onerror=null;this.src='{{ $fallback16x9 }}';">
                                     </a>
                                 @else
                                     <div class="ratio ratio-21x9 bg-light d-flex align-items-center justify-content-center text-muted">{{ config('app.name') }}</div>
@@ -28,7 +31,7 @@
                                     <span class="badge badge-medium home-featured-la-une-badge" style="background: {{ $f->category->color ?: '#0d6efd' }}; color:#fff;">{{ $f->category->name }}</span>
                                 @endif
                                 <h2 class="blog-title mt-2">
-                                    <a href="{{ route('articles.show', ['slug' => $f->slug]) }}">{{ $f->title }}</a>
+                                    <a href="{{ route('articles.show', ['slug' => $featuredSlug]) }}">{{ $featuredTitle }}</a>
                                 </h2>
                                 <div class="blog-post-meta">
                                     @if ($f->published_at)
@@ -37,19 +40,19 @@
                                         </div>
                                     @endif
                                 </div>
-                                @if ($f->excerpt)
-                                    <p class="mt-3 home-featured-la-une-excerpt">{{ \Illuminate\Support\Str::limit(strip_tags($f->excerpt), (int) config('ivoireindustriemag.featured_excerpt_max_chars', 191), '…') }}</p>
+                                @if ($featuredExcerpt)
+                                    <p class="mt-3 home-featured-la-une-excerpt">{{ \Illuminate\Support\Str::limit(strip_tags($featuredExcerpt), (int) config('ivoireindustriemag.featured_excerpt_max_chars', 191), '…') }}</p>
                                 @endif
                                 @if ($f->author)
                                     <div class="blog-post-user mt-2"><span>par <span style="color:#243e5d;">{{ $f->signature ?: $f->author->name }}</span></span></div>
                                 @endif
-                                <a class="btn btn-primary btn-sm home-featured-la-une-btn mt-3" href="{{ route('articles.show', ['slug' => $f->slug]) }}">Lire l’article</a>
+                                <a class="btn btn-primary btn-sm home-featured-la-une-btn mt-3" href="{{ route('articles.show', ['slug' => $featuredSlug]) }}">{{ __('app.read_more') }}</a>
                             </div>
                         </div>
                     @endif
 
                     <div class="section-title mb-4">
-                        <h2 class="mb-0"><i class="fa-solid fa-newspaper me-2"></i>Derniers articles</h2>
+                        <h2 class="mb-0"><i class="fa-solid fa-newspaper me-2"></i>{{ __('front.latest_articles') }}</h2>
                     </div>
                     <div class="row">
                         @foreach ($latest as $article)
@@ -59,7 +62,7 @@
                         @endforeach
                     </div>
                     <div class="text-center mt-3">
-                        <a href="{{ route('articles.index') }}" class="btn btn-primary">Tous les articles</a>
+                        <a href="{{ route('articles.index') }}" class="btn btn-primary">{{ __('front.all_articles') }}</a>
                     </div>
 
                     @if (isset($breves) && $breves->isNotEmpty())
@@ -67,7 +70,7 @@
                         <div class="section-title mb-4">
                             <h2 class="mb-0 d-flex align-items-center ivm-section-title">
                                 <span class="ivm-section-dot me-2" style="background:#ff7800;"></span>
-                                <span>Brèves</span>
+                                <span>{{ __('front.briefs') }}</span>
                             </h2>
                         </div>
                         <div class="row">
@@ -79,7 +82,7 @@
                         </div>
                         @if (($brevesTotal ?? 0) > $breves->count())
                             <div class="text-center mb-2">
-                                <a href="{{ route('categories.show', ['slug' => 'breve']) }}" class="btn btn-primary btn-sm">Voir plus</a>
+                                <a href="{{ route('categories.show', ['slug' => 'breve']) }}" class="btn btn-primary btn-sm">{{ __('front.see_more') }}</a>
                             </div>
                         @endif
                     @endif
@@ -108,7 +111,7 @@
                             </div>
                             @if ($totalPosts >= 3)
                                 <div class="text-center mb-2">
-                                    <a href="{{ route('categories.show', ['slug' => $cat->slug]) }}" class="btn btn-primary btn-sm">Voir plus</a>
+                                    <a href="{{ route('categories.show', ['slug' => $cat->slug]) }}" class="btn btn-primary btn-sm">{{ __('front.see_more') }}</a>
                                 </div>
                             @endif
 
@@ -130,7 +133,7 @@
                             </div>
                         @endif
                         <div class="widget mt-4">
-                            <h6 class="widget-title">Entreprises qui bougent</h6>
+                            <h6 class="widget-title">{{ __('front.moving_companies') }}</h6>
                             @forelse ($companies as $company)
                                 <div class="d-flex mb-3 align-items-center border-bottom pb-3">
                                     @if ($company->logo)
@@ -144,13 +147,13 @@
                                     </div>
                                 </div>
                             @empty
-                                <p class="text-muted small">Aucune entreprise pour le moment.</p>
+                                <p class="text-muted small">{{ __('front.no_companies') }}</p>
                             @endforelse
-                            <a href="{{ route('companies.index') }}" class="btn btn-sm btn-primary w-100">Annuaire</a>
+                            <a href="{{ route('companies.index') }}" class="btn btn-sm btn-primary w-100">{{ __('front.directory') }}</a>
                         </div>
                         @if (isset($featuredCompanies) && $featuredCompanies->isNotEmpty())
                             <div class="widget mt-4">
-                                <h6 class="widget-title">Entreprises mises en avant</h6>
+                                <h6 class="widget-title">{{ __('front.featured_companies') }}</h6>
                                 @foreach ($featuredCompanies->take(5) as $company)
                                     <div class="d-flex mb-3 align-items-center border-bottom pb-3">
                                         @if ($company->logo)

@@ -1,36 +1,35 @@
 @extends('layouts.front')
 
-@section('title', 'À propos')
+@section('title', __('about.title'))
 
 @section('content')
-    @include('front.partials.page-header', ['title' => 'À propos'])
+    @include('front.partials.page-header', ['title' => __('about.title')])
 
     <section class="space-ptb">
         <div class="container">
             <div class="row align-items-stretch g-4">
                 <div class="col-lg-7">
                     <div class="border rounded p-4 p-md-5 h-100 bg-white shadow-sm">
-                        <span class="badge rounded-pill mb-3" style="background:#243e5d;">Notre mission</span>
-                        <h2 class="mb-3">La référence éditoriale de l’industrie ivoirienne</h2>
+                        <span class="badge rounded-pill mb-3" style="background:#243e5d;">{{ __('about.mission_badge') }}</span>
+                        <h2 class="mb-3">{{ __('about.headline') }}</h2>
                         <p class="text-muted mb-3">
-                            Ivoire Industrie Magazine informe, décrypte et valorise les acteurs qui transforment le tissu industriel en Côte d’Ivoire.
-                            Nous publions des analyses, des interviews, des dossiers et des formats pratiques pour aider à comprendre les dynamiques du secteur.
+                            {{ __('about.paragraph_1') }}
                         </p>
                         <p class="text-muted mb-0">
-                            Notre ligne éditoriale relie terrain, investissement, innovation et impact social pour donner une vision complète, utile et fiable.
+                            {{ __('about.paragraph_2') }}
                         </p>
                     </div>
                 </div>
                 <div class="col-lg-5">
                     <div class="border rounded p-4 h-100 bg-light">
-                        <h3 class="h5 mb-3">Nos engagements</h3>
+                        <h3 class="h5 mb-3">{{ __('about.commitments') }}</h3>
                         <ul class="list-unstyled mb-4">
-                            <li class="mb-3 d-flex"><i class="fa-solid fa-circle-check text-primary me-2 mt-1"></i><span>Indépendance éditoriale et rigueur des sources.</span></li>
-                            <li class="mb-3 d-flex"><i class="fa-solid fa-circle-check text-primary me-2 mt-1"></i><span>Clarté de l’information pour professionnels et grand public.</span></li>
-                            <li class="mb-0 d-flex"><i class="fa-solid fa-circle-check text-primary me-2 mt-1"></i><span>Mise en valeur des talents, entreprises et territoires.</span></li>
+                            <li class="mb-3 d-flex"><i class="fa-solid fa-circle-check text-primary me-2 mt-1"></i><span>{{ __('about.commitment_1') }}</span></li>
+                            <li class="mb-3 d-flex"><i class="fa-solid fa-circle-check text-primary me-2 mt-1"></i><span>{{ __('about.commitment_2') }}</span></li>
+                            <li class="mb-0 d-flex"><i class="fa-solid fa-circle-check text-primary me-2 mt-1"></i><span>{{ __('about.commitment_3') }}</span></li>
                         </ul>
-                        <div class="small text-muted">Vous avez un sujet ou une entreprise à proposer ?</div>
-                        <a href="{{ route('contact') }}" class="btn btn-primary btn-sm mt-2">Contacter la rédaction</a>
+                        <div class="small text-muted">{{ __('about.cta_hint') }}</div>
+                        <a href="{{ route('contact') }}" class="btn btn-primary btn-sm mt-2">{{ __('about.cta') }}</a>
                     </div>
                 </div>
             </div>
@@ -39,19 +38,19 @@
                 <div class="col-md-4">
                     <div class="border rounded p-4 text-center bg-white h-100">
                         <div class="h3 mb-1 text-primary fw-bold">100%</div>
-                        <p class="mb-0 text-muted">Industrie et économie réelle</p>
+                        <p class="mb-0 text-muted">{{ __('about.stat_1') }}</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="border rounded p-4 text-center bg-white h-100">
                         <div class="h3 mb-1 text-primary fw-bold">Focus</div>
-                        <p class="mb-0 text-muted">Entreprises, investissements, innovation</p>
+                        <p class="mb-0 text-muted">{{ __('about.stat_2') }}</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="border rounded p-4 text-center bg-white h-100">
                         <div class="h3 mb-1 text-primary fw-bold">Impact</div>
-                        <p class="mb-0 text-muted">Information utile pour agir et décider</p>
+                        <p class="mb-0 text-muted">{{ __('about.stat_3') }}</p>
                     </div>
                 </div>
             </div>
