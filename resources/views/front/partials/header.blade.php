@@ -108,7 +108,7 @@
                 </div>
             </div>
         </div>
-        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Menu">
+        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMain" aria-controls="offcanvasMain" aria-expanded="false" aria-label="Menu">
             <i class="fa-solid fa-align-right"></i>
         </button>
     </nav>
