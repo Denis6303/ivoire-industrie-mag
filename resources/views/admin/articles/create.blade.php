@@ -29,19 +29,9 @@
                     </select>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-12">
                     <label class="form-label">Châpeau</label>
                     <textarea name="excerpt" class="form-control" rows="3" placeholder="Résumé...">{{ old('excerpt') }}</textarea>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label">Tags</label>
-                    <select id="article-tags" name="tags[]" class="form-select" multiple>
-                        @foreach(($tags ?? []) as $tag)
-                            <option value="{{ $tag->id }}" @selected(in_array((string) $tag->id, (array) old('tags', []), true))>{{ $tag->name }}</option>
-                        @endforeach
-                    </select>
-                    <div class="form-text">Recherche rapide et sélection multiple.</div>
                 </div>
 
                 <div class="col-md-6">
@@ -100,8 +90,18 @@
                 </div>
 
                 <div class="col-md-6">
+                    <label class="form-label">Tags</label>
+                    <select id="article-tags" name="tags[]" class="form-select" multiple>
+                        @foreach(($tags ?? []) as $tag)
+                            <option value="{{ $tag->id }}" @selected(in_array((string) $tag->id, (array) old('tags', []), true))>{{ $tag->name }}</option>
+                        @endforeach
+                    </select>
+                    <div class="form-text">Recherche rapide et sélection multiple.</div>
+                </div>
+
+                <div class="col-md-6">
                     <label class="form-label">Signature auteur</label>
-                    <input name="signature" class="form-control" placeholder="Ex: Jean Dupont" value="{{ old('signature') }}">
+                    <input name="signature" class="form-control" placeholder="Ex : Jean Dupont" value="{{ old('signature') }}">
                 </div>
 
                 <div class="col-12">

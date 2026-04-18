@@ -1,0 +1,18 @@
+/**
+ * Le thème public (style.css) applique text-transform: capitalize à tous les h1–h6.
+ * On rétablit une casse normale pour les titres de l’admin (évite « Commentaires En Attente », etc.).
+ */
+.admin-shell h1,
+.admin-shell h2,
+.admin-shell h3,
+.admin-shell h4,
+.admin-shell h5,
+.admin-shell h6,
+.admin-shell .h1,
+.admin-shell .h2,
+.admin-shell .h3,
+.admin-shell .h4,
+.admin-shell .h5,
+.admin-shell .h6 {
+    text-transform: none !important;
+}

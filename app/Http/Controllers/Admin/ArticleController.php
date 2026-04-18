@@ -73,7 +73,9 @@ class ArticleController extends Controller
 
     public function createBreve()
     {
-        return view('admin.articles.create-breve');
+        $tags = Tag::orderBy('name')->get(['id', 'name']);
+
+        return view('admin.articles.create-breve', compact('tags'));
     }
 
     /**
@@ -191,9 +193,14 @@ class ArticleController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'signature' => ['nullable', 'string', 'max:255'],
             'content' => ['required', 'string'],
+            'tags' => ['nullable', 'array'],
+            'tags.*' => ['integer', 'exists:tags,id'],
             'cover_file' => ['nullable', 'image', 'max:10240'],
             'cover_alt' => ['nullable', 'string', 'max:255'],
         ]);
+
+        $tagIds = $data['tags'] ?? [];
+        unset($data['tags']);
 
         $breveCategory = $this->resolveBreveCategory();
 
@@ -229,7 +236,8 @@ class ArticleController extends Controller
             $payload['cover_image'] = '/storage/'.ltrim($uploaded['path'], '/');
         }
 
-        Article::create($payload);
+        $article = Article::create($payload);
+        $article->tags()->sync($tagIds);
 
         return redirect()->route('admin.articles.index')->with('success', 'Brève enregistrée en brouillon.');
     }

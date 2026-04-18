@@ -30,23 +30,14 @@
                     </select>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-12">
                     <label class="form-label">Châpeau</label>
                     <textarea name="excerpt" class="form-control" rows="3">{{ old('excerpt', $article->excerpt) }}</textarea>
                 </div>
 
-                <div class="col-md-6">
-                    <label class="form-label">Tags</label>
-                    @php
-                        $selectedTags = old('tags', $article->tags->pluck('id')->map(fn ($id) => (string) $id)->all());
-                    @endphp
-                    <select id="article-tags" name="tags[]" class="form-select" multiple>
-                        @foreach(($tags ?? []) as $tag)
-                            <option value="{{ $tag->id }}" @selected(in_array((string) $tag->id, (array) $selectedTags, true))>{{ $tag->name }}</option>
-                        @endforeach
-                    </select>
-                    <div class="form-text">Recherche rapide et sélection multiple.</div>
-                </div>
+                @php
+                    $selectedTags = old('tags', $article->tags->pluck('id')->map(fn ($id) => (string) $id)->all());
+                @endphp
 
                 <div class="col-md-6">
                     <label class="form-label">Image de couverture (optionnel)</label>
@@ -77,61 +68,63 @@
                     @endif
                 </div>
 
-                <div class="col-md-6">
-                    <label class="form-label">Image 2 (après 2 paragraphes)</label>
-                    <div class="admin-upload-zone">
-                        <input type="file" name="cover_file_secondary" id="cover_file_secondary" class="form-control" accept="image/*">
-                        <div class="small text-muted mt-2">Insertion automatique après 2 paragraphes.</div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label">Texte alternatif image 2 (optionnel)</label>
-                    <input type="text" name="cover_alt_secondary" class="form-control" value="{{ old('cover_alt_secondary', $article->secondary_alt) }}">
-                    <div class="mt-2">
-                        <img
-                            id="cover-preview-secondary"
-                            alt="{{ $article->secondary_alt ?? '' }}"
-                            src="{{ article_cover($article->secondary_image) }}"
-                            style="{{ $article->secondary_image ? 'display:block; max-height:160px;' : 'display:none; max-height:160px;' }}"
-                            class="img-thumbnail"
-                        >
-                    </div>
-                    @if(!empty($article->secondary_image))
-                        <div class="form-check mt-2">
-                            <input class="form-check-input" type="checkbox" value="1" id="remove_secondary_image" name="remove_secondary_image">
-                            <label class="form-check-label" for="remove_secondary_image">Supprimer l'image 2</label>
+                @if($article->type !== 'breve')
+                    <div class="col-md-6">
+                        <label class="form-label">Image 2 (après 2 paragraphes)</label>
+                        <div class="admin-upload-zone">
+                            <input type="file" name="cover_file_secondary" id="cover_file_secondary" class="form-control" accept="image/*">
+                            <div class="small text-muted mt-2">Insertion automatique après 2 paragraphes.</div>
                         </div>
-                    @endif
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label">Image 3 (après 4 paragraphes)</label>
-                    <div class="admin-upload-zone">
-                        <input type="file" name="cover_file_tertiary" id="cover_file_tertiary" class="form-control" accept="image/*">
-                        <div class="small text-muted mt-2">Insertion automatique après 4 paragraphes.</div>
                     </div>
-                </div>
 
-                <div class="col-md-6">
-                    <label class="form-label">Texte alternatif image 3 (optionnel)</label>
-                    <input type="text" name="cover_alt_tertiary" class="form-control" value="{{ old('cover_alt_tertiary', $article->tertiary_alt) }}">
-                    <div class="mt-2">
-                        <img
-                            id="cover-preview-tertiary"
-                            alt="{{ $article->tertiary_alt ?? '' }}"
-                            src="{{ article_cover($article->tertiary_image) }}"
-                            style="{{ $article->tertiary_image ? 'display:block; max-height:160px;' : 'display:none; max-height:160px;' }}"
-                            class="img-thumbnail"
-                        >
-                    </div>
-                    @if(!empty($article->tertiary_image))
-                        <div class="form-check mt-2">
-                            <input class="form-check-input" type="checkbox" value="1" id="remove_tertiary_image" name="remove_tertiary_image">
-                            <label class="form-check-label" for="remove_tertiary_image">Supprimer l'image 3</label>
+                    <div class="col-md-6">
+                        <label class="form-label">Texte alternatif image 2 (optionnel)</label>
+                        <input type="text" name="cover_alt_secondary" class="form-control" value="{{ old('cover_alt_secondary', $article->secondary_alt) }}">
+                        <div class="mt-2">
+                            <img
+                                id="cover-preview-secondary"
+                                alt="{{ $article->secondary_alt ?? '' }}"
+                                src="{{ article_cover($article->secondary_image) }}"
+                                style="{{ $article->secondary_image ? 'display:block; max-height:160px;' : 'display:none; max-height:160px;' }}"
+                                class="img-thumbnail"
+                            >
                         </div>
-                    @endif
-                </div>
+                        @if(!empty($article->secondary_image))
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" value="1" id="remove_secondary_image" name="remove_secondary_image">
+                                <label class="form-check-label" for="remove_secondary_image">Supprimer l'image 2</label>
+                            </div>
+                        @endif
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Image 3 (après 4 paragraphes)</label>
+                        <div class="admin-upload-zone">
+                            <input type="file" name="cover_file_tertiary" id="cover_file_tertiary" class="form-control" accept="image/*">
+                            <div class="small text-muted mt-2">Insertion automatique après 4 paragraphes.</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Texte alternatif image 3 (optionnel)</label>
+                        <input type="text" name="cover_alt_tertiary" class="form-control" value="{{ old('cover_alt_tertiary', $article->tertiary_alt) }}">
+                        <div class="mt-2">
+                            <img
+                                id="cover-preview-tertiary"
+                                alt="{{ $article->tertiary_alt ?? '' }}"
+                                src="{{ article_cover($article->tertiary_image) }}"
+                                style="{{ $article->tertiary_image ? 'display:block; max-height:160px;' : 'display:none; max-height:160px;' }}"
+                                class="img-thumbnail"
+                            >
+                        </div>
+                        @if(!empty($article->tertiary_image))
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" value="1" id="remove_tertiary_image" name="remove_tertiary_image">
+                                <label class="form-check-label" for="remove_tertiary_image">Supprimer l'image 3</label>
+                            </div>
+                        @endif
+                    </div>
+                @endif
 
                 <div class="col-12">
                     <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
@@ -141,8 +134,18 @@
                 </div>
 
                 <div class="col-md-6">
+                    <label class="form-label">Tags</label>
+                    <select id="article-tags" name="tags[]" class="form-select" multiple>
+                        @foreach(($tags ?? []) as $tag)
+                            <option value="{{ $tag->id }}" @selected(in_array((string) $tag->id, (array) $selectedTags, true))>{{ $tag->name }}</option>
+                        @endforeach
+                    </select>
+                    <div class="form-text">Recherche rapide et sélection multiple.</div>
+                </div>
+
+                <div class="col-md-6">
                     <label class="form-label">Signature auteur</label>
-                    <input name="signature" class="form-control" value="{{ old('signature', $article->signature) }}">
+                    <input name="signature" class="form-control" placeholder="Ex : Jean Dupont" value="{{ old('signature', $article->signature) }}">
                 </div>
 
                 <div class="col-12">

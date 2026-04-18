@@ -11,26 +11,34 @@
             <form id="job-form" method="POST" action="{{ route('admin.emplois.update', $job) }}" enctype="multipart/form-data" class="row g-3">
                 @csrf
                 @method('PUT')
+
                 <div class="col-12">
                     <label class="form-label">Titre</label>
                     <input name="title" class="form-control" value="{{ old('title', $job->title) }}" required>
                 </div>
-                <div class="col-12">
-                    <label class="form-label">Signature</label>
-                    <input name="signature" class="form-control" value="{{ old('signature', $job->signature) }}">
-                </div>
-                <div class="col-12">
+
+                <div class="col-md-6">
                     <label class="form-label">Image (optionnel)</label>
                     <input type="file" name="cover_file" id="cover_file" class="form-control" accept="image/*">
-                    <label class="form-label mt-2">Texte alternatif (optionnel)</label>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Texte alternatif (optionnel)</label>
                     <input type="text" name="cover_alt" class="form-control" value="{{ old('cover_alt', $job->cover_alt) }}">
                 </div>
+
                 <div class="col-12">
                     <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
                     <div class="mb-2">Corps de l'offre</div>
                     <div id="quill-editor" style="height: 320px;" class="bg-white"></div>
                     <input type="hidden" name="content" id="content" value="{{ old('content', $job->content) }}">
                 </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Signature</label>
+                    <input name="signature" class="form-control" placeholder="Ex : Rédaction" value="{{ old('signature', $job->signature) }}">
+                </div>
+
                 <div class="col-12">
                     <button class="btn btn-ivm" type="submit">Mettre à jour</button>
                 </div>

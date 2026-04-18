@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('css/fontawesome/all.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/admin-overrides.css') }}" />
 </head>
 <body class="bg-light-subtle admin-shell">
 <div class="container-fluid px-0">

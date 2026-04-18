@@ -71,23 +71,7 @@ textarea {
     letter-spacing: 0.2px;
 }
 
-/* Admin: conserver exactement la casse saisie (pas de capitalize/uppercase force) */
-.admin-shell h1,
-.admin-shell h2,
-.admin-shell h3,
-.admin-shell h4,
-.admin-shell h5,
-.admin-shell h6,
-.admin-shell a,
-.admin-shell button,
-.admin-shell .btn,
-.admin-shell .nav-link,
-.admin-shell .form-label,
-.admin-shell label,
-.admin-shell th,
-.admin-shell td {
-    text-transform: none !important;
-}
+/* Casse admin : voir public/css/admin-overrides.css (chargé dans layouts/admin après le thème). */
 
 .admin-mobile-header {
     background: linear-gradient(165deg, #1d344d 0%, #142536 100%);
