@@ -25,11 +25,12 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="sidebar">
-                        @include('front.partials.sidebar-category-list', [
-                            'categories' => $sidebarCategories,
-                            'excludeCategoryId' => $category->id,
-                            'title' => __('sidebar.categories_other_title'),
-                        ])
+                        @include('front.partials.sidebar-recent-posts', ['recentArticles' => $recentArticles])
+                        @if (!empty($adSidebar))
+                            <div class="widget mb-4">
+                                @include('front.partials.ad-banner', ['ad' => $adSidebar, 'variant' => 'vertical'])
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

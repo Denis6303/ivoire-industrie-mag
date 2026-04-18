@@ -3,42 +3,63 @@
 @endphp
 
 <div class="widget mt-4">
-    <h6 class="widget-title">{{ __('sidebar.follow_social') }}</h6>
-    <div class="follow-style-01">
-        <div class="row g-2">
-            <div class="col-6 facebook-fans">
-                <div class="social-box">
-                    <div class="social">
-                        <a href="{{ $social['facebook']['url'] ?? '#' }}" class="fans-icon" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                            <i class="fa-brands fa-facebook-f"></i>
-                        </a>
-                        <span>{{ $social['facebook']['count'] ?? '—' }}</span>
-                    </div>
-                    <div class="follower-btn fans"><a href="{{ $social['facebook']['url'] ?? '#' }}" target="_blank" rel="noopener noreferrer">{{ __('sidebar.social_fans') }}</a></div>
-                </div>
-            </div>
-            <div class="col-6 twitter-follower">
-                <div class="social-box">
-                    <div class="social">
-                        <a href="{{ $social['twitter']['url'] ?? '#' }}" class="twitter-icon" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-                            <i class="fa-brands fa-twitter"></i>
-                        </a>
-                        <span>{{ $social['twitter']['count'] ?? '—' }}</span>
-                    </div>
-                    <div class="follower-btn follower"><a href="{{ $social['twitter']['url'] ?? '#' }}" target="_blank" rel="noopener noreferrer">{{ __('sidebar.social_followers') }}</a></div>
-                </div>
-            </div>
-            <div class="col-6 you-tube">
-                <div class="social-box">
-                    <div class="social">
-                        <a href="{{ $social['youtube']['url'] ?? '#' }}" class="tube-icon" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-                            <i class="fa-brands fa-youtube"></i>
-                        </a>
-                        <span>{{ $social['youtube']['count'] ?? '—' }}</span>
-                    </div>
-                    <div class="follower-btn subscriber"><a href="{{ $social['youtube']['url'] ?? '#' }}" target="_blank" rel="noopener noreferrer">{{ __('sidebar.social_subscribers') }}</a></div>
-                </div>
-            </div>
-        </div>
+    <h6 class="widget-title">Suivez nous sur</h6>
+    @push('styles')
+        <style>
+            .ivm-social-row {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                margin-bottom: 12px;
+            }
+            .ivm-social-btn {
+                width: 44px;
+                height: 44px;
+                border-radius: 12px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgba(36, 62, 93, 0.18);
+                background: #ffffff;
+                color: #243e5d;
+                box-shadow: 0 8px 18px rgba(16, 24, 40, 0.08);
+                transition: transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
+            }
+            .ivm-social-btn:hover,
+            .ivm-social-btn:focus {
+                transform: translateY(-1px);
+                background: #243e5d;
+                color: #fff;
+                border-color: #243e5d;
+                box-shadow: 0 12px 24px rgba(36, 62, 93, 0.22);
+            }
+            .ivm-social-btn i {
+                font-size: 18px;
+                line-height: 1;
+            }
+            .ivm-x-svg {
+                width: 18px;
+                height: 18px;
+                display: block;
+                fill: currentColor;
+            }
+        </style>
+    @endpush
+
+    <div class="ivm-social-row" aria-label="{{ __('sidebar.follow_social') }}">
+        <a href="{{ $social['facebook']['url'] ?? '#' }}" class="ivm-social-btn" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+        </a>
+        <a href="{{ $social['linkedin']['url'] ?? '#' }}" class="ivm-social-btn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+        </a>
+        <a href="{{ $social['twitter']['url'] ?? '#' }}" class="ivm-social-btn" target="_blank" rel="noopener noreferrer" aria-label="X">
+            <svg class="ivm-x-svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.5l-5.1-6.6L5.8 22H2.7l7.3-8.4L1.2 2h6.6l4.6 6L18.9 2Zm-1.1 18h1.7L6.9 3.9H5.1L17.8 20Z"/>
+            </svg>
+        </a>
+        <a href="{{ $social['youtube']['url'] ?? '#' }}" class="ivm-social-btn" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+        </a>
     </div>
 </div>

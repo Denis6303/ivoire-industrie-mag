@@ -44,7 +44,7 @@
                                     <p class="mt-3 home-featured-la-une-excerpt">{{ \Illuminate\Support\Str::limit(strip_tags($featuredExcerpt), (int) config('ivoireindustriemag.featured_excerpt_max_chars', 191), '…') }}</p>
                                 @endif
                                 @if ($f->author)
-                                    <div class="blog-post-user mt-2"><span>par <span style="color:#243e5d;">{{ $f->signature ?: $f->author->name }}</span></span></div>
+                                    <div class="blog-post-user mt-2"><span style="color:#243e5d;">{{ $f->signature ?: $f->author->name }}</span></div>
                                 @endif
                                 <a class="btn btn-primary btn-sm home-featured-la-une-btn mt-3" href="{{ route('articles.show', ['slug' => $featuredSlug]) }}">{{ __('app.read_more') }}</a>
                             </div>
@@ -64,28 +64,6 @@
                     <div class="text-center mt-3">
                         <a href="{{ route('articles.index') }}" class="btn btn-primary">{{ __('front.all_articles') }}</a>
                     </div>
-
-                    @if (isset($breves) && $breves->isNotEmpty())
-                        <div class="ivm-section-sep"></div>
-                        <div class="section-title mb-4">
-                            <h2 class="mb-0 d-flex align-items-center ivm-section-title">
-                                <span class="ivm-section-dot me-2" style="background:#ff7800;"></span>
-                                <span>{{ __('front.briefs') }}</span>
-                            </h2>
-                        </div>
-                        <div class="row">
-                            @foreach ($breves as $article)
-                                <div class="col-md-6 mb-4">
-                                    <x-article-card :article="$article" style="02" />
-                                </div>
-                            @endforeach
-                        </div>
-                        @if (($brevesTotal ?? 0) > $breves->count())
-                            <div class="text-center mb-2">
-                                <a href="{{ route('categories.show', ['slug' => 'breve']) }}" class="btn btn-primary btn-sm">{{ __('front.see_more') }}</a>
-                            </div>
-                        @endif
-                    @endif
 
                     @if (isset($homeSections) && $homeSections->isNotEmpty())
                         @foreach ($homeSections as $section)
@@ -126,6 +104,58 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="sidebar">
+                        @if (isset($breves) && $breves->isNotEmpty())
+                            <div class="widget post-widget">
+                                <h6 class="widget-title">{{ __('front.briefs') }}</h6>
+                                <div class="pt-2 sidebar-home-posts">
+                                    @foreach ($breves->take(4) as $breve)
+                                        @php
+                                            $breveCover = article_cover($breve->cover_image);
+                                            $breveTitle = article_i18n($breve, 'title') ?: $breve->title;
+                                            $breveSlug = article_route_slug($breve);
+                                        @endphp
+                                        <div class="blog-post post-style-07">
+                                            <div class="post-image">
+                                                @if ($breveCover)
+                                                    <a href="{{ route('articles.show', ['slug' => $breveSlug]) }}">
+                                                        <span class="d-block ratio ratio-1x1 overflow-hidden rounded">
+                                                            <img class="w-100 h-100" style="object-fit: cover;" src="{{ $breveCover }}" alt="{{ $breve->cover_alt ?? $breveTitle }}" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
+                                                        </span>
+                                                    </a>
+                                                @else
+                                                    <a href="{{ route('articles.show', ['slug' => $breveSlug]) }}" class="d-block bg-light ratio ratio-1x1 rounded"></a>
+                                                @endif
+                                            </div>
+                                            <div class="blog-post-details">
+                                                <span class="badge badge-medium mb-1" style="background:#dc3545;color:#fff;">Brève</span>
+                                                <h6 class="blog-title">
+                                                    <a href="{{ route('articles.show', ['slug' => $breveSlug]) }}">{{ $breveTitle }}</a>
+                                                </h6>
+                                                @if ($breve->published_at)
+                                                    <div class="blog-post-meta">
+                                                        <div class="blog-post-time">
+                                                            <a href="{{ route('articles.show', ['slug' => $breveSlug]) }}"><i class="fa-solid fa-calendar-days"></i>{{ $breve->published_at->translatedFormat('j M Y') }}</a>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                @if ($breve->tags->isNotEmpty())
+                                                    <div class="d-flex flex-wrap gap-1 mt-2">
+                                                        @foreach ($breve->tags->take(3) as $tag)
+                                                            <a href="{{ route('search', ['q' => $tag->name]) }}" class="badge text-bg-light text-decoration-none">#{{ $tag->name }}</a>
+                                                        @endforeach
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                @if (($brevesTotal ?? 0) > ($breves->count() ?? 0))
+                                    <div class="text-center">
+                                        <a href="{{ route('categories.show', ['slug' => 'breve']) }}" class="btn btn-primary btn-sm">{{ __('front.see_more') }}</a>
+                                    </div>
+                                @endif
+                            </div>
+                        @endif
                         @include('front.partials.sidebar-home-related-posts')
                         @if (!empty($adSidebar))
                             <div class="widget mb-4">

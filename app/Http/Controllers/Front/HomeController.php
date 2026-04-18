@@ -13,7 +13,7 @@ class HomeController extends Controller
     {
         $featured = Article::with(['category', 'author'])->published()->featured()->latest('published_at')->first();
         $latest = Article::with(['category', 'author'])->published()->where('type', '!=', 'breve')->latest('published_at')->take(2)->get();
-        $breves = Article::with(['category', 'author'])
+        $breves = Article::with(['category', 'author', 'tags'])
             ->published()
             ->where('type', 'breve')
             ->latest('published_at')

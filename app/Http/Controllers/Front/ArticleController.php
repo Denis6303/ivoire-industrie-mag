@@ -15,9 +15,12 @@ class ArticleController extends Controller
             ->latest('published_at')
             ->paginate(12);
 
-        $sidebarCategories = Category::sidebarListWithPublishedCounts();
+        $recentArticles = Article::published()
+            ->latest('published_at')
+            ->take(6)
+            ->get();
 
-        return view('front.articles.index', compact('articles', 'sidebarCategories'));
+        return view('front.articles.index', compact('articles', 'recentArticles'));
     }
 
     public function show(string $locale, string $slug)

@@ -29,7 +29,13 @@
                                 <div class="social d-inline-flex">
                                     <ul class="list-unstyled">
                                         <li><a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a></li>
-                                        <li><a href="#" aria-label="X"><i class="fab fa-twitter"></i></a></li>
+                                        <li>
+                                            <a href="{{ config('ivoireindustriemag.social.twitter.url') ?? '#' }}" aria-label="X" target="_blank" rel="noopener noreferrer">
+                                                <svg style="width:16px;height:16px;display:inline-block;fill:currentColor;vertical-align:-0.125em;" viewBox="0 0 24 24" aria-hidden="true">
+                                                    <path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.5l-5.1-6.6L5.8 22H2.7l7.3-8.4L1.2 2h6.6l4.6 6L18.9 2Zm-1.1 18h1.7L6.9 3.9H5.1L17.8 20Z"/>
+                                                </svg>
+                                            </a>
+                                        </li>
                                         <li><a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a></li>
                                     </ul>
                                 </div>

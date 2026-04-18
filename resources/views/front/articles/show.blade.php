@@ -117,10 +117,13 @@
 
                             @php $cover = article_cover($article->cover_image); @endphp
                             @if ($cover)
-                                <div class="blog-post-image mb-4">
+                                <div class="blog-post-image mb-3">
                                     <div class="overflow-hidden rounded" style="height: 360px;">
                                         <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $articleTitle }}" loading="eager" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-16x9.svg') }}';">
                                     </div>
+                                    @if (!empty($article->cover_alt))
+                                        <small class="d-block text-muted mt-1 mb-0">{{ $article->cover_alt }}</small>
+                                    @endif
                                 </div>
                             @endif
                             <div class="blog-post post-style-07 border-0 py-4 px-0">
@@ -167,12 +170,14 @@
                                 };
 
                                 if ($secondaryImage) {
-                                    $secondaryBlock = '<figure class="ivm-inline-article-image"><img src="'.$secondaryImage.'" alt="'.e($article->secondary_alt ?: $articleTitle).'" loading="lazy"></figure>';
+                                    $secondaryCaption = $article->secondary_alt ? '<figcaption class="small text-muted mt-1">'.e($article->secondary_alt).'</figcaption>' : '';
+                                    $secondaryBlock = '<figure class="ivm-inline-article-image"><img src="'.$secondaryImage.'" alt="'.e($article->secondary_alt ?: $articleTitle).'" loading="lazy">'.$secondaryCaption.'</figure>';
                                     $articleBodyHtml = $injectAfterParagraph($articleBodyHtml, $secondaryBlock, 2);
                                 }
 
                                 if ($tertiaryImage) {
-                                    $tertiaryBlock = '<figure class="ivm-inline-article-image"><img src="'.$tertiaryImage.'" alt="'.e($article->tertiary_alt ?: $articleTitle).'" loading="lazy"></figure>';
+                                    $tertiaryCaption = $article->tertiary_alt ? '<figcaption class="small text-muted mt-1">'.e($article->tertiary_alt).'</figcaption>' : '';
+                                    $tertiaryBlock = '<figure class="ivm-inline-article-image"><img src="'.$tertiaryImage.'" alt="'.e($article->tertiary_alt ?: $articleTitle).'" loading="lazy">'.$tertiaryCaption.'</figure>';
                                     $articleBodyHtml = $injectAfterParagraph($articleBodyHtml, $tertiaryBlock, 4);
                                 }
                             @endphp
@@ -186,7 +191,7 @@
                             @endif
                             @if ($article->author)
                                 <div class="blog-post-user mt-4 mb-2">
-                                    <span>{{ __('app.by') }} <span style="color:#243e5d;">{{ $article->signature ?: $article->author->name }}</span></span>
+                                    <span style="color:#243e5d;">{{ $article->signature ?: $article->author->name }}</span>
                                 </div>
                             @endif
                             @if ($article->tags->isNotEmpty())
@@ -283,7 +288,7 @@
                                                     class="sidebar-post-category"
                                                     href="{{ route('categories.show', ['slug' => $recent->category->slug]) }}"
                                                     style="background: {{ $recent->category->color ?: '#0d6efd' }}; color: #fff; padding: 2px 10px; border-radius: 999px;"
-                                                >{{ $recent->category->name }}</a>
+                                                >{{ category_i18n($recent->category) }}</a>
                                             @endif
                                             <h6 class="blog-title">
                                                 <a href="{{ route('articles.show', ['slug' => $recentSlug]) }}">{{ $recentTitle }}</a>
