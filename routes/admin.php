@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\SectorController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\VideoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])
@@ -24,6 +25,7 @@ Route::middleware('role:super_admin,admin,editor')->group(function () {
     Route::get('articles/breves/create', [ArticleController::class, 'createBreve'])->name('articles.breves.create');
     Route::post('articles/breves', [ArticleController::class, 'storeBreve'])->name('articles.breves.store');
     Route::resource('articles', ArticleController::class);
+    Route::resource('videos', VideoController::class)->except(['show']);
     Route::patch('articles/{article}/publish', [ArticleController::class, 'publish'])->name('articles.publish');
     Route::patch('articles/{article}/unpublish', [ArticleController::class, 'unpublish'])->name('articles.unpublish');
     Route::resource('emplois', JobOfferController::class)->parameters(['emplois' => 'job'])->except(['show']);

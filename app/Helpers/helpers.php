@@ -94,6 +94,50 @@ if (! function_exists('article_route_slug')) {
     }
 }
 
+if (! function_exists('youtube_video_id_from_text')) {
+    /**
+     * Extrait le premier ID vidéo YouTube trouvé dans une chaîne (HTML ou texte).
+     */
+    function youtube_video_id_from_text(?string $text): ?string
+    {
+        if ($text === null || $text === '') {
+            return null;
+        }
+
+        $patterns = [
+            '~youtube\.com/watch\?[^#]*\bv=([a-zA-Z0-9_-]{11})~',
+            '~youtu\.be/([a-zA-Z0-9_-]{11})~',
+            '~youtube\.com/embed/([a-zA-Z0-9_-]{11})~',
+            '~youtube\.com/shorts/([a-zA-Z0-9_-]{11})~',
+        ];
+
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $text, $m)) {
+                return $m[1];
+            }
+        }
+
+        return null;
+    }
+}
+
+if (! function_exists('article_youtube_video_id')) {
+    function article_youtube_video_id(\App\Models\Article $article): ?string
+    {
+        foreach ([$article->content, $article->excerpt] as $blob) {
+            if (! is_string($blob) || $blob === '') {
+                continue;
+            }
+            $id = youtube_video_id_from_text($blob);
+            if ($id !== null) {
+                return $id;
+            }
+        }
+
+        return null;
+    }
+}
+
 if (! function_exists('category_i18n')) {
     function category_i18n(?\App\Models\Category $category): string
     {

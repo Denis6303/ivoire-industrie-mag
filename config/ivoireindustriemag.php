@@ -33,4 +33,16 @@ return [
             'count' => env('SOCIAL_INSTAGRAM_COUNT', '3.1k'),
         ],
     ],
+
+    /*
+     * Page rubrique « 2IM TV » : intégration YouTube (lecteur + option playlist).
+     * playlist_id : ID de playlist (recommandé pour un embed fiable type « chaîne »).
+     * channel_id : utile surtout pour liens / futures extensions ; l’embed listing complet
+     *               nécessite en pratique une playlist ou des IDs vidéo.
+     */
+    'youtube' => [
+        'channel_id' => env('YOUTUBE_CHANNEL_ID'),
+        'playlist_id' => env('YOUTUBE_PLAYLIST_ID'),
+        'channel_url' => env('SOCIAL_YOUTUBE_URL', '#'),
+    ],
 ];

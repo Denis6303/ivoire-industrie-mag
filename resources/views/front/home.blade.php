@@ -205,4 +205,6 @@
             </div>
         </div>
     </section>
+
+    @include('front.partials.home-2im-tv')
 @endsection

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Company;
+use App\Models\Video;
 
 class HomeController extends Controller
 {
@@ -47,7 +48,6 @@ class HomeController extends Controller
             'dossier',
             'districts',
             'made-in-ivory-coast',
-            '2im-tv',
             'magazine',
             'emploi',
         ];
@@ -80,6 +80,13 @@ class HomeController extends Controller
             ->filter(fn ($row) => $row['posts']->isNotEmpty())
             ->values();
 
+        $tvVideos = Video::query()
+            ->published()
+            ->latest('is_featured')
+            ->latest('published_at')
+            ->take(6)
+            ->get();
+
         return view('front.home', compact(
             'featured',
             'latest',
@@ -89,6 +96,7 @@ class HomeController extends Controller
             'featuredCompanies',
             'sidebarPopular',
             'homeSections',
+            'tvVideos',
         ));
     }
 }

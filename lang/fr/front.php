@@ -26,4 +26,21 @@ return [
     'footer_pitch' => 'Ivoire Industrie Magazine vulgarise l’industrie ivoirienne : actualités, analyses et portraits d’entreprises pour décideurs et citoyens.',
     'newsletter_pitch' => 'Recevez les temps forts de l’industrie en Côte d’Ivoire.',
     'copyright' => '© 2026 Ivoire Industrie Magazine propulsé par Build It Agency - Tous les droits réservés',
+
+    'tv_meta_description' => '2IM TV : reportages et vidéos YouTube sur l’industrie en Côte d’Ivoire.',
+    'tv_badge' => 'Chaîne YouTube',
+    'tv_intro' => 'Cette rubrique regroupe nos contenus vidéo. Visionnez les extraits ici ou abonnez-vous à la chaîne pour ne rien manquer.',
+    'tv_subscribe_cta' => 'Voir la chaîne YouTube',
+    'tv_playlist_title' => 'Lecteur YouTube',
+    'tv_video_section' => 'Vidéos',
+    'tv_play_video' => 'Lire la vidéo : :title',
+    'tv_open_article' => 'Fiche & texte',
+    'tv_no_embed_hint' => 'Contenu sans lien YouTube détecté — ouverture sous forme d’article.',
+    'tv_no_items' => 'Aucune vidéo publiée pour le moment.',
+    'tv_modal_title' => 'Lecture vidéo',
+
+    'home_tv_intro' => 'Les dernières vidéos de la chaîne 2IM TV.',
+    'home_tv_see_all' => 'Voir toutes les vidéos',
+    'home_tv_empty' => 'Aucune vidéo publiée pour le moment. Ajoutez-en depuis l’admin : menu « 2IM TV » (cochez « Publier »).',
+    'footer_read_about' => 'En savoir plus',
 ];

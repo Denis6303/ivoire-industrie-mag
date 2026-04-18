@@ -4,6 +4,11 @@ return [
     'title' => 'À propos',
     'mission_badge' => 'Notre mission',
     'headline' => 'La référence éditoriale de l’industrie ivoirienne',
+
+    'intro_p1' => 'Ivoire Industrie Magazine (2IM) est le premier média entièrement dédié à la promotion et au rayonnement de l\'industrie en Côte d\'Ivoire. Porté par une équipe de journalistes aguerris et d\'experts reconnus dans leurs domaines, 2IM se positionne comme le partenaire médiatique idéal pour tous les acteurs du secteur industriel ivoirien. Son champ éditorial couvre l\'ensemble des filières stratégiques : agro-industrie, agriculture, pétrole, gaz, mines, santé, pharmaceutique, électronique, emballage et conditionnement, textile, bois, métallurgie, sidérurgie, plasturgie, aéronautique, automobile, BTP, chimie, aquaculture, énergie, équipement, mécanique, usines, zones industrielles, et bien d\'autres encore.',
+    'intro_p2' => 'Au-delà de l\'information, 2IM s\'engage activement dans la structuration de l\'écosystème industriel à travers des événements d\'envergure nationale et internationale. Ces rendez-vous inédits constituent de véritables espaces d\'affaires, de networking et de lobbying, favorisant des connexions privilégiées entre industriels, décideurs et partenaires stratégiques de premier plan.',
+    'intro_p3' => 'Avec Ivoire Industrie Magazine, suivre l\'actualité industrielle ne se limite plus à s\'informer : c\'est saisir chaque opportunité pour développer, innover et connecter.',
+
     'paragraph_1' => 'Ivoire Industrie Magazine informe, décrypte et valorise les acteurs qui transforment le tissu industriel en Côte d’Ivoire. Nous publions des analyses, des interviews, des dossiers et des formats pratiques pour aider à comprendre les dynamiques du secteur.',
     'paragraph_2' => 'Notre ligne éditoriale relie terrain, investissement, innovation et impact social pour donner une vision complète, utile et fiable.',
     'commitments' => 'Nos engagements',

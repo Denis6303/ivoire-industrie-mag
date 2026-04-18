@@ -7,7 +7,12 @@
                         <a class="footer-logo" href="{{ route('home') }}">
                             <img src="{{ asset('images/logo_2im_blanc.svg') }}" alt="Ivoire Industrie Magazine" style="width: 180px; max-width: 100%; height: auto; object-fit: contain;">
                         </a>
-                        <p>{!! str_replace('Ivoire Industrie Magazine', '<span style="color:#ff7800;">Ivoire Industrie Magazine</span>', e(__('front.footer_pitch'))) !!}</p>
+                        <p class="text-white small mb-2" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;line-height:1.55;">
+                            {{ __('about.intro_p1') }} {{ __('about.intro_p2') }} {{ __('about.intro_p3') }}
+                        </p>
+                        <p class="mb-5">
+                            <a href="{{ route('about') }}" class="text-decoration-none fw-semibold" style="color:#ff7800;">{{ __('front.footer_read_about') }}</a>
+                        </p>
                         <div class="footer-social">
                             <ul class="social-icons">
                                 <li>

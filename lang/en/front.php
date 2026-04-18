@@ -26,4 +26,21 @@ return [
     'footer_pitch' => 'Ivoire Industrie Magazine highlights Ivorian industry: news, analysis and company profiles for decision-makers and citizens.',
     'newsletter_pitch' => 'Get the key highlights of industry in Côte d’Ivoire.',
     'copyright' => '© 2026 Ivoire Industrie Magazine powered by Build It Agency - All rights reserved',
+
+    'tv_meta_description' => '2IM TV: YouTube reports and videos on industry in Côte d’Ivoire.',
+    'tv_badge' => 'YouTube channel',
+    'tv_intro' => 'This section gathers our video content. Watch clips here or subscribe to the channel.',
+    'tv_subscribe_cta' => 'Open YouTube channel',
+    'tv_playlist_title' => 'YouTube player',
+    'tv_video_section' => 'Videos',
+    'tv_play_video' => 'Play video: :title',
+    'tv_open_article' => 'Article page',
+    'tv_no_embed_hint' => 'No YouTube link found in this item — opens as an article.',
+    'tv_no_items' => 'No videos published yet.',
+    'tv_modal_title' => 'Video playback',
+
+    'home_tv_intro' => 'Latest videos from the 2IM TV channel.',
+    'home_tv_see_all' => 'See all videos',
+    'home_tv_empty' => 'No videos published yet. Add some from the admin: “2IM TV” menu (check “Publish”).',
+    'footer_read_about' => 'Read more',
 ];
