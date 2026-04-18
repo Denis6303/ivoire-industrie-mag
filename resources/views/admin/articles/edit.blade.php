@@ -29,18 +29,8 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Titre (anglais)</label>
-                    <input name="title_en" class="form-control" value="{{ old('title_en', $article->title_en) }}" placeholder="English title (optional)">
-                </div>
-
-                <div class="col-md-6">
                     <label class="form-label">Châpeau</label>
                     <textarea name="excerpt" class="form-control" rows="3">{{ old('excerpt', $article->excerpt) }}</textarea>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label">Châpeau (anglais)</label>
-                    <textarea name="excerpt_en" class="form-control" rows="3">{{ old('excerpt_en', $article->excerpt_en) }}</textarea>
                 </div>
 
                 <div class="col-md-6">
@@ -148,12 +138,6 @@
                     <input type="hidden" name="content" id="content" value="{{ old('content', $article->content) }}">
                 </div>
 
-                <div class="col-12">
-                    <div class="mb-2">Contenu (anglais)</div>
-                    <div id="quill-editor-en" style="height: 320px;" class="bg-white"></div>
-                    <input type="hidden" name="content_en" id="content_en" value="{{ old('content_en', $article->content_en) }}">
-                </div>
-
                 <div class="col-md-6">
                     <label class="form-label">Signature auteur</label>
                     <input name="signature" class="form-control" value="{{ old('signature', $article->signature) }}">
@@ -194,22 +178,6 @@
                 quill.root.innerHTML = initial;
             }
 
-            const quillEn = new Quill('#quill-editor-en', {
-                theme: 'snow',
-                modules: {
-                    toolbar: [
-                        [{ header: [1, 2, false] }],
-                        ['bold', 'italic', 'underline'],
-                        [{ list: 'ordered' }, { list: 'bullet' }],
-                        ['link', 'blockquote', 'code-block']
-                    ]
-                }
-            });
-            const initialEn = document.getElementById('content_en').value;
-            if (initialEn) {
-                quillEn.root.innerHTML = initialEn;
-            }
-
             const form = document.getElementById('article-form');
             const coverFile = document.getElementById('cover_file');
             const coverPreview = document.getElementById('cover-preview');
@@ -244,7 +212,6 @@
 
             form.addEventListener('submit', function () {
                 document.getElementById('content').value = quill.root.innerHTML;
-                document.getElementById('content_en').value = quillEn.root.innerHTML;
             });
         });
     </script>

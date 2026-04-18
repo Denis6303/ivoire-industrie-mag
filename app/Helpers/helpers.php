@@ -71,8 +71,15 @@ if (! function_exists('article_i18n')) {
         }
 
         $value = $article->{$field} ?? null;
+        if (! is_string($value)) {
+            return null;
+        }
 
-        return is_string($value) ? $value : null;
+        if ($locale === 'en' && in_array($field, ['title', 'excerpt', 'content', 'meta_title', 'meta_description'], true)) {
+            return app(\App\Services\AutoTranslationService::class)->translate($value, 'fr', 'en');
+        }
+
+        return $value;
     }
 }
 
