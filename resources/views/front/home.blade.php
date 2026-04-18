@@ -138,13 +138,6 @@
                                                         </div>
                                                     </div>
                                                 @endif
-                                                @if ($breve->tags->isNotEmpty())
-                                                    <div class="d-flex flex-wrap gap-1 mt-2">
-                                                        @foreach ($breve->tags->take(3) as $tag)
-                                                            <a href="{{ route('search', ['q' => $tag->name]) }}" class="badge text-bg-light text-decoration-none">#{{ $tag->name }}</a>
-                                                        @endforeach
-                                                    </div>
-                                                @endif
                                             </div>
                                         </div>
                                     @endforeach

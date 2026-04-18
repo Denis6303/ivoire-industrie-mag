@@ -1,11 +1,22 @@
 <?php
 
 if (! function_exists('readingTime')) {
+    /**
+     * Temps de lecture estimé (≈ 200 mots/min), basé sur châpeau + corps en clair.
+     * Comptage compatible UTF-8 (français).
+     */
     function readingTime(string $content): int
     {
-        $words = str_word_count(strip_tags($content));
+        $text = strip_tags($content);
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $text = preg_replace('/\s+/u', ' ', trim($text));
+        if ($text === '') {
+            return 1;
+        }
+        $tokens = preg_split('/\s+/u', $text, -1, PREG_SPLIT_NO_EMPTY);
+        $count = is_array($tokens) ? count($tokens) : 0;
 
-        return max(1, (int) ceil($words / 200));
+        return max(1, (int) ceil($count / 200));
     }
 }
 

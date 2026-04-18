@@ -7,6 +7,7 @@
     $articleMetaTitle = article_i18n($article, 'meta_title') ?: ($article->meta_title ?? $articleTitle);
     $articleMetaDescription = article_i18n($article, 'meta_description')
         ?: ($article->meta_description ?? \Illuminate\Support\Str::limit(strip_tags($articleExcerpt ?: $articleContent), 160));
+    $computedReadingMinutes = readingTime(trim(($articleExcerpt ?? '').' '.($articleContent ?? '')));
 @endphp
 @section('title', e($articleMetaTitle))
 @section('meta_description', e($articleMetaDescription))
@@ -134,11 +135,9 @@
                                                 <span><i class="fa-solid fa-calendar-days"></i>{{ $article->published_at->translatedFormat('j F Y') }}</span>
                           </div>
                                         @endif
-                                        @if ($article->reading_time)
-                              <div class="blog-post-time">
-                                                <span><i class="fa-regular fa-clock"></i>{{ $article->reading_time }} min</span>
+                                        <div class="blog-post-time">
+                                                <span><i class="fa-regular fa-clock"></i>{{ $computedReadingMinutes }} min</span>
                              </div>
-                                        @endif
                           </div>
                         </div>
                             </div>
