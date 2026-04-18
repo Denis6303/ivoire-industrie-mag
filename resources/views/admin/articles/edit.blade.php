@@ -20,10 +20,12 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Catégorie</label>
+                    <label class="form-label">Rubrique / sous-catégorie</label>
                     <select name="category_id" class="form-select">
                         @foreach($categories ?? [] as $category)
-                            <option value="{{ $category->id }}" @selected((int) old('category_id', $article->category_id) === (int) $category->id)>{{ $category->name }}</option>
+                            <option value="{{ $category->id }}" @selected((int) old('category_id', $article->category_id) === (int) $category->id)>
+                                {{ optional($category->parent)->name ? optional($category->parent)->name.' > ' : '' }}{{ $category->name }}
+                            </option>
                         @endforeach
                     </select>
                 </div>

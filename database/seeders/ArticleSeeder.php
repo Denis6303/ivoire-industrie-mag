@@ -56,26 +56,34 @@ class ArticleSeeder extends Seeder
         ]);
 
         $blueprints = [
-            ['title' => 'Cacao: une nouvelle capacité de conditionnement arrive à Abidjan', 'type' => 'news', 'category' => 'actualites'],
-            ['title' => 'Énergie: pourquoi les industriels misent sur le solaire hybride', 'type' => 'analysis', 'category' => 'analyses'],
-            ['title' => 'Interview: “La qualité export se gagne à l’usine”', 'type' => 'interview', 'category' => 'interviews'],
-            ['title' => 'Reportage: dans les coulisses d’une zone industrielle en mutation', 'type' => 'report', 'category' => 'reportages'],
-            ['title' => 'Tribune: réindustrialiser, c’est aussi former', 'type' => 'opinion', 'category' => 'tribunes'],
-            ['title' => 'Données: 7 indicateurs pour suivre la performance industrielle', 'type' => 'data', 'category' => 'donnees-chiffres'],
-            ['title' => 'Mines: comment renforcer la sécurité sans ralentir la production', 'type' => 'analysis', 'category' => 'analyses'],
-            ['title' => 'Logistique: réduire les pertes post-récolte grâce au froid', 'type' => 'news', 'category' => 'actualites'],
-            ['title' => 'Numérique: cap sur la maintenance prédictive en usine', 'type' => 'analysis', 'category' => 'analyses'],
-            ['title' => 'BTP: matériaux locaux et nouvelles contraintes de chantier', 'type' => 'news', 'category' => 'actualites'],
-            ['title' => 'Chimie & pharma: traçabilité et sérialisation, où en est-on?', 'type' => 'analysis', 'category' => 'analyses'],
-            ['title' => 'Textile: relancer des séries courtes “made in CI”', 'type' => 'report', 'category' => 'reportages'],
+            ['title' => 'Cacao: une nouvelle capacité de conditionnement arrive à Abidjan', 'type' => 'news', 'category' => 'agro-industrie'],
+            ['title' => 'Énergie: pourquoi les industriels misent sur le solaire hybride', 'type' => 'analysis', 'category' => 'energie'],
+            ['title' => 'Interview: “La qualité export se gagne à l’usine”', 'type' => 'interview', 'category' => 'usines'],
+            ['title' => 'Reportage: dans les coulisses d’une zone industrielle en mutation', 'type' => 'report', 'category' => 'zones-industrielles'],
+            ['title' => 'Tribune: réindustrialiser, c’est aussi former', 'type' => 'opinion', 'category' => 'industrie-story'],
+            ['title' => 'Données: 7 indicateurs pour suivre la performance industrielle', 'type' => 'data', 'category' => 'industrie'],
+            ['title' => 'Mines: comment renforcer la sécurité sans ralentir la production', 'type' => 'analysis', 'category' => 'mines'],
+            ['title' => 'Logistique: réduire les pertes post-récolte grâce au froid', 'type' => 'news', 'category' => 'transport-et-logistique'],
+            ['title' => 'Numérique: cap sur la maintenance prédictive en usine', 'type' => 'analysis', 'category' => 'technologie'],
+            ['title' => 'BTP: matériaux locaux et nouvelles contraintes de chantier', 'type' => 'news', 'category' => 'btp'],
+            ['title' => 'Chimie & pharma: traçabilité et sérialisation, où en est-on?', 'type' => 'analysis', 'category' => 'pharmaceutique'],
+            ['title' => 'Textile: relancer des séries courtes “made in CI”', 'type' => 'report', 'category' => 'textile'],
         ];
 
         // Dupliquer/varier pour obtenir une homepage plus riche.
+        $subCategorySlugs = Category::query()
+            ->whereNotNull('parent_id')
+            ->pluck('slug')
+            ->values()
+            ->all();
+
         for ($i = 1; $i <= 28; $i++) {
             $blueprints[] = [
                 'title' => "Industrie: focus investissement & productivité #{$i}",
                 'type' => ['news', 'analysis', 'report', 'interview', 'press_release', 'data'][($i - 1) % 6],
-                'category' => array_values($categories->keys()->all())[($i - 1) % $categories->count()],
+                'category' => $subCategorySlugs !== []
+                    ? $subCategorySlugs[($i - 1) % count($subCategorySlugs)]
+                    : array_values($categories->keys()->all())[($i - 1) % $categories->count()],
             ];
         }
 

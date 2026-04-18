@@ -20,12 +20,25 @@ class CategoryController extends Controller
             ], 301);
         }
 
-        $category = Category::where('slug', $slug)->firstOrFail();
-        $articles = $category->articles()->published()->latest('published_at')->paginate(12);
+        $category = Category::query()
+            ->with('children:id,parent_id')
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        $categoryIds = [$category->id];
+        if ($category->parent_id === null && $category->children->isNotEmpty()) {
+            $categoryIds = array_merge($categoryIds, $category->children->pluck('id')->all());
+        }
+
+        $articles = \App\Models\Article::query()
+            ->published()
+            ->whereIn('category_id', $categoryIds)
+            ->latest('published_at')
+            ->paginate(12);
 
         $recentArticles = \App\Models\Article::query()
             ->published()
-            ->where('category_id', '!=', $category->id)
+            ->whereNotIn('category_id', $categoryIds)
             ->latest('published_at')
             ->take(6)
             ->get();

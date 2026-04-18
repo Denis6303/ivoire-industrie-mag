@@ -269,10 +269,47 @@ POTENZA.isSticky = function () {
 *************************/
 POTENZA.searchbox = function () {
   if ($("#search").exists()) {
+    const focusSearchInput = function () {
+      const $input = $('#search input[type="search"]').first();
+      if (!$input.length) return;
+
+      const el = $input.get(0);
+
+      const doFocus = function () {
+        try {
+          // focus() natif = plus fiable que trigger('focus') pour afficher le caret
+          el.focus({ preventScroll: true });
+          // Place le caret à la fin si une valeur existe (ex: page résultats)
+          if (typeof el.setSelectionRange === 'function') {
+            const len = (el.value || '').length;
+            el.setSelectionRange(len, len);
+          }
+        } catch (e) {
+          // fallback
+          el.focus();
+        }
+      };
+
+      // Plusieurs tentatives: certains navigateurs ignorent le focus tant que
+      // l’overlay n’est pas réellement affiché (reflow/animation).
+      doFocus();
+      requestAnimationFrame(function () {
+        doFocus();
+        requestAnimationFrame(doFocus);
+      });
+      setTimeout(doFocus, 120);
+      setTimeout(doFocus, 320);
+    };
+
     $('a[href="#search"]').on('click', function (event) {
       event.preventDefault();
       $('#search').addClass('open');
-      $('#search input[type="search"]').first().trigger('focus');
+      focusSearchInput();
+    });
+    // Sur mobile, certains navigateurs ne déclenchent pas le focus fiable sur click.
+    $('a[href="#search"]').on('touchstart', function () {
+      $('#search').addClass('open');
+      focusSearchInput();
     });
     $('#search button.close').on('click', function (event) {
       event.preventDefault();

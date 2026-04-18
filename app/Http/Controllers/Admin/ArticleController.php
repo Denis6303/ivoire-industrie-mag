@@ -9,6 +9,7 @@ use App\Models\Media;
 use App\Models\Tag;
 use App\Services\MediaService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
@@ -65,7 +66,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $categories = Category::orderBy('name')->get();
+        $categories = $this->articleAssignableCategories();
         $tags = Tag::orderBy('name')->get(['id', 'name']);
         return view('admin.articles.create', compact('categories', 'tags'));
     }
@@ -81,6 +82,7 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         $supportsExtraImages = $this->supportsExtraArticleImages();
+        $allowedCategoryIds = $this->allowedArticleCategoryIds();
 
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -90,7 +92,11 @@ class ArticleController extends Controller
             'excerpt_en' => ['nullable', 'string'],
             'content' => ['required', 'string'],
             'content_en' => ['nullable', 'string'],
-            'category_id' => ['required', 'exists:categories,id'],
+            'category_id' => [
+                'required',
+                'integer',
+                Rule::in($allowedCategoryIds),
+            ],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['integer', 'exists:tags,id'],
             'cover_file' => ['nullable', 'image', 'max:10240'],
@@ -243,7 +249,13 @@ class ArticleController extends Controller
     public function edit(Article $article)
     {
         $this->ensureEditorOwnsArticle($article);
-        $categories = Category::orderBy('name')->get();
+        $categories = $this->articleAssignableCategories();
+        if ($article->type === 'breve') {
+            $breve = Category::query()->where('slug', 'breve')->first();
+            if ($breve) {
+                $categories = collect([$breve])->concat($categories);
+            }
+        }
         $tags = Tag::orderBy('name')->get(['id', 'name']);
         return view('admin.articles.edit', compact('article', 'categories', 'tags'));
     }
@@ -255,6 +267,14 @@ class ArticleController extends Controller
     {
         $this->ensureEditorOwnsArticle($article);
         $supportsExtraImages = $this->supportsExtraArticleImages();
+        $allowedCategoryIds = $this->allowedArticleCategoryIds();
+        if ($article->type === 'breve') {
+            $breve = Category::query()->where('slug', 'breve')->first();
+            if ($breve) {
+                $allowedCategoryIds[] = (int) $breve->id;
+                $allowedCategoryIds = array_values(array_unique($allowedCategoryIds));
+            }
+        }
 
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -264,7 +284,11 @@ class ArticleController extends Controller
             'excerpt_en' => ['nullable', 'string'],
             'content' => ['required', 'string'],
             'content_en' => ['nullable', 'string'],
-            'category_id' => ['required', 'exists:categories,id'],
+            'category_id' => [
+                'required',
+                'integer',
+                Rule::in($allowedCategoryIds),
+            ],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['integer', 'exists:tags,id'],
             'cover_file' => ['nullable', 'image', 'max:10240'],
@@ -420,5 +444,43 @@ class ArticleController extends Controller
             && Schema::hasColumn('articles', 'secondary_alt')
             && Schema::hasColumn('articles', 'tertiary_image')
             && Schema::hasColumn('articles', 'tertiary_alt');
+    }
+
+    /**
+     * Rubriques assignables à un article classique :
+     * - rubriques « feuilles » (pas d’enfants en base), sauf la catégorie technique « brève » ;
+     * - sous-catégories des pôles Industrie / Innovation / International.
+     */
+    private function articleAssignableCategories()
+    {
+        $leafRubriques = Category::query()
+            ->whereNull('parent_id')
+            ->whereDoesntHave('children')
+            ->where('slug', '!=', 'breve')
+            ->orderBy('order')
+            ->orderBy('name')
+            ->get();
+
+        $hubChildren = Category::query()
+            ->whereNotNull('parent_id')
+            ->whereHas('parent', function ($query) {
+                $query->whereIn('slug', ['industrie', 'innovation', 'international']);
+            })
+            ->with('parent:id,name')
+            ->orderBy('order')
+            ->orderBy('name')
+            ->get();
+
+        return $leafRubriques->concat($hubChildren);
+    }
+
+    private function allowedArticleCategoryIds(): array
+    {
+        return $this->articleAssignableCategories()
+            ->pluck('id')
+            ->map(fn ($id) => (int) $id)
+            ->unique()
+            ->values()
+            ->all();
     }
 }

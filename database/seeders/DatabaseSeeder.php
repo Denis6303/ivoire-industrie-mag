@@ -20,8 +20,6 @@ class DatabaseSeeder extends Seeder
             SiteSettingSeeder::class,
             CompanySeeder::class,
             IndustrialProjectSeeder::class,
-            ArticleSeeder::class,
-            CommentSeeder::class,
             NewsletterSubscriptionSeeder::class,
             MediaSeeder::class,
         ]);

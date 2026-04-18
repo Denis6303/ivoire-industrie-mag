@@ -15,78 +15,109 @@ class CategorySeeder extends Seeder
     {
         $palette = [
             '#ff7800', '#1e40af', '#065f46', '#7c3aed', '#0f766e', '#92400e',
-            '#1B4332', '#b91c1c', '#334155', '#0ea5e9', '#be185d', '#15803d',
+            '#1b4332', '#b91c1c', '#334155', '#0ea5e9', '#be185d', '#15803d',
         ];
 
-        // Rubriques principales (12 sections / menus)
-        $primary = [
-            'Industrie Story',
-            'Investissement',
-            'Zones industrielles',
-            'Usines',
-            'Innovation',
-            'International',
-            'Districts',
-            'Agenda',
-            'Made In Ivory Coast',
-            '2IM TV',
-            'Hommes et Femmes industriels ivoiriens',
+        $tree = [
+            'Industrie Story' => [],
+            'Industrie' => [
+                'Agro-industrie',
+                'Agriculture',
+                'Pétrole',
+                'Gaz',
+                'Mines',
+                'Santé',
+                'Pharmaceutique',
+                'Electronique',
+                'Emballage et Conditionnement',
+                'Textile',
+                'Bois',
+                'Métallurgie',
+                'Sidérurgie',
+                'Plasturgie',
+                'Acteurs',
+                'Aéronautique',
+                'Automobile',
+                'BTP',
+                'Chimie',
+                'Aquaculture',
+                'Pêche',
+                'Boissons',
+                'Electromécanique',
+                'Energie',
+                'Equipement',
+                'Mécanique',
+                'Matériaux',
+                'Environnement',
+                'Informatique',
+                'Transport et Logistique',
+                'Événementiel',
+                'Sport',
+                'Économie',
+                'Aérien',
+                'Aviation',
+            ],
+            'Investissement' => [],
+            'Zones industrielles' => [],
+            'Usines' => [],
+            'Innovation' => [
+                'Ingénierie',
+                'R&D',
+                'Technologie',
+                'IA',
+            ],
+            'International' => [
+                'Afrique',
+                'Monde',
+            ],
+            'Districts' => [],
+            'Agenda' => [],
+            'Made In Ivory Coast' => [],
+            '2IM TV' => [],
+            'Hommes et Femmes industriels ivoiriens' => [],
+            'Dossier' => [],
+            'Magazine' => [],
         ];
 
-        // Sous-catégories du menu Industrie (dropdown)
-        $industry = [
-            'Featured',
-            'Brève',
-            'Agro-industrie',
-            'Agriculture',
-            'Pétrole',
-            'Gaz',
-            'Mines',
-            'Santé',
-            'Pharmaceutique',
-            'Electronique',
-            'Emballage et Conditionnement',
-            'Textile',
-            'Bois',
-            'Métallurgie',
-            'Sidérurgie',
-            'Plasturgie',
-            'Acteurs',
-            'Aéronautique',
-            'Automobile',
-            'BTP',
-            'Chimie',
-            'Aquaculture',
-            'Pêche',
-            'Boissons',
-            'Electromécanique',
-            'Energie',
-            'Equipement',
-            'Mécanique',
-            'Matériaux',
-            'Environnement',
-            'Informatique',
-            'Transport et Logistique',
-            'Événementiel',
-            'Sport',
-        ];
+        $colorIndex = 0;
+        $parentOrder = 1;
 
-        $categories = collect()
-            ->merge($primary)
-            ->merge($industry)
-            ->values()
-            ->unique()
-            ->map(function (string $name, int $i) use ($palette) {
-                return [
-                    'name' => $name,
-                    'slug' => Str::slug($name),
-                    'color' => $palette[$i % count($palette)],
-                ];
-            })
-            ->all();
+        foreach ($tree as $parentName => $children) {
+            $parentSlug = Str::slug($parentName);
+            $parent = Category::updateOrCreate(
+                ['slug' => $parentSlug],
+                [
+                    'name' => $parentName,
+                    'slug' => $parentSlug,
+                    'description' => null,
+                    'color' => $palette[$colorIndex % count($palette)],
+                    'icon' => null,
+                    'parent_id' => null,
+                    'order' => $parentOrder,
+                ]
+            );
 
-        foreach ($categories as $category) {
-            Category::updateOrCreate(['slug' => $category['slug']], $category);
+            $colorIndex++;
+            $parentOrder++;
+
+            foreach (array_values($children) as $childOrder => $childName) {
+                $childSlug = Str::slug($childName);
+
+                Category::updateOrCreate(
+                    ['slug' => $childSlug],
+                    [
+                        'name' => $childName,
+                        'slug' => $childSlug,
+                        'description' => null,
+                        'color' => $palette[$colorIndex % count($palette)],
+                        'icon' => null,
+                        'parent_id' => $parent->id,
+                        'order' => $childOrder + 1,
+                    ]
+                );
+
+                $colorIndex++;
+            }
         }
     }
 }

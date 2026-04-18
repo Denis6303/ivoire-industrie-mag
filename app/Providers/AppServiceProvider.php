@@ -32,25 +32,22 @@ class AppServiceProvider extends ServiceProvider
             $navData = request()->attributes->get('navData');
             if ($navData === null) {
                 $all = Category::query()
-                    ->whereHas('articles', fn ($q) => $q->published())
                     ->withCount(['articles as published_articles_count' => fn ($q) => $q->published()])
+                    ->orderBy('order')
                     ->orderBy('name')
                     ->get()
                     ->keyBy('slug');
 
-                $industrySlugs = collect([
-                    'agro-industrie', 'agriculture', 'petrole', 'gaz', 'mines', 'sante',
-                    'pharmaceutique', 'electronique', 'emballage-et-conditionnement', 'textile', 'bois',
-                    'metallurgie', 'siderurgie', 'plasturgie', 'acteurs', 'aeronautique', 'automobile',
-                    'btp', 'chimie', 'aquaculture', 'peche', 'boissons', 'electromecanique', 'energie',
-                    'equipement', 'mecanique', 'materiaux', 'environnement', 'informatique',
-                    'transport-et-logistique', 'evenementiel', 'sport',
-                ]);
-
-                $industryCategories = $industrySlugs
-                    ->map(fn ($slug) => $all->get($slug))
-                    ->filter()
-                    ->values();
+                $industryParent = $all->get('industrie');
+                $industryCategories = collect();
+                if ($industryParent) {
+                    $industryCategories = Category::query()
+                        ->where('parent_id', $industryParent->id)
+                        ->whereHas('articles', fn ($q) => $q->published())
+                        ->orderBy('order')
+                        ->orderBy('name')
+                        ->get();
+                }
 
                 $primarySlugs = collect([
                     'industrie-story',
@@ -72,27 +69,35 @@ class AppServiceProvider extends ServiceProvider
                     'emploi',
                 ]);
 
-                $innovationChildSlugs = collect([
-                    'ingenierie',
-                    'recherche-et-dev',
-                    'technologie',
-                    'ia',
-                ]);
+                $hasPublishedChild = static function (Category $cat): bool {
+                    return Category::query()
+                        ->where('parent_id', $cat->id)
+                        ->whereHas('articles', fn ($q) => $q->published())
+                        ->exists();
+                };
 
                 $primaryCategories = $primarySlugs
                     ->map(fn ($slug) => $all->get($slug))
                     ->filter()
+                    ->filter(fn ($cat) => (int) ($cat->published_articles_count ?? 0) > 0 || $hasPublishedChild($cat))
                     ->values();
 
                 $hiddenCategories = $hiddenSlugs
                     ->map(fn ($slug) => $all->get($slug))
                     ->filter()
+                    ->filter(fn ($cat) => (int) ($cat->published_articles_count ?? 0) > 0 || $hasPublishedChild($cat))
                     ->values();
 
-                $innovationChildren = $innovationChildSlugs
-                    ->map(fn ($slug) => $all->get($slug))
-                    ->filter()
-                    ->values();
+                $innovation = $all->get('innovation');
+                $innovationChildren = collect();
+                if ($innovation) {
+                    $innovationChildren = Category::query()
+                        ->where('parent_id', $innovation->id)
+                        ->whereHas('articles', fn ($q) => $q->published())
+                        ->orderBy('order')
+                        ->orderBy('name')
+                        ->get();
+                }
 
                 $navData = [
                     'industryCategories' => $industryCategories,

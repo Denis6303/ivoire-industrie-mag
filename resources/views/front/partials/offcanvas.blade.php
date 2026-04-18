@@ -92,18 +92,21 @@
 
             @if ($innovation = $hidden->firstWhere('slug', 'innovation'))
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center justify-content-between" data-bs-toggle="collapse" href="#offcanvasInnovation" role="button" aria-expanded="false" aria-controls="offcanvasInnovation">
-                        <span>{{ __('nav.innovation') }}</span>
-                        <i class="fas fa-chevron-down fa-xs"></i>
-                    </a>
-                    <div class="collapse" id="offcanvasInnovation">
-                        <ul class="list-unstyled ps-3 mb-2">
-                            <li><a class="nav-link py-1" href="{{ route('categories.show', ['slug' => $innovation->slug]) }}">{{ __('nav.innovation') }}</a></li>
-                            @foreach ($innovationChildren as $child)
-                                <li><a class="nav-link py-1" href="{{ route('categories.show', ['slug' => $child->slug]) }}">{{ $child->name }}</a></li>
-                            @endforeach
-                        </ul>
-                    </div>
+                    @if ($innovationChildren->isEmpty())
+                        <a class="nav-link" href="{{ route('categories.show', ['slug' => $innovation->slug]) }}">{{ __('nav.innovation') }}</a>
+                    @else
+                        <a class="nav-link d-flex align-items-center justify-content-between" data-bs-toggle="collapse" href="#offcanvasInnovation" role="button" aria-expanded="false" aria-controls="offcanvasInnovation">
+                            <span>{{ __('nav.innovation') }}</span>
+                            <i class="fas fa-chevron-down fa-xs"></i>
+                        </a>
+                        <div class="collapse" id="offcanvasInnovation">
+                            <ul class="list-unstyled ps-3 mb-2">
+                                @foreach ($innovationChildren as $child)
+                                    <li><a class="nav-link py-1" href="{{ route('categories.show', ['slug' => $child->slug]) }}">{{ $child->name }}</a></li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                 </li>
             @endif
 
