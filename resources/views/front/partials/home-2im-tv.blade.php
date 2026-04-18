@@ -17,42 +17,38 @@
             <a href="{{ $tvRoute }}" class="btn btn-primary btn-sm">{{ __('front.home_tv_see_all') }}</a>
         </div>
 
-        @if (isset($tvVideos) && $tvVideos->isNotEmpty())
-            <div class="row g-4">
-                @foreach ($tvVideos as $video)
-                    <div class="col-6 col-md-4 col-lg-2">
-                        <div class="card border-0 shadow-sm h-100 overflow-hidden ivm-home-tv-card">
-                            <button
-                                type="button"
-                                class="btn btn-link p-0 text-start w-100 text-decoration-none"
-                                data-bs-toggle="modal"
-                                data-bs-target="#ivmHomeYtModal"
-                                data-youtube-id="{{ $video->youtube_video_id }}"
-                                aria-label="{{ __('front.tv_play_video', ['title' => $video->title]) }}"
-                            >
-                                <div class="ratio ratio-16x9 bg-dark position-relative">
-                                    <img
-                                        src="https://i.ytimg.com/vi/{{ $video->youtube_video_id }}/hqdefault.jpg"
-                                        alt=""
-                                        class="w-100 h-100"
-                                        style="object-fit:cover;"
-                                        loading="lazy"
-                                    >
-                                    <span class="position-absolute top-50 start-50 translate-middle" style="font-size:2rem;color:#ff0000;" aria-hidden="true">
-                                        <i class="fa-brands fa-youtube"></i>
-                                    </span>
-                                </div>
-                                <div class="card-body p-2">
-                                    <p class="small fw-semibold mb-0 text-dark" style="line-height:1.25;">{{ \Illuminate\Support\Str::limit($video->title, 64) }}</p>
-                                </div>
-                            </button>
-                        </div>
+        <div class="row g-4">
+            @foreach ($tvVideos as $video)
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="card border-0 shadow-sm h-100 overflow-hidden ivm-home-tv-card">
+                        <button
+                            type="button"
+                            class="btn btn-link p-0 text-start w-100 text-decoration-none"
+                            data-bs-toggle="modal"
+                            data-bs-target="#ivmHomeYtModal"
+                            data-youtube-id="{{ $video->youtube_video_id }}"
+                            aria-label="{{ __('front.tv_play_video', ['title' => $video->title]) }}"
+                        >
+                            <div class="ratio ratio-16x9 bg-dark position-relative">
+                                <img
+                                    src="https://i.ytimg.com/vi/{{ $video->youtube_video_id }}/hqdefault.jpg"
+                                    alt=""
+                                    class="w-100 h-100"
+                                    style="object-fit:cover;"
+                                    loading="lazy"
+                                >
+                                <span class="position-absolute top-50 start-50 translate-middle" style="font-size:2rem;color:#ff0000;" aria-hidden="true">
+                                    <i class="fa-brands fa-youtube"></i>
+                                </span>
+                            </div>
+                            <div class="card-body p-2">
+                                <p class="small fw-semibold mb-0 text-dark" style="line-height:1.25;">{{ \Illuminate\Support\Str::limit($video->title, 64) }}</p>
+                            </div>
+                        </button>
                     </div>
-                @endforeach
-            </div>
-        @else
-            <p class="text-muted mb-0">{{ __('front.home_tv_empty') }}</p>
-        @endif
+                </div>
+            @endforeach
+        </div>
     </div>
 </section>
 

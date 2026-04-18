@@ -206,5 +206,7 @@
         </div>
     </section>
 
-    @include('front.partials.home-2im-tv')
+    @if (isset($tvVideos) && $tvVideos->isNotEmpty())
+        @include('front.partials.home-2im-tv')
+    @endif
 @endsection

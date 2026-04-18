@@ -41,6 +41,5 @@ return [
 
     'home_tv_intro' => 'Latest videos from the 2IM TV channel.',
     'home_tv_see_all' => 'See all videos',
-    'home_tv_empty' => 'No videos published yet. Add some from the admin: “2IM TV” menu (check “Publish”).',
     'footer_read_about' => 'Read more',
 ];

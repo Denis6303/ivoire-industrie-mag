@@ -41,6 +41,5 @@ return [
 
     'home_tv_intro' => 'Les dernières vidéos de la chaîne 2IM TV.',
     'home_tv_see_all' => 'Voir toutes les vidéos',
-    'home_tv_empty' => 'Aucune vidéo publiée pour le moment. Ajoutez-en depuis l’admin : menu « 2IM TV » (cochez « Publier »).',
     'footer_read_about' => 'En savoir plus',
 ];
