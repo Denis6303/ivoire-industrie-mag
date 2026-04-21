@@ -21,7 +21,7 @@
 
                 <div class="col-md-4">
                     <label class="form-label">Rubrique / sous-catégorie</label>
-                    <select name="category_id" class="form-select">
+                    <select id="article-category" name="category_id" class="form-select">
                         @foreach($categories ?? [] as $category)
                             <option value="{{ $category->id }}" @selected((int) old('category_id', $article->category_id) === (int) $category->id)>
                                 {{ optional($category->parent)->name ? optional($category->parent)->name.' > ' : '' }}{{ $category->name }}
@@ -159,6 +159,12 @@
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            new TomSelect('#article-category', {
+                create: false,
+                sortField: { field: 'text', direction: 'asc' },
+                placeholder: 'Rechercher une catégorie...'
+            });
+
             new TomSelect('#article-tags', {
                 plugins: ['remove_button'],
                 hideSelected: true,
