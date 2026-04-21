@@ -120,7 +120,7 @@
                                 <td class="text-end">{{ optional($article->updated_at)->format('d/m/Y H:i') }}</td>
                                 <td class="text-end">
                                     <div class="d-inline-flex gap-1">
-                                        <a href="{{ route('admin.articles.edit', $article) }}" class="btn btn-sm btn-outline-secondary">
+                                        <a href="{{ route('admin.articles.edit', $article) }}" class="btn btn-sm btn-outline-secondary" title="Modifier">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </a>
                                         @if($article->status !== 'published')
@@ -140,6 +140,19 @@
                                                 </button>
                                             </form>
                                         @endif
+                                        @if(!$article->is_featured)
+                                            <form action="{{ route('admin.articles.feature', $article) }}" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-sm btn-outline-warning" title="Mettre à la une">
+                                                    <i class="fa-regular fa-star"></i>
+                                                </button>
+                                            </form>
+                                        @else
+                                            <span class="btn btn-sm btn-warning disabled" title="À la une">
+                                                <i class="fa-solid fa-star"></i>
+                                            </span>
+                                        @endif
                                         <form action="{{ route('admin.articles.destroy', $article) }}" method="POST" onsubmit="return confirm('Supprimer cet article ?');">
                                             @csrf
                                             @method('DELETE')
@@ -147,7 +160,7 @@
                                                 <i class="fa-regular fa-trash-can"></i>
                                             </button>
                                         </form>
-                                        <a href="{{ route('articles.show', [config('app.locale', 'fr'), $article->slug]) }}" target="_blank" class="btn btn-sm btn-outline-dark">
+                                        <a href="{{ route('articles.show', [config('app.locale', 'fr'), $article->slug]) }}" target="_blank" class="btn btn-sm btn-outline-dark" title="Voir">
                                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                                         </a>
                                     </div>

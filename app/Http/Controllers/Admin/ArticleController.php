@@ -426,6 +426,15 @@ class ArticleController extends Controller
         return back()->with('success', 'Article remis en brouillon.');
     }
 
+    public function feature(Article $article)
+    {
+        // Retire la une de tous les autres articles
+        Article::where('is_featured', true)->update(['is_featured' => false]);
+        // Met celui-ci à la une
+        $article->update(['is_featured' => true]);
+        return back()->with('success', '« '.$article->title.' » est maintenant à la une.');
+    }
+
     private function ensureEditorOwnsArticle(Article $article): void
     {
         if (auth()->user()?->role === 'editor' && $article->author_id !== auth()->id()) {
