@@ -41,15 +41,21 @@
         font-family: "Red Hat Display", sans-serif !important;
     }
 
-    /* Neutralise les styles du thème qui capitalisent artificiellement les mots */
+    /* Neutralise le text-transform:capitalize global du thème sur tous les titres et éléments de navigation */
+    h1, h2, h3, h4, h5, h6,
+    .h1, .h2, .h3, .h4, .h5, .h6,
     .blog-title,
     .blog-title a,
     .widget-title,
     .section-title h1,
     .section-title h2,
     .section-title h3,
+    .footer-title,
     .navbar .nav-link,
-    .offcanvas .nav-link {
+    .offcanvas .nav-link,
+    .inner-header .breadcrumb-item,
+    .inner-header .breadcrumb-item span,
+    .inner-header .breadcrumb-item a {
         text-transform: none !important;
     }
 

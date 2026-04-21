@@ -21,20 +21,17 @@ class DashboardController extends Controller
         $totalArticles = Article::count();
         $totalViews = (int) Article::sum('view_count');
         $avgViews = max(0, (int) round(Article::avg('view_count') ?? 0));
-        $pendingRate = Comment::count() > 0
-            ? round((Comment::where('is_approved', false)->count() / Comment::count()) * 100, 1)
-            : 0;
+        $totalComments = Comment::count();
 
         $stats = [
             'published_articles' => Article::where('status', 'published')->count(),
             'views_today' => Article::whereDate('updated_at', today())->sum('view_count'),
             'newsletter_subscribers' => NewsletterSubscription::whereIn('status', ['pending', 'active'])->count(),
-            'pending_comments' => Comment::where('is_approved', false)->count(),
+            'total_comments' => $totalComments,
             'published_this_month' => $publishedThisMonth,
             'draft_articles' => $draftArticles,
             'total_views' => $totalViews,
             'avg_views_per_article' => $avgViews,
-            'pending_comments_rate' => $pendingRate,
             'total_articles' => $totalArticles,
         ];
 

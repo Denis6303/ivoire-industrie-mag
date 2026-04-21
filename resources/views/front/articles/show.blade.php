@@ -214,43 +214,71 @@
                         </div>
                     </article>
 
-                    <div class="bg-white mb-4 mt-5">
-                        <h6 class="widget-title text-uppercase fw-bolder">{{ __('front.leave_comment') }}</h6>
-                        <div class="blog-sidebar-post-divider mb-4"></div>
-                        <form class="row" method="POST" action="{{ route('comments.store', $article) }}">
-                            @csrf
-                            @guest
-                                <div class="col-md-6 mb-3">
-                                    <input type="text" name="guest_name" class="form-control @error('guest_name') is-invalid @enderror" placeholder="Nom" value="{{ old('guest_name') }}">
-                                    @error('guest_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                            </div>
-                                <div class="col-md-6 mb-3">
-                                    <input type="email" name="guest_email" class="form-control @error('guest_email') is-invalid @enderror" placeholder="E-mail" value="{{ old('guest_email') }}">
-                                    @error('guest_email')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                          </div>
-                            @endguest
-                            <div class="col-12 mb-3">
-                                <textarea name="content" class="form-control @error('content') is-invalid @enderror" rows="4" placeholder="Votre commentaire" required>{{ old('content') }}</textarea>
-                                @error('content')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                            </div>
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-primary">{{ __('front.publish') }}</button>
-        </div>
-      </form>
-                    </div>
-
+                    {{-- Commentaires approuvés --}}
                     @if ($article->comments->isNotEmpty())
-                        <div class="mt-4">
-                            <h6 class="widget-title">{{ __('front.comments') }}</h6>
+                        <div class="mt-5">
+                            <h6 class="widget-title text-uppercase fw-bolder">{{ __('front.comments') }} <span class="badge bg-secondary ms-1">{{ $article->comments->count() }}</span></h6>
+                            <div class="blog-sidebar-post-divider mb-3"></div>
                             @foreach ($article->comments as $comment)
                                 <div class="border-bottom py-3">
-                                    <strong>{{ $comment->user?->name ?? $comment->guest_name ?? 'Visiteur' }}</strong>
-                                    <small class="text-muted ms-2">{{ $comment->created_at?->translatedFormat('j M Y à H:i') }}</small>
-                                    <p class="mb-0 mt-2">{{ $comment->content }}</p>
-                  </div>
+                                    <div class="d-flex align-items-center gap-2 mb-1">
+                                        <span class="fw-semibold" style="color:#243e5d;">{{ $comment->user?->name ?? $comment->guest_name ?? 'Visiteur' }}</span>
+                                        <small class="text-muted">{{ $comment->created_at?->translatedFormat('j M Y à H:i') }}</small>
+                                    </div>
+                                    <p class="mb-0">{{ $comment->content }}</p>
+                                </div>
                             @endforeach
                         </div>
                     @endif
+
+                    {{-- Formulaire --}}
+                    <div class="bg-white mb-4 mt-5">
+                        <h6 class="widget-title text-uppercase fw-bolder">{{ __('front.leave_comment') }}</h6>
+                        <div class="blog-sidebar-post-divider mb-4"></div>
+
+                        @if (session('success'))
+                            <div class="alert alert-success d-flex align-items-center gap-2 mb-4" role="alert">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>{{ session('success') }}</span>
+                            </div>
+                        @endif
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger mb-3">
+                                <ul class="mb-0 ps-3">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <form class="row g-3" method="POST" action="{{ route('comments.store', ['article' => $article->id]) }}">
+                            @csrf
+                            @guest
+                                <div class="col-md-6">
+                                    <label class="form-label small text-muted">Nom <span class="text-muted">(optionnel)</span></label>
+                                    <input type="text" name="guest_name" class="form-control @error('guest_name') is-invalid @enderror" placeholder="Votre nom" value="{{ old('guest_name') }}">
+                                    @error('guest_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small text-muted">E-mail <span class="text-muted">(optionnel, non publié)</span></label>
+                                    <input type="email" name="guest_email" class="form-control @error('guest_email') is-invalid @enderror" placeholder="votre@email.com" value="{{ old('guest_email') }}">
+                                    @error('guest_email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                </div>
+                            @endguest
+                            <div class="col-12">
+                                <label class="form-label small text-muted">Commentaire <span class="text-danger">*</span></label>
+                                <textarea name="content" class="form-control @error('content') is-invalid @enderror" rows="4" placeholder="Votre commentaire…" required>{{ old('content') }}</textarea>
+                                @error('content')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa-regular fa-paper-plane me-1"></i>{{ __('front.publish') }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
 
                     @if ($related->isNotEmpty())
                         <div class="bg-white mt-5">

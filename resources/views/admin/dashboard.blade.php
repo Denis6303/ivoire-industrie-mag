@@ -49,10 +49,10 @@
             <div class="card card-mag h-100 admin-stat-card admin-stat-warning">
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between mb-2">
-                        <div class="text-muted small">Commentaires en attente</div>
+                        <div class="text-muted small">Commentaires</div>
                         <i class="fa-regular fa-comments admin-stat-icon"></i>
                     </div>
-                    <div class="display-6 fw-bold">{{ $stats['pending_comments'] }}</div>
+                    <div class="display-6 fw-bold">{{ $stats['total_comments'] }}</div>
                 </div>
             </div>
         </div>
@@ -139,8 +139,8 @@
                             <strong>{{ number_format($stats['avg_views_per_article'], 0, ',', ' ') }}</strong>
                         </div>
                         <div class="admin-kpi-item">
-                            <span>Taux commentaires en attente</span>
-                            <strong>{{ number_format($stats['pending_comments_rate'], 1, ',', ' ') }}%</strong>
+                            <span>Total commentaires</span>
+                            <strong>{{ number_format($stats['total_comments'], 0, ',', ' ') }}</strong>
                         </div>
                     </div>
                 </div>
