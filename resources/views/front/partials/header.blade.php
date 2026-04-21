@@ -6,8 +6,12 @@
                     <div class="col-12">
                         <div class="d-lg-flex align-items-center text-center">
                             <div class="topbar-left mb-2 mb-lg-0">
-                                <div class="topbar-date d-inline-flex">
+                                <div class="topbar-date d-inline-flex align-items-center" style="border-right:none;padding-right:0;">
                                     <span class="date"><i class="fa-solid fa-calendar-days"></i> {{ now()->translatedFormat('l j F Y') }}</span>
+                                    <span class="mx-3" aria-hidden="true" style="width:1px;height:22px;background:#243e5d;display:inline-block;opacity:.45;"></span>
+                                    <button type="button" class="btn btn-md fw-semibold text-white border-0" style="background:#ff7800;padding:0.5rem 0.5rem;line-height:1.2;" data-bs-toggle="modal" data-bs-target="#newsletterModal">
+                                        <i class="fa-regular fa-envelope me-1" aria-hidden="true"></i>{{ __('front.newsletter') }}
+                                    </button>
                                 </div>
                             </div>
                             <div class="topbar-right ms-auto justify-content-center">
@@ -138,4 +142,25 @@
             <i class="fa-solid fa-align-right"></i>
         </button>
     </nav>
+
+    <div class="modal fade" id="newsletterModal" tabindex="-1" aria-labelledby="newsletterModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5 mb-0" id="newsletterModalLabel">{{ __('front.newsletter') }}</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('app.close') }}"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted mb-3">{{ __('front.newsletter_pitch') }}</p>
+                    <form class="newsletter-box" method="POST" action="{{ route('newsletter.subscribe') }}">
+                        @csrf
+                        <div class="input-group">
+                            <input type="email" name="email" class="form-control" placeholder="{{ __('front.your_email') }}" required>
+                            <button class="btn btn-primary" type="submit">{{ __('front.subscribe') }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </header>
