@@ -2,8 +2,7 @@
 
 return [
     'title' => 'About',
-    'mission_badge' => 'Our mission',
-    'headline' => 'The editorial benchmark for Ivorian industry',
+    'headline' => 'Ivoire Industrie Magazine, at the heart of industrial news',
 
     'intro_p1' => 'Ivoire Industrie Magazine (2IM) is the first media outlet entirely dedicated to promoting and showcasing industry in Côte d’Ivoire. Led by seasoned journalists and recognised experts, 2IM aims to be the ideal media partner for every stakeholder in the Ivorian industrial sector. Its editorial scope spans all strategic industries: agro-industry, agriculture, oil, gas, mining, health, pharmaceuticals, electronics, packaging, textile, wood, metallurgy, steel, plastics, aeronautics, automotive, construction, chemistry, aquaculture, energy, equipment, mechanics, factories, industrial zones, and many more.',
     'intro_p2' => 'Beyond information, 2IM is actively involved in structuring the industrial ecosystem through major national and international events. These unique gatherings are true business, networking and lobbying spaces, fostering privileged connections between industrial leaders, decision-makers and top strategic partners.',

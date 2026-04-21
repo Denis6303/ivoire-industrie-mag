@@ -24,6 +24,10 @@ return [
             'url' => env('SOCIAL_TWITTER_URL', '#'),
             'count' => env('SOCIAL_TWITTER_COUNT', '1.2k'),
         ],
+        'linkedin' => [
+            'url' => env('SOCIAL_LINKEDIN_URL', '#'),
+            'count' => env('SOCIAL_LINKEDIN_COUNT', ''),
+        ],
         'youtube' => [
             'url' => env('SOCIAL_YOUTUBE_URL', '#'),
             'count' => env('SOCIAL_YOUTUBE_COUNT', '890'),

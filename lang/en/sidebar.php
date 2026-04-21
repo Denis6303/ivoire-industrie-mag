@@ -7,6 +7,7 @@ return [
     'no_tags' => 'No tags available.',
     'no_posts_tab' => 'No posts available.',
     'follow_social' => 'Follow us',
+    'follow_social_heading' => 'Follow us on',
     'social_fans' => 'Fans',
     'social_followers' => 'Followers',
     'social_subscribers' => 'Subscribers',

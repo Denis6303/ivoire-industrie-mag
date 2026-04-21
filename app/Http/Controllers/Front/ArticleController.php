@@ -27,7 +27,7 @@ class ArticleController extends Controller
     {
         $articleQuery = Article::with([
             'author',
-            'category',
+            'category.parent',
             'tags',
             'sectors',
             'comments' => function ($q) {

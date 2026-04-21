@@ -10,25 +10,21 @@ class CategoryController extends Controller
 {
     public function show(string $locale, string $slug)
     {
-        $aliasMap = [
-            'industrie' => 'industrie-story',
-        ];
-
-        if (isset($aliasMap[$slug])) {
-            return redirect()->route('categories.show', [
-                'locale' => $locale,
-                'slug' => $aliasMap[$slug],
-            ], 301);
-        }
-
         $category = Category::query()
-            ->with('children:id,parent_id')
+            ->with(['parent:id,slug,name,parent_id', 'children:id,parent_id'])
             ->where('slug', $slug)
             ->firstOrFail();
 
         $categoryIds = [$category->id];
         if ($category->parent_id === null && $category->children->isNotEmpty()) {
             $categoryIds = array_merge($categoryIds, $category->children->pluck('id')->all());
+        }
+        // "Industrie Story" est une rubrique éditoriale distincte : on l'exclut du hub Industrie.
+        if ($category->slug === 'industrie') {
+            $industryStoryId = Category::query()->where('slug', 'industrie-story')->value('id');
+            if ($industryStoryId) {
+                $categoryIds = array_values(array_filter($categoryIds, fn ($id) => (int) $id !== (int) $industryStoryId));
+            }
         }
 
         if ($category->slug === '2im-tv') {

@@ -20,9 +20,18 @@
             </thead>
             <tbody>
             @foreach($ads as $ad)
+                @php
+                    $positionLabels = [
+                        'header' => 'En-tête',
+                        'sidebar' => 'Colonne latérale (haut)',
+                        'sidebar_secondary' => 'Colonne latérale (Entreprises → Focus)',
+                        'in_article' => 'Dans l’article',
+                        'footer' => 'Pied de page',
+                    ];
+                @endphp
                 <tr>
                     <td>{{ $ad->title }}</td>
-                    <td class="text-muted small">{{ $ad->position }}</td>
+                    <td class="text-muted small">{{ $positionLabels[$ad->position] ?? $ad->position }}</td>
                     <td class="text-center">
                         @if($ad->is_active)
                             <span class="badge text-bg-success">Oui</span>

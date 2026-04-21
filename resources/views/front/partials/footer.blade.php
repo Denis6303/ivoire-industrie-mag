@@ -16,24 +16,24 @@
                         <div class="footer-social">
                             <ul class="social-icons">
                                 <li>
-                                    <a href="{{ config('ivoireindustriemag.social.facebook.url') ?? '#' }}" class="social-icon facebook" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+                                    <a href="{{ site_setting('social_facebook') ?: '#' }}" class="social-icon facebook" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
                                         <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ config('ivoireindustriemag.social.linkedin.url') ?? '#' }}" class="social-icon linkedin" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+                                    <a href="{{ site_setting('social_linkedin') ?: '#' }}" class="social-icon linkedin" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
                                         <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ config('ivoireindustriemag.social.twitter.url') ?? '#' }}" class="social-icon twitter" aria-label="X" target="_blank" rel="noopener noreferrer">
+                                    <a href="{{ site_setting('social_x') ?: '#' }}" class="social-icon twitter" aria-label="X" target="_blank" rel="noopener noreferrer">
                                         <svg style="width:18px;height:18px;display:inline-block;fill:currentColor;vertical-align:middle;" viewBox="0 0 24 24" aria-hidden="true">
                                             <path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.5l-5.1-6.6L5.8 22H2.7l7.3-8.4L1.2 2h6.6l4.6 6L18.9 2Zm-1.1 18h1.7L6.9 3.9H5.1L17.8 20Z"/>
                                         </svg>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ config('ivoireindustriemag.social.youtube.url') ?? '#' }}" class="social-icon youtube" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+                                    <a href="{{ site_setting('social_youtube') ?: '#' }}" class="social-icon youtube" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
                                         <i class="fa-brands fa-youtube" aria-hidden="true"></i>
                                     </a>
                                 </li>
@@ -45,7 +45,7 @@
                     <h4 class="footer-title">{{ __('front.navigation') }}</h4>
                     <ul class="footer-menu">
                         <li><a href="{{ route('categories.show', ['slug' => 'industrie-story']) }}"><i class="fa-solid fa-chevron-right"></i>Industrie Story</a></li>
-                        <li><a href="{{ route('categories.show', ['slug' => 'industrie']) }}"><i class="fa-solid fa-chevron-right"></i>{{ __('nav.industry') }}</a></li>
+                        <li><a href="{{ category_route('industrie') }}"><i class="fa-solid fa-chevron-right"></i>{{ __('nav.industry') }}</a></li>
                         <li><a href="{{ route('categories.show', ['slug' => 'zones-industrielles']) }}"><i class="fa-solid fa-chevron-right"></i>{{ __('nav.industrial_zones') }}</a></li>
                     </ul>
                 </div>

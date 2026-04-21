@@ -44,7 +44,7 @@
                                     <p class="mt-3 home-featured-la-une-excerpt">{{ \Illuminate\Support\Str::limit(strip_tags($featuredExcerpt), (int) config('ivoireindustriemag.featured_excerpt_max_chars', 191), '…') }}</p>
                                 @endif
                                 @if ($f->author)
-                                    <div class="blog-post-user mt-2"><span style="color:#243e5d;">{{ $f->signature ?: $f->author->name }}</span></div>
+                                    <div class="blog-post-user mt-2"><span style="color:#243e5d;">par {{ $f->signature ?: $f->author->name }}</span></div>
                                 @endif
                                 <a class="btn btn-primary btn-sm home-featured-la-une-btn mt-3" href="{{ route('articles.show', ['slug' => $featuredSlug]) }}">{{ __('app.read_more') }}</a>
                             </div>
@@ -172,8 +172,13 @@
                             @empty
                                 <p class="text-muted small">{{ __('front.no_companies') }}</p>
                             @endforelse
-                            <a href="{{ route('companies.index') }}" class="btn btn-sm btn-primary w-100">{{ __('front.directory') }}</a>
+                            {{-- <a href="{{ route('companies.index') }}" class="btn btn-sm btn-primary w-100">{{ __('front.directory') }}</a> --}}
                         </div>
+                        @if (!empty($adSidebarSecondary))
+                            <div class="widget mb-4 mt-4">
+                                @include('front.partials.ad-banner', ['ad' => $adSidebarSecondary, 'variant' => 'vertical'])
+                            </div>
+                        @endif
                         @if (isset($featuredCompanies) && $featuredCompanies->isNotEmpty())
                             <div class="widget mt-4">
                                 <h6 class="widget-title">{{ __('front.featured_companies') }}</h6>

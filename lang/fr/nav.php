@@ -3,9 +3,10 @@
 return [
     'industry_story' => 'Industrie story',
     'industry' => 'Industrie',
+    'industry_open_submenu' => 'Ouvrir le sous-menu Industrie',
     'industrial_zones' => 'Zones industrielles',
     'investment' => 'Investissement',
-    'factory' => 'Usine',
+    'factory' => 'Usines',
     'international' => 'International',
     'agenda' => 'Agenda',
     'innovation' => 'Innovation',
@@ -15,5 +16,6 @@ return [
     'made_in_ivory_coast' => 'Made in Ivory Coast',
     'tv' => '2IM TV',
     'magazine' => 'Magazine',
-    'jobs' => 'Emploi',
+    'jobs' => 'Emplois',
+    'studies' => 'Études',
 ];

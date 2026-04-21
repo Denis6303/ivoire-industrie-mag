@@ -8,6 +8,17 @@
     $articleMetaDescription = article_i18n($article, 'meta_description')
         ?: ($article->meta_description ?? \Illuminate\Support\Str::limit(strip_tags($articleExcerpt ?: $articleContent), 160));
     $computedReadingMinutes = readingTime(trim(($articleExcerpt ?? '').' '.($articleContent ?? '')));
+
+    $articleBreadcrumbItems = [
+        ['label' => __('front.articles_title'), 'url' => route('articles.index')],
+    ];
+    if ($article->category) {
+        $c = $article->category;
+        if ($c->parent_id && $c->parent) {
+            $articleBreadcrumbItems[] = ['label' => category_i18n($c->parent), 'url' => category_show_url($c->parent)];
+        }
+        $articleBreadcrumbItems[] = ['label' => category_i18n($c), 'url' => route('categories.show', ['slug' => $c->slug])];
+    }
 @endphp
 @section('title', e($articleMetaTitle))
 @section('meta_description', e($articleMetaDescription))
@@ -101,9 +112,7 @@
 @section('content')
     @include('front.partials.page-header', [
         'title' => \Illuminate\Support\Str::limit($articleTitle, 80),
-        'breadcrumbItems' => $article->category
-            ? [['label' => $article->category->name, 'url' => route('categories.show', ['slug' => $article->category->slug])]]
-            : [],
+        'breadcrumbItems' => $articleBreadcrumbItems,
     ])
 
     <section class="space-ptb">
@@ -190,7 +199,7 @@
                             @endif
                             @if ($article->author)
                                 <div class="blog-post-user mt-4 mb-2">
-                                    <span style="color:#243e5d;">{{ $article->signature ?: $article->author->name }}</span>
+                                    <span style="color:#243e5d;">par {{ $article->signature ?: $article->author->name }}</span>
                                 </div>
                             @endif
                             @if ($article->tags->isNotEmpty())

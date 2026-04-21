@@ -10,11 +10,15 @@
             <div class="row align-items-start g-4">
                 <div class="col-lg-7">
                     <div class="border rounded p-4 p-md-5 bg-white shadow-sm">
-                        <span class="badge rounded-pill mb-3" style="background:#243e5d;">{{ __('about.mission_badge') }}</span>
-                        <h2 class="mb-4 h3">{{ __('about.headline') }}</h2>
-                        <p class="text-muted mb-3">{{ __('about.intro_p1') }}</p>
-                        <p class="text-muted mb-3">{{ __('about.intro_p2') }}</p>
-                        <p class="text-muted mb-0">{{ __('about.intro_p3') }}</p>
+                        <h2 class="mb-4 h4" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ __('about.headline') }}</h2>
+                        @php
+                            $p1 = __('about.intro_p1');
+                            $bold = 'Ivoire Industrie Magazine (2IM)';
+                            $rest = mb_substr($p1, mb_strlen($bold));
+                        @endphp
+                        <p class="mb-3" style="text-align:justify;"><strong>{{ $bold }}</strong>{{ $rest }}</p>
+                        <p class="mb-3" style="text-align:justify;">{{ __('about.intro_p2') }}</p>
+                        <p class="mb-0 fw-bold" style="text-align:justify;">{{ __('about.intro_p3') }}</p>
                     </div>
                 </div>
                 <div class="col-lg-5">

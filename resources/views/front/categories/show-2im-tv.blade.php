@@ -55,7 +55,7 @@
                         <p class="mb-0 text-white-75">{{ __('front.tv_intro') }}</p>
                     </div>
                     <div class="col-lg-4 text-lg-end">
-                        @php $ytChannel = config('ivoireindustriemag.youtube.channel_url'); @endphp
+                        @php $ytChannel = site_setting('social_youtube') ?: config('ivoireindustriemag.youtube.channel_url'); @endphp
                         @if (is_string($ytChannel) && $ytChannel !== '' && $ytChannel !== '#')
                             <a href="{{ $ytChannel }}" class="btn btn-lg btn-danger me-lg-2 mb-2 mb-lg-0" target="_blank" rel="noopener noreferrer">
                                 <i class="fa-brands fa-youtube me-2" aria-hidden="true"></i>{{ __('front.tv_subscribe_cta') }}

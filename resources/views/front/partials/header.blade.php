@@ -28,15 +28,22 @@
                                 </div>
                                 <div class="social d-inline-flex">
                                     <ul class="list-unstyled">
-                                        <li><a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a></li>
                                         <li>
-                                            <a href="{{ config('ivoireindustriemag.social.twitter.url') ?? '#' }}" aria-label="X" target="_blank" rel="noopener noreferrer">
+                                            <a href="{{ site_setting('social_facebook') ?: '#' }}" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ site_setting('social_x') ?: '#' }}" aria-label="X" target="_blank" rel="noopener noreferrer">
                                                 <svg style="width:16px;height:16px;display:inline-block;fill:currentColor;vertical-align:-0.125em;" viewBox="0 0 24 24" aria-hidden="true">
                                                     <path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.5l-5.1-6.6L5.8 22H2.7l7.3-8.4L1.2 2h6.6l4.6 6L18.9 2Zm-1.1 18h1.7L6.9 3.9H5.1L17.8 20Z"/>
                                                 </svg>
                                             </a>
                                         </li>
-                                        <li><a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a></li>
+                                        <li>
+                                            <a href="{{ site_setting('social_linkedin') ?: '#' }}" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin-in"></i></a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ site_setting('social_youtube') ?: '#' }}" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube"></i></a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -65,21 +72,31 @@
                     @endif
 
                     @if ($industry->isNotEmpty())
-                        <li class="nav-item dropdown ivm-mega">
-                            <a class="nav-link dropdown-toggle" href="#" id="navIndustry" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Industrie <i class="fas fa-chevron-down fa-xs"></i>
-                            </a>
-                            <div class="dropdown-menu p-3 ivm-mega-menu" aria-labelledby="navIndustry">
-                                <div class="row g-2">
-                                    @foreach ($industry->chunk((int) ceil($industry->count() / 4)) as $chunk)
-                                        <div class="col-6 col-lg-3">
-                                            <ul class="list-unstyled mb-0">
-                                                @foreach ($chunk as $cat)
-                                                    <li><a class="dropdown-item" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ $cat->name }}</a></li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endforeach
+                        @php
+                            $industryHub = $navIndustryParent ?? null;
+                        @endphp
+                        <li class="nav-item ivm-mega">
+                            <div class="dropdown">
+                                <div class="d-flex align-items-center flex-wrap">
+                                    @if ($industryHub)
+                                        <a class="nav-link py-2 {{ request()->routeIs('categories.show') && request()->route('slug') === $industryHub->slug ? 'active' : '' }}" href="{{ category_show_url($industryHub) }}">{{ category_i18n($industryHub) }}</a>
+                                        <a class="nav-link dropdown-toggle py-2 ps-1 pe-2 border-0" href="#" id="navIndustry" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" aria-label="{{ __('nav.industry_open_submenu') }}"><i class="fas fa-chevron-down fa-xs" aria-hidden="true"></i></a>
+                                    @else
+                                        <a class="nav-link dropdown-toggle py-2" href="#" id="navIndustry" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ __('nav.industry') }} <i class="fas fa-chevron-down fa-xs"></i></a>
+                                    @endif
+                                </div>
+                                <div class="dropdown-menu p-3 ivm-mega-menu" aria-labelledby="navIndustry">
+                                    <div class="row g-2">
+                                        @foreach ($industry->chunk((int) ceil($industry->count() / 4)) as $chunk)
+                                            <div class="col-6 col-lg-3">
+                                                <ul class="list-unstyled mb-0">
+                                                    @foreach ($chunk as $cat)
+                                                        <li><a class="dropdown-item" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ category_i18n($cat) }}</a></li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -98,6 +115,9 @@
                             </li>
                         @endif
                     @endforeach
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('jobs.index') ? 'active' : '' }}" href="{{ route('jobs.index') }}">{{ __('nav.jobs') }}</a>
+                    </li>
                 </ul>
             </div>
             <div class="add-listing">

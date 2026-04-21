@@ -43,7 +43,7 @@
             @endif
             @if ($article->author)
                 <div class="blog-post-user mt-2">
-                    <span style="color:#243e5d;">{{ $article->signature ?: ($article->author->name ?? 'Rédaction') }}</span>
+                    <span style="color:#243e5d;">par {{ $article->signature ?: ($article->author->name ?? 'Rédaction') }}</span>
                 </div>
             @endif
             <a class="btn-link d-inline-block mt-3" href="{{ route('articles.show', ['slug' => $articleSlug]) }}">{{ __('app.read_more') }}</a>
@@ -85,7 +85,7 @@
             @endif
             @if ($article->author)
                 <div class="blog-post-user mt-2 mb-2">
-                    <span style="color:#243e5d;">{{ $article->signature ?: ($article->author->name ?? 'Rédaction') }}</span>
+                    <span style="color:#243e5d;">par {{ $article->signature ?: ($article->author->name ?? 'Rédaction') }}</span>
                 </div>
             @endif
             <a class="btn-link d-inline-block mt-2" href="{{ route('articles.show', ['slug' => $articleSlug]) }}">{{ __('app.read_more') }}</a>

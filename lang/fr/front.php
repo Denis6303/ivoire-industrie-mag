@@ -18,7 +18,7 @@ return [
     'related_topic' => 'Sur le même sujet',
     'publish' => 'Publier',
     'most_read' => 'Les plus lus...',
-    'newsletter' => 'Newsletter',
+    'newsletter' => 'Newsletters',
     'navigation' => 'Navigation',
     'information' => 'Informations',
     'subscribe' => 'Abonnez-vous',

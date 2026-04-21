@@ -18,7 +18,7 @@ return [
     'related_topic' => 'Related topics',
     'publish' => 'Publish',
     'most_read' => 'Most read',
-    'newsletter' => 'Newsletter',
+    'newsletter' => 'Newsletters',
     'navigation' => 'Navigation',
     'information' => 'Information',
     'subscribe' => 'Subscribe',

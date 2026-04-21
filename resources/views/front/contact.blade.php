@@ -12,21 +12,31 @@
                     <div class="border rounded p-3 bg-white h-100 text-center shadow-sm">
                         <div class="mb-2 text-primary"><i class="fa-solid fa-envelope"></i></div>
                         <div class="small text-muted mb-1">{{ __('contact.email') }}</div>
-                        <a href="mailto:contact@ivoireindustriemag.com">contact@ivoireindustriemag.com</a>
+                        @php $pubEmail = site_setting('contact_email'); @endphp
+                        @if($pubEmail !== '')
+                            <a href="mailto:{{ $pubEmail }}">{{ $pubEmail }}</a>
+                        @else
+                            <span class="text-muted">—</span>
+                        @endif
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="border rounded p-3 bg-white h-100 text-center shadow-sm">
                         <div class="mb-2 text-primary"><i class="fa-solid fa-phone"></i></div>
                         <div class="small text-muted mb-1">{{ __('contact.phone') }}</div>
-                        <a href="tel:+2250101151908">00225 01 01 151 908</a>
+                        @php $pubPhone = site_setting('contact_phone'); @endphp
+                        @if($pubPhone !== '')
+                            <a href="tel:{{ preg_replace('/\s+/', '', $pubPhone) }}">{{ $pubPhone }}</a>
+                        @else
+                            <span class="text-muted">—</span>
+                        @endif
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="border rounded p-3 bg-white h-100 text-center shadow-sm">
                         <div class="mb-2 text-primary"><i class="fa-solid fa-location-dot"></i></div>
                         <div class="small text-muted mb-1">{{ __('contact.address') }}</div>
-                        <span>Abidjan, Côte d’Ivoire</span>
+                        <span>{{ site_setting('contact_address') }}</span>
                     </div>
                 </div>
             </div>

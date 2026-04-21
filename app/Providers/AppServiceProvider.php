@@ -64,6 +64,7 @@ class AppServiceProvider extends ServiceProvider
                     'dossier',
                     'districts',
                     'made-in-ivory-coast',
+                    'etudes',
                     '2im-tv',
                     'magazine',
                     'emploi',
@@ -100,6 +101,7 @@ class AppServiceProvider extends ServiceProvider
                 }
 
                 $navData = [
+                    'industryParent' => $industryParent,
                     'industryCategories' => $industryCategories,
                     'primaryCategories' => $primaryCategories,
                     'hiddenCategories' => $hiddenCategories,
@@ -109,6 +111,7 @@ class AppServiceProvider extends ServiceProvider
                 request()->attributes->set('navData', $navData);
             }
 
+            $view->with('navIndustryParent', $navData['industryParent'] ?? null);
             $view->with('navIndustryCategories', $navData['industryCategories'] ?? collect());
             $view->with('navPrimaryCategories', $navData['primaryCategories'] ?? collect());
             $view->with('navHiddenCategories', $navData['hiddenCategories'] ?? collect());
@@ -119,6 +122,7 @@ class AppServiceProvider extends ServiceProvider
                 $adsData = [
                     'header' => null,
                     'sidebar' => null,
+                    'sidebar_secondary' => null,
                     'in_article' => null,
                     'footer' => null,
                 ];
@@ -139,6 +143,7 @@ class AppServiceProvider extends ServiceProvider
 
                     $adsData['header'] = $activeAds->firstWhere('position', 'header');
                     $adsData['sidebar'] = $activeAds->firstWhere('position', 'sidebar');
+                    $adsData['sidebar_secondary'] = $activeAds->firstWhere('position', 'sidebar_secondary');
                     $adsData['in_article'] = $activeAds->firstWhere('position', 'in_article');
                     $adsData['footer'] = $activeAds->firstWhere('position', 'footer');
                 }
@@ -148,6 +153,7 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with('adHeader', $adsData['header'] ?? null);
             $view->with('adSidebar', $adsData['sidebar'] ?? null);
+            $view->with('adSidebarSecondary', $adsData['sidebar_secondary'] ?? null);
             $view->with('adInArticle', $adsData['in_article'] ?? null);
             $view->with('adFooter', $adsData['footer'] ?? null);
         });

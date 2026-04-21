@@ -18,8 +18,14 @@
                 <div class="col-md-6">
                     <label class="form-label">Position</label>
                     <select class="form-select" name="position" required>
-                        @foreach(['header','sidebar','in_article','footer'] as $pos)
-                            <option value="{{ $pos }}" @selected(old('position', $publicite->position) === $pos)>{{ $pos }}</option>
+                        @foreach([
+                            'header' => 'En-tête',
+                            'sidebar' => 'Colonne latérale (haut)',
+                            'sidebar_secondary' => 'Colonne latérale (entre Entreprises qui bougent & Focus)',
+                            'in_article' => 'Dans l’article',
+                            'footer' => 'Pied de page',
+                        ] as $pos => $posLabel)
+                            <option value="{{ $pos }}" @selected(old('position', $publicite->position) === $pos)>{{ $posLabel }}</option>
                         @endforeach
                     </select>
                 </div>

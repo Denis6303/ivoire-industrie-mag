@@ -4,9 +4,18 @@
 @section('meta_description', e(\Illuminate\Support\Str::limit(strip_tags($category->description ?? ''), 160)))
 
 @section('content')
+    @php
+        $breadcrumbItems = [['label' => __('front.articles_title'), 'url' => route('articles.index')]];
+        if ($category->parent_id && $category->parent) {
+            $breadcrumbItems[] = [
+                'label' => category_i18n($category->parent),
+                'url' => category_show_url($category->parent),
+            ];
+        }
+    @endphp
     @include('front.partials.page-header', [
-        'title' => $category->name,
-        'breadcrumbItems' => [['label' => 'Articles', 'url' => route('articles.index')]],
+        'title' => category_i18n($category),
+        'breadcrumbItems' => $breadcrumbItems,
     ])
 
     <section class="space-ptb">

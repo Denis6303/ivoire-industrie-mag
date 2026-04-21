@@ -73,6 +73,7 @@ class CategorySeeder extends Seeder
             'Districts' => [],
             'Agenda' => [],
             'Made In Ivory Coast' => [],
+            'Études' => [],
             '2IM TV' => [],
             'Hommes et Femmes industriels ivoiriens' => [],
             'Dossier' => [],

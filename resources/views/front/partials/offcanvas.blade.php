@@ -53,6 +53,7 @@
         @php
             $primary = $navPrimaryCategories ?? collect();
             $industry = $navIndustryCategories ?? collect();
+            $industryParent = $navIndustryParent ?? null;
             $hidden = $navHiddenCategories ?? collect();
             $innovationChildren = $navInnovationChildren ?? collect();
         @endphp
@@ -64,14 +65,21 @@
                 @endif
 
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center justify-content-between" data-bs-toggle="collapse" href="#offcanvasIndustry" role="button" aria-expanded="false" aria-controls="offcanvasIndustry">
-                        <span>{{ __('nav.industry') }}</span>
-                        <i class="fas fa-chevron-down fa-xs"></i>
-                    </a>
+                    @if ($industryParent)
+                        <div class="d-flex align-items-stretch border-bottom">
+                            <a class="nav-link flex-grow-1 py-2" href="{{ category_show_url($industryParent) }}">{{ category_i18n($industryParent) }}</a>
+                            <a class="nav-link py-2 px-2 text-secondary" data-bs-toggle="collapse" href="#offcanvasIndustry" role="button" aria-expanded="false" aria-controls="offcanvasIndustry" aria-label="{{ __('nav.industry_open_submenu') }}"><i class="fas fa-chevron-down fa-xs"></i></a>
+                        </div>
+                    @else
+                        <a class="nav-link d-flex align-items-center justify-content-between" data-bs-toggle="collapse" href="#offcanvasIndustry" role="button" aria-expanded="false" aria-controls="offcanvasIndustry">
+                            <span>{{ __('nav.industry') }}</span>
+                            <i class="fas fa-chevron-down fa-xs"></i>
+                        </a>
+                    @endif
                     <div class="collapse" id="offcanvasIndustry">
                         <ul class="list-unstyled ps-3 mb-2">
                             @foreach ($industry as $cat)
-                                <li><a class="nav-link py-1" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ $cat->name }}</a></li>
+                                <li><a class="nav-link py-1" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ category_i18n($cat) }}</a></li>
                             @endforeach
                         </ul>
                     </div>
@@ -95,10 +103,10 @@
                     @if ($innovationChildren->isEmpty())
                         <a class="nav-link" href="{{ route('categories.show', ['slug' => $innovation->slug]) }}">{{ __('nav.innovation') }}</a>
                     @else
-                        <a class="nav-link d-flex align-items-center justify-content-between" data-bs-toggle="collapse" href="#offcanvasInnovation" role="button" aria-expanded="false" aria-controls="offcanvasInnovation">
-                            <span>{{ __('nav.innovation') }}</span>
-                            <i class="fas fa-chevron-down fa-xs"></i>
-                        </a>
+                        <div class="d-flex align-items-stretch border-bottom">
+                            <a class="nav-link flex-grow-1 py-2" href="{{ category_show_url($innovation) }}">{{ __('nav.innovation') }}</a>
+                            <a class="nav-link py-2 px-2 text-secondary" data-bs-toggle="collapse" href="#offcanvasInnovation" role="button" aria-expanded="false" aria-controls="offcanvasInnovation" aria-label="{{ __('nav.industry_open_submenu') }}"><i class="fas fa-chevron-down fa-xs"></i></a>
+                        </div>
                         <div class="collapse" id="offcanvasInnovation">
                             <ul class="list-unstyled ps-3 mb-2">
                                 @foreach ($innovationChildren as $child)
@@ -115,6 +123,7 @@
                 'dossier' => __('nav.dossier'),
                 'districts' => __('nav.districts'),
                 'made-in-ivory-coast' => __('nav.made_in_ivory_coast'),
+                'etudes' => __('nav.studies'),
                 '2im-tv' => __('nav.tv'),
                 'magazine' => __('nav.magazine'),
             ] as $slug => $label)

@@ -173,6 +173,7 @@ if (! function_exists('category_i18n')) {
             'dossier' => 'nav.dossier',
             'districts' => 'nav.districts',
             'made-in-ivory-coast' => 'nav.made_in_ivory_coast',
+            'etudes' => 'nav.studies',
             '2im-tv' => 'nav.tv',
             'magazine' => 'nav.magazine',
             'emploi' => 'nav.jobs',
@@ -182,6 +183,28 @@ if (! function_exists('category_i18n')) {
         $key = $map[$category->slug] ?? null;
 
         return $key ? __($key) : (string) $category->name;
+    }
+}
+
+if (! function_exists('category_route')) {
+    /**
+     * URL catégorie avec contournement du cache 301 historique sur "industrie".
+     */
+    function category_route(string $slug): string
+    {
+        $params = ['slug' => $slug];
+        if ($slug === 'industrie') {
+            $params['v'] = '2';
+        }
+
+        return route('categories.show', $params);
+    }
+}
+
+if (! function_exists('category_show_url')) {
+    function category_show_url(?\App\Models\Category $category): string
+    {
+        return category_route((string) ($category?->slug ?? ''));
     }
 }
 
@@ -259,5 +282,65 @@ if (! function_exists('article_cover')) {
         }
 
         return asset(ltrim($url, '/'));
+    }
+}
+
+if (! function_exists('site_setting_fallback')) {
+    function site_setting_fallback(string $key, ?string $default): string
+    {
+        if ($default !== null && $default !== '') {
+            return $default;
+        }
+        $mail = config('mail.from.address');
+
+        return match ($key) {
+            'contact_email' => is_string($mail) ? $mail : '',
+            'contact_phone' => '',
+            'contact_address' => 'Abidjan, Côte d’Ivoire',
+            'social_facebook' => (string) data_get(config('ivoireindustriemag.social'), 'facebook.url', '#'),
+            'social_x' => (string) data_get(config('ivoireindustriemag.social'), 'twitter.url', '#'),
+            'social_linkedin' => (string) data_get(config('ivoireindustriemag.social'), 'linkedin.url', '#'),
+            'social_instagram' => (string) data_get(config('ivoireindustriemag.social'), 'instagram.url', '#'),
+            'social_youtube' => (string) data_get(config('ivoireindustriemag.social'), 'youtube.url', '#'),
+            default => '',
+        };
+    }
+}
+
+if (! function_exists('flush_site_settings_cache')) {
+    function flush_site_settings_cache(): void
+    {
+        \Illuminate\Support\Facades\Cache::forget('site_settings_flat');
+    }
+}
+
+if (! function_exists('site_setting')) {
+    /**
+     * Valeur paramétrable en admin (table site_settings), avec repli sur config / .env.
+     */
+    function site_setting(string $key, ?string $default = null): string
+    {
+        try {
+            if (! \Illuminate\Support\Facades\Schema::hasTable('site_settings')) {
+                return site_setting_fallback($key, $default);
+            }
+        } catch (\Throwable $e) {
+            return site_setting_fallback($key, $default);
+        }
+
+        $flat = \Illuminate\Support\Facades\Cache::remember('site_settings_flat', 3600, function () {
+            try {
+                return \App\Models\SiteSetting::query()->pluck('value', 'key')->all();
+            } catch (\Throwable $e) {
+                return [];
+            }
+        });
+
+        $value = $flat[$key] ?? null;
+        if (is_string($value) && trim($value) !== '') {
+            return trim($value);
+        }
+
+        return site_setting_fallback($key, $default);
     }
 }

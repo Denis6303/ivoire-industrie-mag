@@ -3,9 +3,10 @@
 return [
     'industry_story' => 'Industry story',
     'industry' => 'Industry',
+    'industry_open_submenu' => 'Open Industry submenu',
     'industrial_zones' => 'Industrial zones',
     'investment' => 'Investment',
-    'factory' => 'Factory',
+    'factory' => 'Factories',
     'international' => 'International',
     'agenda' => 'Agenda',
     'innovation' => 'Innovation',
@@ -16,4 +17,5 @@ return [
     'tv' => '2IM TV',
     'magazine' => 'Magazine',
     'jobs' => 'Jobs',
+    'studies' => 'Studies',
 ];
