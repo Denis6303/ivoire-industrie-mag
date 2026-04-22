@@ -2,26 +2,25 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Données minimales pour une livraison propre du site.
+     * - UserSeeder        : super admin uniquement
+     * - CategorySeeder    : toutes les catégories et sous-catégories
+     * - SiteSettingSeeder : paramètres du site (email, téléphone, réseaux…)
+     *
+     * Les seeders de démonstration (articles, tags, entreprises, projets,
+     * newsletters, commentaires) sont volontairement exclus.
      */
     public function run(): void
     {
         $this->call([
             UserSeeder::class,
-            IndustrySectorSeeder::class,
             CategorySeeder::class,
-            TagSeeder::class,
             SiteSettingSeeder::class,
-            CompanySeeder::class,
-            IndustrialProjectSeeder::class,
-            NewsletterSubscriptionSeeder::class,
-            MediaSeeder::class,
         ]);
     }
 }

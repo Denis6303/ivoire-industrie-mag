@@ -8,18 +8,15 @@ use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         User::updateOrCreate(
-            ['email' => 'admin@ivoireindustriemag.ci'],
+            ['email' => 'm.fofana@ivoireindustriemag.com'],
             [
-                'name' => 'Super Admin',
-                'password' => Hash::make('Admin@2025'),
-                'role' => 'super_admin',
-                'slug' => 'super-admin',
+                'name'     => 'Super Admin',
+                'password' => Hash::make('FoF@2026'),
+                'role'     => 'super_admin',
+                'slug'     => 'super-admin',
             ]
         );
     }
