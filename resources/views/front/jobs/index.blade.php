@@ -36,7 +36,16 @@
                         </div>
                     </div>
                 @empty
-                    <div class="col-12"><p class="text-muted">Aucune offre disponible pour le moment.</p></div>
+                    <div class="col-12 text-center py-5">
+                        <i class="fa-solid fa-briefcase fa-3x mb-4 d-block" style="color:#e0e6ef;"></i>
+                        <h3 class="fw-bold mb-2" style="color:#243e5d;">Aucune offre disponible pour le moment</h3>
+                        <p class="text-muted mb-4" style="max-width:480px;margin:0 auto;">
+                            Revenez prochainement — de nouvelles opportunités dans le secteur industriel ivoirien seront publiées ici.
+                        </p>
+                        <a href="{{ route('home') }}" class="btn btn-primary">
+                            <i class="fa-solid fa-house me-2"></i>Retour à l'accueil
+                        </a>
+                    </div>
                 @endforelse
             </div>
             <div class="mt-2">{{ $offers->links() }}</div>
