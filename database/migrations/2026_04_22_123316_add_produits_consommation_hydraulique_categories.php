@@ -21,6 +21,7 @@ return new class extends Migration
         $toInsert = [
             ['name' => 'Produits de consommation', 'slug' => 'produits-de-consommation', 'color' => '#0ea5e9'],
             ['name' => 'Hydraulique',               'slug' => 'hydraulique',               'color' => '#0284c7'],
+            ['name' => 'Entrepreneuriat',           'slug' => 'entrepreneuriat',           'color' => '#7c3aed'],
         ];
 
         foreach ($toInsert as $cat) {
@@ -45,7 +46,7 @@ return new class extends Migration
     public function down(): void
     {
         DB::table('categories')
-            ->whereIn('slug', ['produits-de-consommation', 'hydraulique'])
+            ->whereIn('slug', ['produits-de-consommation', 'hydraulique', 'entrepreneuriat'])
             ->delete();
     }
 };
