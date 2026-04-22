@@ -12,7 +12,12 @@ class TrustProxies extends Middleware
      *
      * @var array<int, string>|string|null
      */
-    protected $proxies;
+    /**
+     * o2switch (et la plupart des hébergeurs mutualisés) font passer les requêtes
+     * par un reverse proxy. Sans ce réglage, url() et asset() génèrent des URLs
+     * en http:// même quand le visiteur est en HTTPS.
+     */
+    protected $proxies = '*';
 
     /**
      * The headers that should be used to detect proxies.

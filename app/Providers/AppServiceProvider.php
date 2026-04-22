@@ -6,6 +6,7 @@ use App\Models\Advertisement;
 use App\Models\Category;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +25,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // En production, forcer toutes les URLs générées par Laravel en HTTPS
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
+
         Schema::defaultStringLength(191);
 
         Paginator::useBootstrapFive();
