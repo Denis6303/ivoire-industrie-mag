@@ -52,6 +52,7 @@ class CategorySeeder extends Seeder
                 'Informatique',
                 'Transport et Logistique',
                 'Produits de consommation',
+                'Hydraulique',
                 'Événementiel',
                 'Sport',
                 'Économie',
