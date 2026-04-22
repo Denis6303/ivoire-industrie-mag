@@ -1,2 +1,15 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Bloquer les zones privées
+Disallow: /admin/
+Disallow: /admin-login
+Disallow: /*/connexion
+Disallow: /*/inscription
+
+# Bloquer les ressources générées / tmp
+Disallow: /storage/temp/
+Disallow: /storage/private/
+
+# Sitemaps
+Sitemap: https://www.ivoireindustriemag.com/sitemap.xml

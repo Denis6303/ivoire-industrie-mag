@@ -31,6 +31,7 @@
         }
     </style>
     @stack('styles')
+    @include('front.partials.seo-jsonld')
 </head>
 <body>
     @include('front.partials.loader')

@@ -1,6 +1,10 @@
 @extends('layouts.front')
 
 @section('title', __('about.title'))
+@section('meta_description', app()->getLocale() === 'en'
+    ? 'Ivoire Industrie Magazine (2IM) is the leading media dedicated to industry in Côte d\'Ivoire. Discover our mission, values and editorial team.'
+    : 'Ivoire Industrie Magazine (2IM) est le premier média dédié à l\'industrie en Côte d\'Ivoire. Découvrez notre mission, nos valeurs et notre équipe éditoriale.')
+@section('meta_keywords', 'à propos Ivoire Industrie Magazine, 2IM, magazine industrie Côte d\'Ivoire, media industrie ivoirien')
 
 @section('content')
     @include('front.partials.page-header', ['title' => __('about.title')])

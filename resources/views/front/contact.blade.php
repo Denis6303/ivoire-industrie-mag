@@ -1,6 +1,10 @@
 @extends('layouts.front')
 
 @section('title', __('contact.title'))
+@section('meta_description', app()->getLocale() === 'en'
+    ? 'Contact Ivoire Industrie Magazine (2IM) — Get in touch with the editorial team for partnerships, press releases or advertising.'
+    : 'Contactez Ivoire Industrie Magazine (2IM) — Rejoignez l\'équipe éditoriale pour des partenariats, communiqués de presse ou publicités.')
+@section('meta_robots', 'noindex, follow')
 
 @section('content')
     @include('front.partials.page-header', ['title' => __('contact.title')])

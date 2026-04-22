@@ -13,6 +13,7 @@ use App\Http\Controllers\Front\NewsletterController;
 use App\Http\Controllers\Front\ProjectController;
 use App\Http\Controllers\Front\SearchController;
 use App\Http\Controllers\Front\SectorController;
+use App\Http\Controllers\Front\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +25,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect('/'.config('app.locale', 'fr'));
 });
+
+// Sitemaps (hors locale, accessibles par les robots crawlers)
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.index');
+Route::get('/sitemap-{locale}-static.xml', [SitemapController::class, 'staticPages'])
+    ->where('locale', 'fr|en')->name('sitemap.static');
+Route::get('/sitemap-{locale}-articles.xml', [SitemapController::class, 'articles'])
+    ->where('locale', 'fr|en')->name('sitemap.articles');
 
 Route::get('/newsletter/confirm/{token}', [NewsletterController::class, 'confirm'])->name('newsletter.confirm');
 Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');

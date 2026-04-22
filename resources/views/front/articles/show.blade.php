@@ -22,6 +22,79 @@
 @endphp
 @section('title', e($articleMetaTitle))
 @section('meta_description', e($articleMetaDescription))
+@section('og_type', 'article')
+@section('meta_image', $article->image ? asset('storage/'.$article->image) : asset('images/og-default.jpg'))
+@section('canonical', url()->current())
+
+@section('jsonld')
+@php
+    $appUrl       = rtrim(config('app.url'), '/');
+    $articleUrl   = url()->current();
+    $imageUrl     = $article->image ? asset('storage/'.$article->image) : asset('images/og-default.jpg');
+    $authorName   = $article->author?->name ?? 'Ivoire Industrie Magazine';
+    $publishedAt  = $article->published_at?->toAtomString() ?? $article->created_at->toAtomString();
+    $modifiedAt   = $article->updated_at->toAtomString();
+
+    $breadItems   = [['url' => $appUrl.'/'.app()->getLocale().'/', 'name' => 'Accueil']];
+    foreach ($articleBreadcrumbItems as $b) {
+        $breadItems[] = ['url' => $b['url'], 'name' => $b['label']];
+    }
+    $breadItems[] = ['url' => $articleUrl, 'name' => $articleTitle];
+@endphp
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "@id": "{{ $articleUrl }}#article",
+    "headline": {{ json_encode(Str::limit($articleTitle, 110)) }},
+    "description": {{ json_encode(Str::limit(strip_tags($articleMetaDescription), 200)) }},
+    "url": "{{ $articleUrl }}",
+    "datePublished": "{{ $publishedAt }}",
+    "dateModified": "{{ $modifiedAt }}",
+    "inLanguage": "{{ app()->getLocale() }}",
+    "image": {
+        "@type": "ImageObject",
+        "url": "{{ $imageUrl }}",
+        "width": 1200,
+        "height": 630
+    },
+    "author": {
+        "@type": "Person",
+        "name": {{ json_encode($authorName) }}
+    },
+    "publisher": {
+        "@id": "{{ $appUrl }}/#organization"
+    },
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ $articleUrl }}"
+    }
+    @if ($article->category)
+    ,"articleSection": {{ json_encode(category_i18n($article->category)) }}
+    @endif
+    @if ($article->tags && $article->tags->isNotEmpty())
+    ,"keywords": {{ json_encode($article->tags->pluck('name')->implode(', ')) }}
+    @endif
+}
+</script>
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        @foreach ($breadItems as $idx => $b)
+        {
+            "@type": "ListItem",
+            "position": {{ $idx + 1 }},
+            "name": {{ json_encode($b['name']) }},
+            "item": "{{ $b['url'] }}"
+        }{{ !$loop->last ? ',' : '' }}
+        @endforeach
+    ]
+}
+</script>
+@endsection
+
 @push('styles')
     <style>
         .sidebar-home-posts .blog-post.post-style-07 {

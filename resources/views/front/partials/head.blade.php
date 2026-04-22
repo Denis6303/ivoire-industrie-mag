@@ -1,20 +1,79 @@
+@php
+    $locale      = app()->getLocale();
+    $altLocale   = $locale === 'fr' ? 'en' : 'fr';
+    $appUrl      = rtrim(config('app.url'), '/');
+    $siteName    = 'Ivoire Industrie Magazine';
+    $defaultDesc = $locale === 'en'
+        ? 'Ivoire Industrie Magazine (2IM) — The leading media outlet dedicated to industry in Côte d\'Ivoire: agro-industry, energy, mining, BTP, innovation and investment.'
+        : 'Ivoire Industrie Magazine (2IM) — Le premier média dédié à l\'industrie en Côte d\'Ivoire : agro-industrie, énergie, mines, BTP, innovation et investissement.';
+    $defaultKeywords = 'industrie Côte d\'Ivoire, actualité industrielle, magazine industrie ivoirien, 2IM, investissement Côte d\'Ivoire, agro-industrie, mines, pétrole gaz, BTP, énergie, innovation, zones industrielles, économie ivoirienne, industrie africaine, Abidjan';
+    $metaTitle   = trim(strip_tags($__env->yieldContent('title')));
+    $fullTitle   = $metaTitle ? "$metaTitle — $siteName" : $siteName;
+    $metaDesc    = trim(strip_tags($__env->yieldContent('meta_description'))) ?: $defaultDesc;
+    $metaImage   = trim($__env->yieldContent('meta_image')) ?: asset('images/og-default.jpg');
+    $canonicalUrl = trim($__env->yieldContent('canonical')) ?: url()->current();
+    // URL de la même page dans l'autre langue
+    $altUrl = str_replace("/$locale/", "/$altLocale/", $canonicalUrl);
+@endphp
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="@yield('meta_description', 'Ivoire Industrie Magazine - Actualités et analyses sur l\'industrie en Côte d\'Ivoire.')">
-<title>
-@hasSection('title')
-    @yield('title') - Ivoire Industrie Magazine
-@else
-    Ivoire Industrie Magazine
-@endif
-</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+{{-- Titre --}}
+<title>{{ $fullTitle }}</title>
+
+{{-- Description & mots-clés --}}
+<meta name="description" content="{{ Str::limit($metaDesc, 160) }}">
+<meta name="keywords" content="{{ $__env->yieldContent('meta_keywords') ?: $defaultKeywords }}">
+<meta name="author" content="{{ $siteName }}">
+<meta name="robots" content="{{ $__env->yieldContent('meta_robots') ?: 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' }}">
+<meta name="language" content="{{ $locale === 'en' ? 'English' : 'French' }}">
+<meta name="revisit-after" content="3 days">
+<meta name="geo.region" content="CI">
+<meta name="geo.placename" content="Abidjan, Côte d'Ivoire">
+
+{{-- Canonical & hreflang (multilangue) --}}
+<link rel="canonical" href="{{ $canonicalUrl }}">
+<link rel="alternate" hreflang="fr" href="{{ str_replace("/$altLocale/", '/fr/', $canonicalUrl) }}">
+<link rel="alternate" hreflang="en" href="{{ str_replace("/$locale/", '/en/', $canonicalUrl) }}">
+<link rel="alternate" hreflang="x-default" href="{{ str_replace("/$locale/", '/fr/', $canonicalUrl) }}">
+
+{{-- Open Graph (Facebook, LinkedIn, WhatsApp…) --}}
+<meta property="og:type" content="{{ $__env->yieldContent('og_type') ?: 'website' }}">
+<meta property="og:site_name" content="{{ $siteName }}">
+<meta property="og:title" content="{{ $fullTitle }}">
+<meta property="og:description" content="{{ Str::limit($metaDesc, 200) }}">
+<meta property="og:url" content="{{ $canonicalUrl }}">
+<meta property="og:image" content="{{ $metaImage }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{ $fullTitle }}">
+<meta property="og:locale" content="{{ $locale === 'en' ? 'en_US' : 'fr_FR' }}">
+<meta property="og:locale:alternate" content="{{ $locale === 'en' ? 'fr_FR' : 'en_US' }}">
+
+{{-- Twitter / X Cards --}}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $fullTitle }}">
+<meta name="twitter:description" content="{{ Str::limit($metaDesc, 200) }}">
+<meta name="twitter:image" content="{{ $metaImage }}">
+<meta name="twitter:image:alt" content="{{ $fullTitle }}">
+<meta name="twitter:site" content="@IvoireIndustrie">
+
+{{-- Favicon & icônes --}}
 <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
+<link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
+
+{{-- Sitemap (hint pour crawlers) --}}
+<link rel="sitemap" type="application/xml" title="Sitemap" href="{{ url('/sitemap.xml') }}">
+
+{{-- Polices & CSS --}}
 <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/fontawesome/all.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
 <style>
-    /* Pas de flèches Owl dans l’en-tête (filet de sécurité si le DOM est mal positionné) */
+    /* Pas de flèches Owl dans l'en-tête (filet de sécurité si le DOM est mal positionné) */
     .header .owl-nav {
         display: none !important;
     }
@@ -121,7 +180,7 @@
         background: rgba(255, 120, 0, 0.10);
     }
 
-    /* Homepage sections spacing + dot alignment + pink CTA */
+    /* Homepage sections spacing + dot alignment */
     .ivm-section-sep {
         margin-top: 44px;
         margin-bottom: 26px;
@@ -137,7 +196,6 @@
         flex: 0 0 12px;
         transform: translateY(1px);
     }
-    /* CTA uniformes: on utilise le orange du thème (btn-primary) */
 
     /* Réduit la largeur du conteneur de l'heure dans le header */
     .header .add-listing .clock {

@@ -1,7 +1,13 @@
 @extends('layouts.front')
 
-@section('title', e($category->name))
-@section('meta_description', e(\Illuminate\Support\Str::limit(strip_tags($category->description ?? ''), 160)))
+@section('title', e(category_i18n($category)))
+@section('meta_description', e(\Illuminate\Support\Str::limit(strip_tags(
+    $category->description
+    ?? (app()->getLocale() === 'en'
+        ? 'Browse all '.category_i18n($category).' articles on Ivoire Industrie Magazine — industry news from Côte d\'Ivoire.'
+        : 'Retrouvez tous les articles '.category_i18n($category).' sur Ivoire Industrie Magazine — actualité industrielle de Côte d\'Ivoire.')
+), 160)))
+@section('meta_keywords', category_i18n($category).', industrie Côte d\'Ivoire, actualité '.category_i18n($category).', 2IM, Ivoire Industrie Magazine')
 
 @section('content')
     @php
