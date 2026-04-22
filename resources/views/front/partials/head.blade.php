@@ -8,7 +8,7 @@
         : 'Ivoire Industrie Magazine (2IM) — Le premier média dédié à l\'industrie en Côte d\'Ivoire : agro-industrie, énergie, mines, BTP, innovation et investissement.';
     $defaultKeywords = 'industrie Côte d\'Ivoire, actualité industrielle, magazine industrie ivoirien, 2IM, investissement Côte d\'Ivoire, agro-industrie, mines, pétrole gaz, BTP, énergie, innovation, zones industrielles, économie ivoirienne, industrie africaine, Abidjan';
     $metaTitle   = trim(strip_tags($__env->yieldContent('title')));
-    $fullTitle   = $metaTitle ? "$metaTitle — $siteName" : $siteName;
+    $fullTitle   = $metaTitle ? "$metaTitle - $siteName" : $siteName;
     $metaDesc    = trim(strip_tags($__env->yieldContent('meta_description'))) ?: $defaultDesc;
     $metaImage   = trim($__env->yieldContent('meta_image')) ?: asset('images/og-default.jpg');
     $canonicalUrl = trim($__env->yieldContent('canonical')) ?: url()->current();
