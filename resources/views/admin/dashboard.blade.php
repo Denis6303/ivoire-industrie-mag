@@ -27,10 +27,10 @@
             <div class="card card-mag h-100 admin-stat-card admin-stat-info">
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between mb-2">
-                        <div class="text-muted small">Vues aujourd'hui</div>
+                        <div class="text-muted small">Vues</div>
                         <i class="fa-regular fa-eye admin-stat-icon"></i>
                     </div>
-                    <div class="display-6 fw-bold">{{ $stats['views_today'] }}</div>
+                    <div class="display-6 fw-bold">{{ number_format($stats['total_views'], 0, ',', ' ') }}</div>
                 </div>
             </div>
         </div>
@@ -156,28 +156,19 @@
 
             const labels = @json($chart['labels']);
             const publishedData = @json($chart['published']);
-            const viewsData = @json($chart['views']);
 
             new Chart(canvas, {
-                type: 'line',
+                type: 'bar',
                 data: {
                     labels,
                     datasets: [
                         {
                             label: 'Articles publiés',
                             data: publishedData,
+                            backgroundColor: 'rgba(78, 110, 242, 0.75)',
                             borderColor: '#4e6ef2',
-                            backgroundColor: 'rgba(78, 110, 242, 0.1)',
-                            fill: true,
-                            tension: 0.35
-                        },
-                        {
-                            label: 'Vues',
-                            data: viewsData,
-                            borderColor: '#ff7800',
-                            backgroundColor: 'rgba(255, 120, 0, 0.1)',
-                            fill: true,
-                            tension: 0.35
+                            borderWidth: 1,
+                            borderRadius: 4
                         }
                     ]
                 },
