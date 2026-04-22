@@ -56,6 +56,8 @@ class ArticleSeeder extends Seeder
         ]);
 
         $blueprints = [
+            ['title' => 'Études industrielles : l\'université au service de l\'usine ivoirienne', 'type' => 'analysis', 'category' => 'etudes'],
+            ['title' => 'Expertise : les ingénieurs ivoiriens face aux défis de la transformation locale', 'type' => 'report', 'category' => 'etudes'],
             ['title' => 'Cacao: une nouvelle capacité de conditionnement arrive à Abidjan', 'type' => 'news', 'category' => 'agro-industrie'],
             ['title' => 'Énergie: pourquoi les industriels misent sur le solaire hybride', 'type' => 'analysis', 'category' => 'energie'],
             ['title' => 'Interview: “La qualité export se gagne à l’usine”', 'type' => 'interview', 'category' => 'usines'],

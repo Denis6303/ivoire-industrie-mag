@@ -42,7 +42,7 @@ class HomeController extends Controller
             'investissement',
             'usines',
             'international',
-            'agenda',
+            'etudes',
             'innovation',
             'hommes-et-femmes-industriels-ivoiriens',
             'dossier',

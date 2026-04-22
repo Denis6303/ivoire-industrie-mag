@@ -138,4 +138,12 @@
         transform: translateY(1px);
     }
     /* CTA uniformes: on utilise le orange du thème (btn-primary) */
+
+    /* Réduit la largeur du conteneur de l'heure dans le header */
+    .header .add-listing .clock {
+        min-width: auto !important;
+        padding: 5px 8px !important;
+        margin-right: 8px !important;
+        font-size: 14px !important;
+    }
 </style>
