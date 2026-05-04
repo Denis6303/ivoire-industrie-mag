@@ -12,6 +12,7 @@
     $metaDesc    = trim(strip_tags($__env->yieldContent('meta_description'))) ?: $defaultDesc;
     $metaImage   = trim($__env->yieldContent('meta_image')) ?: asset('images/og-default.jpg');
     $canonicalUrl = trim($__env->yieldContent('canonical')) ?: url()->current();
+    $gaMeasurementId = config('services.google_analytics.measurement_id');
     // URL de la même page dans l'autre langue
     $altUrl = str_replace("/$locale/", "/$altLocale/", $canonicalUrl);
 @endphp
@@ -58,6 +59,19 @@
 <meta name="twitter:image" content="{{ $metaImage }}">
 <meta name="twitter:image:alt" content="{{ $fullTitle }}">
 <meta name="twitter:site" content="@IvoireIndustrie">
+
+{{-- Google Analytics (GA4) --}}
+@if (!empty($gaMeasurementId))
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaMeasurementId }}"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ $gaMeasurementId }}', {
+        anonymize_ip: true
+    });
+</script>
+@endif
 
 {{-- Favicon & icônes --}}
 <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
