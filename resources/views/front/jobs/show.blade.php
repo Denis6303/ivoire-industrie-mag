@@ -24,7 +24,7 @@
                                 <span><i class="fa-solid fa-calendar-days me-1"></i>{{ $offer->published_at->translatedFormat('j F Y') }}</span>
                             @endif
                             @if ($offer->signature)
-                                <span>par <span style="color:#243e5d;">{{ $offer->signature }}</span></span>
+                                <span><span style="color:#ff7800;font-weight:700;">par</span> <span style="color:#243e5d;">{{ $offer->signature }}</span></span>
                             @endif
                         </div>
 

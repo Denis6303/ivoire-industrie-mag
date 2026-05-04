@@ -31,7 +31,10 @@
                                             </div>
                                         @endif
                                         @if($offer->signature)
-                                            <div class="blog-post-user mb-2"><span>par <span style="color:#243e5d;">{{ $offer->signature }}</span></span></div>
+                                            <div class="blog-post-user mb-2">
+                                                <span style="color:#ff7800;font-weight:700;">par</span>
+                                                <span style="color:#243e5d;"> {{ $offer->signature }}</span>
+                                            </div>
                                         @endif
                                         <a class="btn-link d-inline-block" href="{{ route('jobs.show', ['slug' => $offer->slug]) }}">Voir l'offre</a>
                                     </div>

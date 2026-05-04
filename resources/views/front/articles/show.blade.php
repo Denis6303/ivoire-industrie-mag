@@ -194,8 +194,14 @@
             font-size: 1rem;
             line-height: 1.8;
         }
+        .article-body {
+            margin-bottom: .25rem;
+        }
+        .article-body > *:last-child {
+            margin-bottom: .25rem !important;
+        }
         .ivm-article-author {
-            margin-top: .75rem;
+            margin-top: 0;
             margin-bottom: .5rem;
             color: #243e5d;
             font-weight: 600;
