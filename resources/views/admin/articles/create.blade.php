@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Image de couverture (optionnel)</label>
+                    <label class="form-label">Image de couverture</label>
                     <div class="admin-upload-zone">
                         <input type="file" name="cover_file" id="cover_file" class="form-control" accept="image/*">
                         <div class="small text-muted mt-2">Formats recommandés : JPG/PNG/WebP, max 10 MB.</div>
@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Image 2 (après 2 paragraphes)</label>
+                    <label class="form-label">Image 2 (après 2 paragraphes) (optionnel)</label>
                     <div class="admin-upload-zone">
                         <input type="file" name="cover_file_secondary" id="cover_file_secondary" class="form-control" accept="image/*">
                         <div class="small text-muted mt-2">Insertion automatique après 2 paragraphes.</div>
@@ -68,7 +68,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Image 3 (après 4 paragraphes)</label>
+                    <label class="form-label">Image 3 (après 4 paragraphes) (optionnel)</label>
                     <div class="admin-upload-zone">
                         <input type="file" name="cover_file_tertiary" id="cover_file_tertiary" class="form-control" accept="image/*">
                         <div class="small text-muted mt-2">Insertion automatique après 4 paragraphes.</div>

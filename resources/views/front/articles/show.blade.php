@@ -179,6 +179,31 @@
             object-fit: cover;
             border-radius: 0.5rem;
         }
+        .ivm-article-title {
+            font-size: 1.5rem;
+            line-height: 1.3;
+        }
+        .ivm-article-excerpt {
+            font-size: 1rem;
+            line-height: 1.8;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .article-body,
+        .article-body p {
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+        .ivm-article-author {
+            margin-top: .75rem;
+            margin-bottom: .5rem;
+            color: #243e5d;
+            font-weight: 600;
+        }
+        .ivm-article-author .by-prefix {
+            color: #ff7800;
+            font-weight: 700;
+        }
     </style>
 @endpush
 
@@ -195,7 +220,7 @@
                     <article class="blog-post-info">
                         <div class="blog-content pb-0">
                             <div class="blog-post-title mb-3">
-                                <h1 class="mb-0 h3">{{ $articleTitle }}</h1>
+                                <h1 class="mb-0 ivm-article-title">{{ $articleTitle }}</h1>
                             </div>
 
                             @php $cover = article_cover($article->cover_image); @endphp
@@ -224,8 +249,8 @@
                         </div>
                             </div>
                             @if ($articleExcerpt)
-                                <div class="mb-4">
-                                    <p class="lead fw-bold mb-0">{{ $articleExcerpt }}</p>
+                                <div class="mb-2">
+                                    <p class="ivm-article-excerpt">{{ $articleExcerpt }}</p>
                                 </div>
                             @endif
                             @php
@@ -271,8 +296,8 @@
                                 </div>
                             @endif
                             @if ($article->author)
-                                <div class="blog-post-user mt-4 mb-2">
-                                    <span style="color:#243e5d;">par {{ $article->signature ?: $article->author->name }}</span>
+                                <div class="blog-post-user ivm-article-author">
+                                    <span><span class="by-prefix">par</span> {{ $article->signature ?: $article->author->name }}</span>
                                 </div>
                             @endif
                             @if ($article->tags->isNotEmpty())

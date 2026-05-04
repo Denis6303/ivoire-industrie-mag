@@ -101,7 +101,7 @@ class ArticleController extends Controller
             ],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['integer', 'exists:tags,id'],
-            'cover_file' => ['nullable', 'image', 'max:10240'],
+            'cover_file' => ['required', 'image', 'max:10240'],
             'cover_alt' => ['nullable', 'string', 'max:255'],
             'cover_file_secondary' => $supportsExtraImages ? ['nullable', 'image', 'max:10240'] : ['nullable'],
             'cover_alt_secondary' => $supportsExtraImages ? ['nullable', 'string', 'max:255'] : ['nullable'],

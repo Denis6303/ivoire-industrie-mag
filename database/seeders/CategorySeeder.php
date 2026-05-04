@@ -54,6 +54,8 @@ class CategorySeeder extends Seeder
                 'Produits de consommation',
                 'Hydraulique',
                 'Entrepreneuriat',
+                'Offshoring',
+                'Sourcing',
                 'Événementiel',
                 'Sport',
                 'Économie',
