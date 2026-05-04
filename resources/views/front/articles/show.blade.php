@@ -195,14 +195,14 @@
             line-height: 1.8;
         }
         .article-body {
-            margin-bottom: .25rem;
+            margin-bottom: 0;
         }
         .article-body > *:last-child {
-            margin-bottom: .25rem !important;
+            margin-bottom: 0 !important;
         }
         .ivm-article-author {
             margin-top: 0;
-            margin-bottom: .5rem;
+            margin-bottom: .25rem;
             color: #243e5d;
             font-weight: 600;
         }
