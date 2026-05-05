@@ -179,6 +179,12 @@
             object-fit: cover;
             border-radius: 0.5rem;
         }
+        .ivm-article-cover-wrap img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
         .ivm-article-title {
             font-size: 1.5rem;
             line-height: 1.3;
@@ -232,8 +238,8 @@
                             @php $cover = article_cover($article->cover_image); @endphp
                             @if ($cover)
                                 <div class="blog-post-image mb-3">
-                                    <div class="overflow-hidden rounded" style="height: 360px;">
-                                        <img class="w-100 h-100" style="object-fit: cover;" src="{{ $cover }}" alt="{{ $article->cover_alt ?? $articleTitle }}" loading="eager" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-16x9.svg') }}';">
+                                    <div class="overflow-hidden rounded ivm-article-cover-wrap">
+                                        <img src="{{ $cover }}" alt="{{ $article->cover_alt ?? $articleTitle }}" loading="eager" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-16x9.svg') }}';">
                                     </div>
                                     @if (!empty($article->cover_alt))
                                         <small class="d-block text-muted mt-1 mb-0">{{ $article->cover_alt }}</small>
