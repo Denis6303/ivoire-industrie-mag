@@ -23,7 +23,7 @@
                                     </div>
                                     <div class="blog-post-details">
                                         <h4 class="blog-title mb-2">
-                                            <a href="{{ route('jobs.show', ['slug' => $offer->slug]) }}" style="font-size:0.85rem !important; line-height:1.25 !important;">{{ $offer->title }}</a>
+                                            <a href="{{ route('jobs.show', ['slug' => $offer->slug]) }}" style="font-size:0.5rem !important; line-height:1.25 !important;">{{ $offer->title }}</a>
                                         </h4>
                                         @if($offer->published_at)
                                             <div class="blog-post-meta mb-2">
