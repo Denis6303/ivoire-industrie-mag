@@ -22,7 +22,7 @@
                                         </a>
                                     </div>
                                     <div class="blog-post-details">
-                                        <h4 class="blog-title mb-2" style="font-size:1rem;">
+                                        <h4 class="blog-title mb-2" style="font-size:0.5rem;">
                                             <a href="{{ route('jobs.show', ['slug' => $offer->slug]) }}">{{ $offer->title }}</a>
                                         </h4>
                                         @if($offer->published_at)
