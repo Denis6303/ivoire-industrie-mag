@@ -193,6 +193,7 @@
             font-size: 1rem;
             line-height: 1.8;
             font-weight: 700;
+            text-align: justify;
             margin-bottom: 1rem;
         }
         .article-body,
