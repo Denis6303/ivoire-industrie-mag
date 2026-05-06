@@ -22,7 +22,7 @@
                                         </a>
                                     </div>
                                     <div class="blog-post-details">
-                                        <h4 class="blog-title mb-2">
+                                        <h4 class="blog-title mb-2" style="font-size:1.1rem;">
                                             <a href="{{ route('jobs.show', ['slug' => $offer->slug]) }}">{{ $offer->title }}</a>
                                         </h4>
                                         @if($offer->published_at)
@@ -64,14 +64,14 @@
                                     Entreprises, diffusez vos offres d'emploi sur 2IM.
                                 </p>
                                 <p class="mb-3" style="font-size:1rem;">
-                                    Envoyez vos offres par e-mail ou sur WhatsApp.
+                                    Envoyez vos offres par e-mail ou WhatsApp.
                                 </p>
                                 <div class="d-grid gap-2">
                                     <a href="mailto:contact@ivoireindustriemag.com" class="btn btn-danger d-inline-flex align-items-center justify-content-center" style="white-space: nowrap;">
-                                        <i class="fa-solid fa-envelope me-2"></i>Email (contact@ivoireindustriemag.com)
+                                        <i class="fa-solid fa-envelope me-2"></i>contact@ivoireindustriemag.com
                                     </a>
                                     <a href="https://wa.me/2250101151908" target="_blank" rel="noopener noreferrer" class="btn btn-success">
-                                        <i class="fa-brands fa-whatsapp me-2"></i>WhatsApp (+225 01 01 151 908)
+                                        <i class="fa-brands fa-whatsapp me-2"></i>+225 01 01 151 908
                                     </a>
                                 </div>
                             </div>

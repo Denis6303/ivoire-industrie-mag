@@ -199,6 +199,7 @@
         .article-body p {
             font-size: 1rem;
             line-height: 1.8;
+            text-align: justify;
         }
         .article-body {
             margin-bottom: 0;
