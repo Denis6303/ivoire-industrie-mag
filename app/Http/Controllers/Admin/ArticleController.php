@@ -464,31 +464,30 @@ class ArticleController extends Controller
     }
 
     /**
-     * Rubriques assignables à un article classique :
-     * - rubriques « feuilles » (pas d’enfants en base), sauf la catégorie technique « brève » ;
-     * - sous-catégories des pôles Industrie / Innovation / International.
+     * Rubriques assignables à un article :
+     * - toutes les catégories de 1er niveau (menus principaux), sauf la catégorie technique « brève » ;
+     * - toutes les sous-catégories (peu importe le parent).
      */
     private function articleAssignableCategories()
     {
-        $leafRubriques = Category::query()
+        $rootRubriques = Category::query()
             ->whereNull('parent_id')
-            ->whereDoesntHave('children')
             ->where('slug', '!=', 'breve')
             ->orderBy('order')
             ->orderBy('name')
             ->get();
 
-        $hubChildren = Category::query()
+        $childRubriques = Category::query()
             ->whereNotNull('parent_id')
-            ->whereHas('parent', function ($query) {
-                $query->whereIn('slug', ['industrie', 'innovation', 'international']);
-            })
             ->with('parent:id,name')
             ->orderBy('order')
             ->orderBy('name')
             ->get();
 
-        return $leafRubriques->concat($hubChildren);
+        return $rootRubriques
+            ->concat($childRubriques)
+            ->unique('id')
+            ->values();
     }
 
     private function allowedArticleCategoryIds(): array
