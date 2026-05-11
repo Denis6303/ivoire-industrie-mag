@@ -5,7 +5,7 @@
                 <div class="col-xl-4 col-lg-6 col-md-6 col-sm-7 mb-4">
                     <div class="footer-about">
                         <a class="footer-logo" href="{{ route('home') }}">
-                            <img src="{{ asset('images/logo_2im_blanc.svg') }}" alt="Ivoire Industrie Magazine" style="width: 180px; max-width: 100%; height: auto; object-fit: contain;">
+                            <img src="{{ asset('images/2im_blanc.png') }}" alt="Ivoire Industrie Magazine" style="width: 180px; max-width: 100%; height: auto; object-fit: contain;">
                         </a>
                         <p class="text-white small mb-2" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;line-height:1.55;">
                             {{ __('about.intro_p1') }} {{ __('about.intro_p2') }} {{ __('about.intro_p3') }}

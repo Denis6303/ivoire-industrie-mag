@@ -44,7 +44,7 @@
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasMainLabel">
             <a class="navbar-brand" href="{{ route('home') }}">
-                <img class="ivm-offcanvas-logo" src="{{ asset('images/logo_2im_couleur.svg') }}" alt="{{ config('app.name') }}" style="height: 42px; width: auto; max-width: 220px; display:block;" onerror="this.onerror=null;this.src='{{ asset('images/2im_couleur.svg') }}';">
+                <img class="ivm-offcanvas-logo" src="{{ asset('images/2im_couleur.png') }}" alt="{{ config('app.name') }}" style="height: 42px; width: auto; max-width: 220px; display:block;" onerror="this.onerror=null;this.src='{{ asset('images/2im_couleur.png') }}';">
             </a>
         </h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="{{ __('app.close') }}"></button>

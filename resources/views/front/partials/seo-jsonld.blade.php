@@ -20,7 +20,7 @@
     "url": "{{ $appUrl }}/{{ $locale }}/",
     "logo": {
         "@type": "ImageObject",
-        "url": "{{ asset('images/logo_2im_couleur.svg') }}",
+        "url": "{{ asset('images/2im_couleur.png') }}",
         "width": 250,
         "height": 80
     },

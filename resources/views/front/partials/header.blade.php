@@ -60,7 +60,7 @@
     <nav class="navbar navbar-expand-lg">
         <div class="container position-relative">
             <a class="navbar-brand" href="{{ route('home') }}">
-                <img src="{{ asset('images/logo_2im_couleur.svg') }}" alt="{{ config('app.name') }}" style="height: 52px; width: auto; max-width: 100%; object-fit: contain;">
+                <img src="{{ asset('images/2im_couleur.png') }}" alt="{{ config('app.name') }}" style="height: 52px; width: auto; max-width: 100%; object-fit: contain;">
             </a>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
