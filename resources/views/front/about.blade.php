@@ -6,6 +6,20 @@
     : 'Ivoire Industrie Magazine (2IM) est le premier média dédié à l\'industrie en Côte d\'Ivoire. Découvrez notre mission, nos valeurs et notre équipe éditoriale.')
 @section('meta_keywords', 'à propos Ivoire Industrie Magazine, 2IM, magazine industrie Côte d\'Ivoire, media industrie ivoirien')
 
+@push('styles')
+    <style>
+        /* Titre à propos : affichage complet sur mobile (pas de … sur une seule ligne) */
+        .ivm-about-headline {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            line-height: 1.35;
+            hyphens: auto;
+            word-wrap: break-word;
+        }
+    </style>
+@endpush
+
 @section('content')
     @include('front.partials.page-header', ['title' => __('about.title')])
 
@@ -14,7 +28,7 @@
             <div class="row align-items-start g-4">
                 <div class="col-lg-7">
                     <div class="border rounded p-4 p-md-5 bg-white shadow-sm">
-                        <h2 class="mb-4 h4" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ __('about.headline') }}</h2>
+                        <h2 class="mb-4 h4 ivm-about-headline">{{ __('about.headline') }}</h2>
                         @php
                             $p1 = __('about.intro_p1');
                             $bold = 'Ivoire Industrie Magazine (2IM)';
