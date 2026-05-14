@@ -2,6 +2,16 @@
 
 @section('title', e($company->name))
 
+@push('styles')
+    <style>
+        .ivm-company-body.article-body,
+        .ivm-company-body.article-body p,
+        .ivm-company-body.article-body li {
+            text-align: justify;
+        }
+    </style>
+@endpush
+
 @section('content')
     @include('front.partials.page-header', [
         'title' => $company->name,
@@ -29,7 +39,7 @@
                             @endif
                         </div>
                     </div>
-                    <div class="article-body">
+                    <div class="article-body ivm-company-body">
                         {!! $company->description !!}
                     </div>
                     @if ($company->projects->isNotEmpty())
