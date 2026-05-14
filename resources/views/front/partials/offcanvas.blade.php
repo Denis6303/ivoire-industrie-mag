@@ -110,7 +110,7 @@
                         <div class="collapse" id="offcanvasInnovation">
                             <ul class="list-unstyled ps-3 mb-2">
                                 @foreach ($innovationChildren as $child)
-                                    <li><a class="nav-link py-1" href="{{ route('categories.show', ['slug' => $child->slug]) }}">{{ $child->name }}</a></li>
+                                    <li><a class="nav-link py-1" href="{{ route('categories.show', ['slug' => $child->slug]) }}">{{ category_i18n($child) }}</a></li>
                                 @endforeach
                             </ul>
                         </div>
@@ -126,10 +126,14 @@
                 'etudes' => __('nav.studies'),
                 '2im-tv' => __('nav.tv'),
                 'magazine' => __('nav.magazine'),
+                'emploi' => '',
             ] as $slug => $label)
                 @if ($cat = $hidden->firstWhere('slug', $slug))
-                    <li class="nav-item"><a class="nav-link" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ $label }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ $slug === 'emploi' ? category_i18n($cat) : $label }}</a></li>
                 @endif
+            @endforeach
+            @foreach ($navOffcanvasExtraCategories ?? collect() as $cat)
+                <li class="nav-item"><a class="nav-link" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ category_i18n($cat) }}</a></li>
             @endforeach
             <li class="nav-item"><a class="nav-link" href="{{ route('jobs.index') }}">{{ __('nav.jobs') }}</a></li>
         </ul>

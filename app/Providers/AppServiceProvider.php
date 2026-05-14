@@ -106,12 +106,28 @@ class AppServiceProvider extends ServiceProvider
                         ->get();
                 }
 
+                $offcanvasCoveredSlugs = $primaryCategories->pluck('slug')
+                    ->merge($hiddenCategories->pluck('slug'))
+                    ->merge($industryCategories->pluck('slug'))
+                    ->merge($innovationChildren->pluck('slug'))
+                    ->unique()
+                    ->filter();
+
+                $navOffcanvasExtraCategories = Category::query()
+                    ->whereHas('articles', fn ($q) => $q->published())
+                    ->where('slug', '!=', 'industrie')
+                    ->orderBy('name')
+                    ->get()
+                    ->reject(fn (Category $c) => $offcanvasCoveredSlugs->contains($c->slug))
+                    ->values();
+
                 $navData = [
                     'industryParent' => $industryParent,
                     'industryCategories' => $industryCategories,
                     'primaryCategories' => $primaryCategories,
                     'hiddenCategories' => $hiddenCategories,
                     'innovationChildren' => $innovationChildren,
+                    'offcanvasExtraCategories' => $navOffcanvasExtraCategories,
                 ];
 
                 request()->attributes->set('navData', $navData);
@@ -122,6 +138,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('navPrimaryCategories', $navData['primaryCategories'] ?? collect());
             $view->with('navHiddenCategories', $navData['hiddenCategories'] ?? collect());
             $view->with('navInnovationChildren', $navData['innovationChildren'] ?? collect());
+            $view->with('navOffcanvasExtraCategories', $navData['offcanvasExtraCategories'] ?? collect());
 
             $adsData = request()->attributes->get('adsData');
             if ($adsData === null) {
