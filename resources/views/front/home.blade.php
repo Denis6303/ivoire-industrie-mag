@@ -115,7 +115,7 @@
                             <div class="widget post-widget">
                                 <h6 class="widget-title">{{ __('front.briefs') }}</h6>
                                 <div class="pt-2 sidebar-home-posts">
-                                    @foreach ($breves->take(4) as $breve)
+                                    @foreach ($breves as $breve)
                                         @php
                                             $breveCover = article_cover($breve->cover_image);
                                             $breveTitle = article_i18n($breve, 'title') ?: $breve->title;
@@ -165,14 +165,14 @@
                         <div class="widget mt-4">
                             <h6 class="widget-title">{{ __('front.moving_companies') }}</h6>
                             @forelse ($companies as $company)
-                                <div class="d-flex mb-3 align-items-center border-bottom pb-3">
+                                <div class="d-flex mb-3 align-items-start border-bottom pb-3">
                                     @if ($company->logo)
-                                        <img src="{{ $company->logo }}" alt="{{ $company->name }}" class="rounded me-3 bg-white" style="width:56px;height:56px;object-fit:contain;" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
+                                        <img src="{{ $company->logo }}" alt="{{ $company->name }}" class="rounded me-3 bg-white flex-shrink-0" style="width:56px;height:56px;object-fit:contain;" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
                                     @endif
-                                    <div>
+                                    <div class="min-w-0 flex-grow-1" style="text-align: justify;">
                                         <h6 class="mb-0"><a href="{{ route('companies.show', ['slug' => $company->slug]) }}">{{ $company->name }}</a></h6>
                                         @if ($company->sector)
-                                            <small class="text-muted">{{ $company->sector->name }}</small>
+                                            <small class="text-muted d-inline-block w-100">{{ $company->sector->name }}</small>
                                         @endif
                                     </div>
                                 </div>

@@ -448,7 +448,7 @@ class ArticleController extends Controller
             ['slug' => 'breve'],
             [
                 'name' => 'Brève',
-                'description' => 'Articles au format brève.',
+                'description' => null,
                 'color' => '#ff7800',
                 'order' => 0,
             ]

@@ -26,7 +26,7 @@
 
     <section class="space-ptb">
         <div class="container">
-            @if ($category->description)
+            @if ($category->description && $category->slug !== 'breve')
                 <p class="lead mb-4">{{ $category->description }}</p>
             @endif
             <div class="row">

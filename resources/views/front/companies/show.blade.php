@@ -17,6 +17,7 @@
                             <img src="{{ $company->logo }}" alt="{{ $company->name }}" class="me-4 rounded bg-white" style="width:120px;height:120px;object-fit:contain;" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
                         @endif
                         <div>
+                            <h2 class="h5 mb-2">{{ $company->name }}</h2>
                             @if ($company->sector)
                                 <span class="badge bg-primary mb-2">{{ $company->sector->name }}</span>
                             @endif

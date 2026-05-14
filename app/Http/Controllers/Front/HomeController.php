@@ -12,16 +12,18 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $featured = Article::with(['category', 'author'])->published()->featured()->latest('published_at')->first();
-        $latest = Article::with(['category', 'author'])->published()->where('type', '!=', 'breve')->latest('published_at')->take(2)->get();
+        $excludeAgenda = fn ($q) => $q->whereDoesntHave('category', fn ($cq) => $cq->where('slug', 'agenda'));
+
+        $featured = Article::with(['category', 'author'])->published()->featured()->where($excludeAgenda)->latest('published_at')->first();
+        $latest = Article::with(['category', 'author'])->published()->where('type', '!=', 'breve')->where($excludeAgenda)->latest('published_at')->take(2)->get();
         $breves = Article::with(['category', 'author'])
             ->published()
             ->where('type', 'breve')
             ->latest('published_at')
-            ->take(4)
+            ->take(2)
             ->get();
         $brevesTotal = Article::published()->where('type', 'breve')->count();
-        $companies = Company::where('is_active', true)->latest()->take(5)->get();
+        $companies = Company::with('sector')->where('is_active', true)->latest()->take(5)->get();
         $featuredCompanies = Company::query()
             ->where('is_active', true)
             ->where('is_featured', true)
@@ -30,6 +32,7 @@ class HomeController extends Controller
             ->get();
 
         $sidebarPopular = Article::with('category')->published()
+            ->where($excludeAgenda)
             ->orderByDesc('view_count')
             ->latest('published_at')
             ->take(6)
