@@ -151,7 +151,7 @@
                                 </div>
                                 @if (($brevesTotal ?? 0) > ($breves->count() ?? 0))
                                     <div class="text-center pt-1">
-                                        <a href="{{ route('categories.show', ['slug' => 'breve']) }}" class="btn-link d-inline-block mt-2">{{ __('front.see_more') }}</a>
+                                        <a href="{{ route('categories.show', ['slug' => 'breve']) }}" class="btn btn-primary btn-sm" role="button">{{ __('front.see_more') }}</a>
                                     </div>
                                 @endif
                             </div>
