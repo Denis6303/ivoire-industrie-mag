@@ -6,6 +6,20 @@
     : 'Ivoire Industrie Magazine (2IM) — Actualités industrielles de Côte d\'Ivoire : agro-industrie, énergie, mines, BTP, innovation, investissement et zones industrielles.')
 @section('meta_keywords', 'industrie Côte d\'Ivoire, actualité industrielle, 2IM, magazine industrie ivoirien, Abidjan industrie, investissement ivoirien, agro-industrie, énergie, mines, BTP, innovation, zones industrielles, économie africaine')
 
+@push('styles')
+    <style>
+        /* Brèves — « Voir plus » : bouton compact (largeur au texte, padding serré, proche du rendu « Lire la suite ») */
+        .sidebar .widget.post-widget .ivm-breves-see-more {
+            display: inline-block !important;
+            width: auto !important;
+            max-width: max-content;
+            padding: 0.25rem 0.65rem !important;
+            font-size: 0.8125rem;
+            line-height: 1.25;
+        }
+    </style>
+@endpush
+
 @section('content')
     <section class="space-ptb">
         <div class="container">
@@ -151,7 +165,7 @@
                                 </div>
                                 @if (($brevesTotal ?? 0) > ($breves->count() ?? 0))
                                     <div class="text-center pt-1">
-                                        <a href="{{ route('categories.show', ['slug' => 'breve']) }}" class="btn btn-primary btn-sm" role="button">{{ __('front.see_more') }}</a>
+                                        <a href="{{ route('categories.show', ['slug' => 'breve']) }}" class="btn btn-primary btn-sm ivm-breves-see-more" role="button">{{ __('front.see_more') }}</a>
                                     </div>
                                 @endif
                             </div>
