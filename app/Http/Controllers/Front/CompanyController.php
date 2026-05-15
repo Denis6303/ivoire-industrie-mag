@@ -9,13 +9,13 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        $companies = Company::with('sector')->where('is_active', true)->latest()->paginate(12);
+        $companies = Company::with('category')->where('is_active', true)->latest()->paginate(12);
         return view('front.companies.index', compact('companies'));
     }
 
     public function show(string $locale, string $slug)
     {
-        $company = Company::with(['sector', 'projects'])->where('slug', $slug)->firstOrFail();
+        $company = Company::with(['category', 'projects'])->where('slug', $slug)->where('is_active', true)->firstOrFail();
         return view('front.companies.show', compact('company'));
     }
 }

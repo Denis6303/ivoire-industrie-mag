@@ -22,15 +22,24 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
+                    @php
+                        $companyLogo = company_logo($company->logo);
+                        $logoFallback = asset('images/ivm-placeholder-square.svg');
+                    @endphp
                     <div class="d-flex align-items-start mb-4">
-                        @if ($company->logo)
-                            <img src="{{ $company->logo }}" alt="{{ $company->name }}" class="me-4 rounded bg-white" style="width:120px;height:120px;object-fit:contain;" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
-                        @endif
+                        <img
+                            src="{{ $companyLogo ?: $logoFallback }}"
+                            alt="{{ $company->name }}"
+                            class="me-4 rounded bg-white flex-shrink-0"
+                            style="width:120px;height:120px;object-fit:contain;"
+                            loading="lazy"
+                            onerror="this.onerror=null;this.src='{{ $logoFallback }}';"
+                        >
                         <div>
-                            <h2 class="h5 mb-2">{{ $company->name }}</h2>
-                            @if ($company->sector)
-                                <span class="badge bg-primary mb-2">{{ $company->sector->name }}</span>
+                            @if ($company->category)
+                                <span class="badge badge-medium d-inline-block mb-2" style="background: {{ $company->category->color ?: '#ff7800' }}; color: #fff;">{{ category_i18n($company->category) }}</span>
                             @endif
+                            <h2 class="h5 mb-2">{{ $company->name }}</h2>
                             @if ($company->city || $company->region)
                                 <p class="text-muted mb-0"><i class="fa-solid fa-location-dot me-1"></i>{{ $company->city }}@if ($company->region), {{ $company->region }}@endif</p>
                             @endif

@@ -61,7 +61,7 @@ class CompanyController extends Controller
 
         if ($request->hasFile('logo_file')) {
             $path = $request->file('logo_file')->store('companies', 'public');
-            $data['logo'] = Storage::disk('public')->url($path);
+            $data['logo'] = asset('storage/'.$path);
         }
 
         Company::create($data);
@@ -123,7 +123,7 @@ class CompanyController extends Controller
 
         if ($request->hasFile('logo_file')) {
             $path = $request->file('logo_file')->store('companies', 'public');
-            $data['logo'] = Storage::disk('public')->url($path);
+            $data['logo'] = asset('storage/'.$path);
         }
 
         $entreprise->update($data);

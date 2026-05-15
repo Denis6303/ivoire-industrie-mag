@@ -285,6 +285,26 @@ if (! function_exists('article_cover')) {
     }
 }
 
+if (! function_exists('company_logo')) {
+    /**
+     * URL du logo entreprise : toujours via asset() pour respecter APP_URL (sous-dossier WAMP, etc.).
+     */
+    function company_logo(?string $url): ?string
+    {
+        if ($url === null || trim($url) === '') {
+            return null;
+        }
+
+        $url = trim($url);
+
+        if (preg_match('/companies\/([^\/\?#]+)$/i', $url, $matches)) {
+            return asset('storage/companies/'.$matches[1]);
+        }
+
+        return article_cover($url);
+    }
+}
+
 if (! function_exists('site_setting_fallback')) {
     function site_setting_fallback(string $key, ?string $default): string
     {

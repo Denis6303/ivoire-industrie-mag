@@ -12,9 +12,18 @@
                     <div class="col-md-6 col-lg-4 mb-4">
                         <div class="blog-post post-style-02 h-100 border rounded p-3">
                             <div class="d-flex align-items-start mb-3">
-                                @if ($company->logo)
-                                    <img src="{{ $company->logo }}" alt="{{ $company->name }}" class="me-3 rounded bg-white" style="width:64px;height:64px;object-fit:contain;" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
-                                @endif
+                                @php
+                                    $companyLogo = company_logo($company->logo);
+                                    $logoFallback = asset('images/ivm-placeholder-square.svg');
+                                @endphp
+                                <img
+                                    src="{{ $companyLogo ?: $logoFallback }}"
+                                    alt="{{ $company->name }}"
+                                    class="me-3 rounded bg-white flex-shrink-0"
+                                    style="width:64px;height:64px;object-fit:contain;"
+                                    loading="lazy"
+                                    onerror="this.onerror=null;this.src='{{ $logoFallback }}';"
+                                >
                                 <div>
                                     <h4 class="blog-title h6 mb-1">
                                         <a href="{{ route('companies.show', ['slug' => $company->slug]) }}">{{ $company->name }}</a>

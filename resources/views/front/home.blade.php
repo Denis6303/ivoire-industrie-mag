@@ -179,14 +179,20 @@
                         <div class="widget mt-4">
                             <h6 class="widget-title">{{ __('front.moving_companies') }}</h6>
                             @forelse ($companies as $company)
+                                @php
+                                    $companyLogo = company_logo($company->logo);
+                                    $logoFallback = asset('images/ivm-placeholder-square.svg');
+                                @endphp
                                 <div class="d-flex mb-3 align-items-start border-bottom pb-3">
-                                    @if ($company->logo)
-                                        <img src="{{ $company->logo }}" alt="{{ $company->name }}" class="rounded me-3 bg-white flex-shrink-0" style="width:56px;height:56px;object-fit:contain;" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
-                                    @endif
+                                    <img
+                                        src="{{ $companyLogo ?: $logoFallback }}"
+                                        alt="{{ $company->name }}"
+                                        class="rounded me-3 bg-white flex-shrink-0"
+                                        style="width:56px;height:56px;object-fit:contain;"
+                                        loading="lazy"
+                                        onerror="this.onerror=null;this.src='{{ $logoFallback }}';"
+                                    >
                                     <div class="min-w-0 flex-grow-1" style="text-align: justify;">
-                                        @if ($company->category)
-                                            <small class="text-muted d-block mb-1">{{ category_i18n($company->category) }}</small>
-                                        @endif
                                         <h6 class="mb-0"><a href="{{ route('companies.show', ['slug' => $company->slug]) }}">{{ $company->name }}</a></h6>
                                     </div>
                                 </div>
@@ -204,10 +210,19 @@
                             <div class="widget mt-4">
                                 <h6 class="widget-title">{{ __('front.featured_companies') }}</h6>
                                 @foreach ($featuredCompanies->take(5) as $company)
+                                    @php
+                                        $companyLogo = company_logo($company->logo);
+                                        $logoFallback = asset('images/ivm-placeholder-square.svg');
+                                    @endphp
                                     <div class="d-flex mb-3 align-items-center border-bottom pb-3">
-                                        @if ($company->logo)
-                                            <img src="{{ $company->logo }}" alt="{{ $company->name }}" class="rounded me-3 bg-white" style="width:56px;height:56px;object-fit:contain;" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
-                                        @endif
+                                        <img
+                                            src="{{ $companyLogo ?: $logoFallback }}"
+                                            alt="{{ $company->name }}"
+                                            class="rounded me-3 bg-white flex-shrink-0"
+                                            style="width:56px;height:56px;object-fit:contain;"
+                                            loading="lazy"
+                                            onerror="this.onerror=null;this.src='{{ $logoFallback }}';"
+                                        >
                                         <div>
                                             <h6 class="mb-0"><a href="{{ route('companies.show', ['slug' => $company->slug]) }}">{{ $company->name }}</a></h6>
                                             @if ($company->description)
