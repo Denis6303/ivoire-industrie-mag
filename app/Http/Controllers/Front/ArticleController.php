@@ -12,10 +12,12 @@ class ArticleController extends Controller
     {
         $articles = Article::with(['author', 'category', 'tags', 'sectors'])
             ->published()
+            ->excludingAgendaAndBriefs()
             ->latest('published_at')
             ->paginate(12);
 
         $recentArticles = Article::published()
+            ->excludingAgendaAndBriefs()
             ->latest('published_at')
             ->take(6)
             ->get();
@@ -64,6 +66,7 @@ class ArticleController extends Controller
             ->get();
 
         $recentArticles = Article::published()
+            ->excludingAgendaAndBriefs()
             ->where('id', '!=', $article->id)
             ->latest('published_at')
             ->take(6)

@@ -14,7 +14,7 @@ class Company extends Model
 
     protected $fillable = [
         'name', 'slug', 'logo', 'description', 'website', 'email', 'phone', 'city', 'region',
-        'address', 'is_featured', 'is_active', 'industry_sector_id',
+        'address', 'is_featured', 'is_active', 'industry_sector_id', 'category_id',
     ];
 
     protected $casts = ['is_featured' => 'boolean', 'is_active' => 'boolean'];
@@ -22,6 +22,11 @@ class Company extends Model
     public function sector(): BelongsTo
     {
         return $this->belongsTo(IndustrySector::class, 'industry_sector_id');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function projects(): HasMany

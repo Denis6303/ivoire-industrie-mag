@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -77,5 +78,15 @@ class Article extends Model
     public function scopeByType($query, string $type)
     {
         return $query->where('type', $type);
+    }
+
+    /**
+     * Liste articles : exclut les brèves (type) et les rubriques agenda / brève.
+     */
+    public function scopeExcludingAgendaAndBriefs(Builder $query): Builder
+    {
+        return $query
+            ->where('type', '!=', 'breve')
+            ->whereDoesntHave('category', fn ($q) => $q->whereIn('slug', ['agenda', 'breve']));
     }
 }

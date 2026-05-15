@@ -11,7 +11,7 @@
             <thead class="table-light">
                 <tr>
                     <th>Nom</th>
-                    <th>Secteur</th>
+                    <th>Rubrique</th>
                     <th class="text-center">Actif</th>
                     <th class="text-end">Actions</th>
                 </tr>
@@ -20,7 +20,17 @@
             @foreach($companies as $company)
                 <tr>
                     <td>{{ $company->name }}</td>
-                    <td class="text-muted small">{{ optional($company->sector)->name ?? '-' }}</td>
+                    <td class="text-muted small">
+                        @if ($company->category)
+                            @if ($company->category->parent)
+                                {{ category_i18n($company->category->parent) }} › {{ category_i18n($company->category) }}
+                            @else
+                                {{ category_i18n($company->category) }}
+                            @endif
+                        @else
+                            —
+                        @endif
+                    </td>
                     <td class="text-center">
                         @if($company->is_active)
                             <span class="badge text-bg-success">Oui</span>

@@ -41,6 +41,7 @@ class CategoryController extends Controller
 
             $recentArticles = \App\Models\Article::query()
                 ->published()
+                ->excludingAgendaAndBriefs()
                 ->whereNotIn('category_id', $categoryIds)
                 ->latest('published_at')
                 ->take(6)
@@ -57,6 +58,7 @@ class CategoryController extends Controller
 
         $recentArticles = \App\Models\Article::query()
             ->published()
+            ->excludingAgendaAndBriefs()
             ->whereNotIn('category_id', $categoryIds)
             ->latest('published_at')
             ->take(6)
