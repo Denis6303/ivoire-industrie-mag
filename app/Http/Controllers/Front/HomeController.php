@@ -21,7 +21,7 @@ class HomeController extends Controller
             ->take(2)
             ->get();
         $brevesTotal = Article::published()->where('type', 'breve')->count();
-        $companies = Company::with('sector')->where('is_active', true)->latest()->take(5)->get();
+        $companies = Company::with('category.parent')->where('is_active', true)->latest()->take(5)->get();
         $featuredCompanies = Company::query()
             ->where('is_active', true)
             ->where('is_featured', true)

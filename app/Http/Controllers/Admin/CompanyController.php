@@ -17,7 +17,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::with(['sector', 'category.parent'])->latest()->paginate(10);
+        $companies = Company::with('category.parent')->latest()->paginate(10);
 
         return view('admin.entreprises.index', compact('companies'));
     }
@@ -27,10 +27,9 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        $sectors = \App\Models\IndustrySector::orderBy('name')->get();
         $categories = $this->companyAssignableCategories();
 
-        return view('admin.entreprises.create', compact('sectors', 'categories'));
+        return view('admin.entreprises.create', compact('categories'));
     }
 
     /**
@@ -51,14 +50,11 @@ class CompanyController extends Controller
             'address' => ['nullable', 'string', 'max:255'],
             'is_featured' => ['nullable', 'boolean'],
             'is_active' => ['nullable', 'boolean'],
-            'industry_sector_id' => ['nullable', 'exists:industry_sectors,id'],
             'category_id' => ['nullable', 'exists:categories,id'],
             'logo_file' => ['nullable', 'image', 'max:5120'],
         ]);
 
         $data['category_id'] = $data['category_id'] ?: null;
-        $data['industry_sector_id'] = $data['industry_sector_id'] ?: null;
-
         $data['slug'] = Str::slug($data['slug'] ?: $data['name']);
         $data['is_featured'] = $request->boolean('is_featured');
         $data['is_active'] = $request->boolean('is_active', true);
@@ -78,7 +74,7 @@ class CompanyController extends Controller
      */
     public function show(Company $entreprise)
     {
-        $entreprise->load(['sector', 'category.parent', 'projects']);
+        $entreprise->load(['category.parent', 'projects']);
 
         return view('admin.entreprises.show', ['entreprise' => $entreprise]);
     }
@@ -88,10 +84,9 @@ class CompanyController extends Controller
      */
     public function edit(Company $entreprise)
     {
-        $sectors = \App\Models\IndustrySector::orderBy('name')->get();
         $categories = $this->companyAssignableCategories();
 
-        return view('admin.entreprises.edit', compact('entreprise', 'sectors', 'categories'));
+        return view('admin.entreprises.edit', compact('entreprise', 'categories'));
     }
 
     /**
@@ -117,14 +112,11 @@ class CompanyController extends Controller
             'address' => ['nullable', 'string', 'max:255'],
             'is_featured' => ['nullable', 'boolean'],
             'is_active' => ['nullable', 'boolean'],
-            'industry_sector_id' => ['nullable', 'exists:industry_sectors,id'],
             'category_id' => ['nullable', 'exists:categories,id'],
             'logo_file' => ['nullable', 'image', 'max:5120'],
         ]);
 
         $data['category_id'] = $data['category_id'] ?: null;
-        $data['industry_sector_id'] = $data['industry_sector_id'] ?: null;
-
         $data['slug'] = Str::slug($data['slug'] ?: $data['name']);
         $data['is_featured'] = $request->boolean('is_featured');
         $data['is_active'] = $request->boolean('is_active', true);
@@ -149,7 +141,7 @@ class CompanyController extends Controller
     }
 
     /**
-     * Rubriques assignables (hors catégorie technique « brève »).
+     * Catégories / sous-catégories du menu (hors catégorie technique « brève »).
      *
      * @return \Illuminate\Database\Eloquent\Collection<int, Category>
      */

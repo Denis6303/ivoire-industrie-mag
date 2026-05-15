@@ -15,7 +15,7 @@
                 <dt class="col-md-3 text-muted">Slug</dt>
                 <dd class="col-md-9">{{ $entreprise->slug }}</dd>
 
-                <dt class="col-md-3 text-muted">Rubrique</dt>
+                <dt class="col-md-3 text-muted">Secteur</dt>
                 <dd class="col-md-9">
                     @if ($entreprise->category)
                         @if ($entreprise->category->parent)
@@ -27,9 +27,6 @@
                         —
                     @endif
                 </dd>
-
-                <dt class="col-md-3 text-muted">Secteur (accueil)</dt>
-                <dd class="col-md-9">{{ optional($entreprise->sector)->name ?? '—' }}</dd>
 
                 <dt class="col-md-3 text-muted">À la une</dt>
                 <dd class="col-md-9">{{ $entreprise->is_featured ? 'Oui' : 'Non' }}</dd>

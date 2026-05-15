@@ -11,7 +11,7 @@
             <thead class="table-light">
                 <tr>
                     <th>Nom</th>
-                    <th>Rubrique</th>
+                    <th>Secteur</th>
                     <th class="text-center">Actif</th>
                     <th class="text-end">Actions</th>
                 </tr>

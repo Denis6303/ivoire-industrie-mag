@@ -20,23 +20,13 @@
                     <input class="form-control" name="slug" value="{{ old('slug', $entreprise->slug) }}">
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Rubrique / catégorie</label>
+                    <label class="form-label">Secteur</label>
                     <select class="form-select" name="category_id">
-                        <option value="">Aucune</option>
+                        <option value="">Aucun</option>
                         @foreach ($categories as $cat)
                             <option value="{{ $cat->id }}" @selected(old('category_id', $entreprise->category_id) == $cat->id)>
                                 @if ($cat->parent){{ category_i18n($cat->parent) }} › @endif{{ category_i18n($cat) }}
                             </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Secteur industriel</label>
-                    <div class="form-text mb-1">Affiché sur l’accueil (Entreprises qui bougent), au-dessus du nom.</div>
-                    <select class="form-select" name="industry_sector_id">
-                        <option value="">Aucun</option>
-                        @foreach($sectors as $sector)
-                            <option value="{{ $sector->id }}" @selected(old('industry_sector_id', $entreprise->industry_sector_id) == $sector->id)>{{ $sector->name }}</option>
                         @endforeach
                     </select>
                 </div>

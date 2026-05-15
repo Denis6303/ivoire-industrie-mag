@@ -184,8 +184,8 @@
                                         <img src="{{ $company->logo }}" alt="{{ $company->name }}" class="rounded me-3 bg-white flex-shrink-0" style="width:56px;height:56px;object-fit:contain;" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/ivm-placeholder-square.svg') }}';">
                                     @endif
                                     <div class="min-w-0 flex-grow-1" style="text-align: justify;">
-                                        @if ($company->sector)
-                                            <small class="text-muted d-block mb-1">{{ $company->sector->name }}</small>
+                                        @if ($company->category)
+                                            <small class="text-muted d-block mb-1">{{ category_i18n($company->category) }}</small>
                                         @endif
                                         <h6 class="mb-0"><a href="{{ route('companies.show', ['slug' => $company->slug]) }}">{{ $company->name }}</a></h6>
                                     </div>
