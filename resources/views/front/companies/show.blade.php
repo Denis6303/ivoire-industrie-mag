@@ -37,7 +37,7 @@
                         >
                         <div>
                             @if ($company->category)
-                                <span class="badge badge-medium d-inline-block mb-2" style="background: {{ $company->category->color ?: '#ff7800' }}; color: #fff;">{{ category_i18n($company->category) }}</span>
+                                <span class="badge badge-medium d-inline-block mb-2" style="background: {{ category_color($company->category) }}; color: #fff;">{{ category_i18n($company->category) }}</span>
                             @endif
                             <h2 class="h5 mb-2">{{ $company->name }}</h2>
                             @if ($company->city || $company->region)

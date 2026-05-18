@@ -31,24 +31,7 @@
                                     </div>
                                 </div>
                                 <div class="social d-inline-flex">
-                                    <ul class="list-unstyled">
-                                        <li>
-                                            <a href="{{ site_setting('social_facebook') ?: '#' }}" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ site_setting('social_x') ?: '#' }}" aria-label="X" target="_blank" rel="noopener noreferrer">
-                                                <svg style="width:16px;height:16px;display:inline-block;fill:currentColor;vertical-align:-0.125em;" viewBox="0 0 24 24" aria-hidden="true">
-                                                    <path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.5l-5.1-6.6L5.8 22H2.7l7.3-8.4L1.2 2h6.6l4.6 6L18.9 2Zm-1.1 18h1.7L6.9 3.9H5.1L17.8 20Z"/>
-                                                </svg>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ site_setting('social_linkedin') ?: '#' }}" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin-in"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ site_setting('social_youtube') ?: '#' }}" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube"></i></a>
-                                        </li>
-                                    </ul>
+                                    @include('front.partials.social-links', ['variant' => 'header'])
                                 </div>
                             </div>
                         </div>

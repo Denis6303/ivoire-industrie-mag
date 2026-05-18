@@ -3,8 +3,10 @@
     $locale  = app()->getLocale();
     $fbUrl   = site_setting('social_facebook') ?: config('ivoireindustriemag.social.facebook.url', '#');
     $liUrl   = site_setting('social_linkedin') ?: config('ivoireindustriemag.social.linkedin.url', '#');
-    $ytUrl   = site_setting('social_youtube') ?: config('ivoireindustriemag.social.youtube.url', '#');
     $xUrl    = site_setting('social_x') ?: '#';
+    $igUrl   = site_setting('social_instagram') ?: config('ivoireindustriemag.social.instagram.url', '#');
+    $ttUrl   = site_setting('social_tiktok') ?: config('ivoireindustriemag.social.tiktok.url', '#');
+    $ytUrl   = site_setting('social_youtube') ?: config('ivoireindustriemag.social.youtube.url', '#');
     $email   = site_setting('contact_email') ?: '';
     $phone   = site_setting('contact_phone') ?: '';
 @endphp
@@ -45,8 +47,10 @@
     "sameAs": [
         "{{ $fbUrl }}",
         "{{ $liUrl }}",
-        "{{ $ytUrl }}",
-        "{{ $xUrl }}"
+        "{{ $xUrl }}",
+        "{{ $igUrl }}",
+        "{{ $ttUrl }}",
+        "{{ $ytUrl }}"
     ]
 }
 </script>

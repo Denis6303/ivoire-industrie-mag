@@ -218,4 +218,20 @@
         margin-right: 8px !important;
         font-size: 14px !important;
     }
+
+    /* Footer : icônes sociales alignées (évite conflit avec .instagram du thème) */
+    .footer .footer-social .social-icons li a.social-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.375rem;
+        height: 1.375rem;
+        padding: 0;
+        background: transparent;
+        line-height: 1;
+    }
+    .footer .footer-social .social-icons li a.social-icon i,
+    .footer .footer-social .social-icons li a.social-icon svg {
+        display: block;
+    }
 </style>

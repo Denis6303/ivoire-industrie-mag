@@ -71,7 +71,7 @@
                         <a
                             class="sidebar-post-category"
                             href="{{ route('categories.show', ['slug' => $article->category->slug]) }}"
-                            style="background: {{ $article->category->color ?: '#0d6efd' }}; color: #fff; padding: 2px 10px; border-radius: 999px;"
+                            style="background: {{ category_color($article->category) }}; color: #fff; padding: 2px 10px; border-radius: 999px;"
                         >{{ category_i18n($article->category) }}</a>
                     @endif
                     <h6 class="blog-title">

@@ -15,7 +15,7 @@ class CompanyController extends Controller
 
     public function show(string $locale, string $slug)
     {
-        $company = Company::with(['category', 'projects'])->where('slug', $slug)->where('is_active', true)->firstOrFail();
+        $company = Company::with(['category.parent', 'projects'])->where('slug', $slug)->where('is_active', true)->firstOrFail();
         return view('front.companies.show', compact('company'));
     }
 }

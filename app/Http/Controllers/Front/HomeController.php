@@ -12,9 +12,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $featured = Article::with(['category', 'author'])->published()->featured()->excludingAgendaAndBriefs()->latest('published_at')->first();
-        $latest = Article::with(['category', 'author'])->published()->excludingAgendaAndBriefs()->latest('published_at')->take(2)->get();
-        $breves = Article::with(['category', 'author'])
+        $featured = Article::with(['category.parent', 'author'])->published()->featured()->excludingAgendaAndBriefs()->latest('published_at')->first();
+        $latest = Article::with(['category.parent', 'author'])->published()->excludingAgendaAndBriefs()->latest('published_at')->take(2)->get();
+        $breves = Article::with(['category.parent', 'author'])
             ->published()
             ->where('type', 'breve')
             ->latest('published_at')
@@ -30,7 +30,7 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
-        $sidebarPopular = Article::with('category')->published()
+        $sidebarPopular = Article::with('category.parent')->published()
             ->excludingAgendaAndBriefs()
             ->orderByDesc('view_count')
             ->latest('published_at')
@@ -55,6 +55,7 @@ class HomeController extends Controller
         ];
 
         $homeSections = Category::query()
+            ->with('parent')
             ->whereIn('slug', $homeSectionSlugs)
             ->get()
             ->sortBy(fn (Category $c) => array_search($c->slug, $homeSectionSlugs, true))
@@ -66,7 +67,7 @@ class HomeController extends Controller
                     ->count();
 
                 $posts = Article::query()
-                    ->with(['category', 'author'])
+                    ->with(['category.parent', 'author'])
                     ->published()
                     ->where('category_id', $category->id)
                     ->latest('published_at')

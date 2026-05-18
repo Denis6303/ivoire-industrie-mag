@@ -46,7 +46,7 @@
                             </div>
                             <div class="blog-post-details">
                                 @if ($f->category)
-                                    <span class="badge badge-medium home-featured-la-une-badge" style="background: {{ $f->category->color ?: '#0d6efd' }}; color:#fff;">{{ category_i18n($f->category) }}</span>
+                                    <span class="badge badge-medium home-featured-la-une-badge" style="background: {{ category_color($f->category) }}; color:#fff;">{{ category_i18n($f->category) }}</span>
                                 @endif
                                 <h2 class="blog-title mt-2">
                                     <a href="{{ route('articles.show', ['slug' => $featuredSlug]) }}">{{ $featuredTitle }}</a>
@@ -97,7 +97,7 @@
                             <div class="ivm-section-sep"></div>
                             <div class="section-title mb-4">
                                 <h2 class="mb-0 d-flex align-items-center ivm-section-title">
-                                    <span class="ivm-section-dot me-2" style="background: {{ $cat->color ?: '#ff7800' }};"></span>
+                                    <span class="ivm-section-dot me-2" style="background: {{ category_color($cat) }};"></span>
                                     <span>{{ category_i18n($cat) }}</span>
                                 </h2>
                             </div>
@@ -148,7 +148,7 @@
                                                 @endif
                                             </div>
                                             <div class="blog-post-details">
-                                                <span class="badge badge-medium mb-1" style="background:#dc3545;color:#fff;">Brève</span>
+                                                <span class="badge badge-medium mb-1" style="background: {{ category_color($breve->category) }}; color:#fff;">{{ category_i18n($breve->category) ?: __('front.briefs') }}</span>
                                                 <h6 class="blog-title">
                                                     <a href="{{ route('articles.show', ['slug' => $breveSlug]) }}">{{ $breveTitle }}</a>
                                                 </h6>

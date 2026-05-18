@@ -111,6 +111,13 @@
             }
 
             applyColor(hex.value);
+
+            const form = document.getElementById('category-form');
+            if (form) {
+                form.addEventListener('submit', function () {
+                    applyColor(picker.value || hex.value);
+                });
+            }
         });
     </script>
 @endsection

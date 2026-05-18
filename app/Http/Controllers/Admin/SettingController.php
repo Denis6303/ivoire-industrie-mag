@@ -17,6 +17,7 @@ class SettingController extends Controller
         'social_x' => 'social',
         'social_linkedin' => 'social',
         'social_instagram' => 'social',
+        'social_tiktok' => 'social',
         'social_youtube' => 'social',
     ];
 
@@ -63,6 +64,7 @@ class SettingController extends Controller
                 'settings.social_x' => ['nullable', 'string', 'max:500'],
                 'settings.social_linkedin' => ['nullable', 'string', 'max:500'],
                 'settings.social_instagram' => ['nullable', 'string', 'max:500'],
+                'settings.social_tiktok' => ['nullable', 'string', 'max:500'],
                 'settings.social_youtube' => ['nullable', 'string', 'max:500'],
             ]);
 

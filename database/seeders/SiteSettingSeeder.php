@@ -19,6 +19,7 @@ class SiteSettingSeeder extends Seeder
             ['key' => 'social_x', 'value' => env('SOCIAL_TWITTER_URL', 'https://x.com/'), 'group' => 'social'],
             ['key' => 'social_linkedin', 'value' => env('SOCIAL_LINKEDIN_URL', 'https://linkedin.com/'), 'group' => 'social'],
             ['key' => 'social_instagram', 'value' => env('SOCIAL_INSTAGRAM_URL', 'https://instagram.com/'), 'group' => 'social'],
+            ['key' => 'social_tiktok', 'value' => env('SOCIAL_TIKTOK_URL', 'https://tiktok.com/'), 'group' => 'social'],
             ['key' => 'social_youtube', 'value' => env('SOCIAL_YOUTUBE_URL', ''), 'group' => 'social'],
             ['key' => 'homepage_intro', 'value' => "Bienvenue sur Ivoire Industrie Mag. Ici, on suit les investissements, l’innovation et les entreprises qui transforment l’économie.", 'group' => 'homepage'],
         ];

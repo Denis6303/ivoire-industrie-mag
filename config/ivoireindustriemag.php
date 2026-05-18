@@ -12,6 +12,9 @@ return [
      */
     'featured_excerpt_max_chars' => 191,
 
+    /** Couleur des badges / pastilles si la catégorie n’en a pas en base. */
+    'category_default_color' => '#ff7800',
+
     'articles_per_page' => 12,
     'companies_per_page' => 12,
     'projects_per_page' => 12,
@@ -35,6 +38,10 @@ return [
         'instagram' => [
             'url' => env('SOCIAL_INSTAGRAM_URL', '#'),
             'count' => env('SOCIAL_INSTAGRAM_COUNT', '3.1k'),
+        ],
+        'tiktok' => [
+            'url' => env('SOCIAL_TIKTOK_URL', '#'),
+            'count' => env('SOCIAL_TIKTOK_COUNT', ''),
         ],
     ],
 

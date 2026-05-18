@@ -48,16 +48,20 @@
                             <input type="text" name="settings[social_facebook]" class="form-control" value="{{ $val('social_facebook') }}" placeholder="https://…" inputmode="url" autocomplete="off">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">X (Twitter)</label>
-                            <input type="text" name="settings[social_x]" class="form-control" value="{{ $val('social_x') }}" placeholder="https://…" inputmode="url" autocomplete="off">
-                        </div>
-                        <div class="col-md-6">
                             <label class="form-label">LinkedIn</label>
                             <input type="text" name="settings[social_linkedin]" class="form-control" value="{{ $val('social_linkedin') }}" placeholder="https://…" inputmode="url" autocomplete="off">
                         </div>
                         <div class="col-md-6">
+                            <label class="form-label">X (Twitter)</label>
+                            <input type="text" name="settings[social_x]" class="form-control" value="{{ $val('social_x') }}" placeholder="https://…" inputmode="url" autocomplete="off">
+                        </div>
+                        <div class="col-md-6">
                             <label class="form-label">Instagram</label>
                             <input type="text" name="settings[social_instagram]" class="form-control" value="{{ $val('social_instagram') }}" placeholder="https://…" inputmode="url" autocomplete="off">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">TikTok</label>
+                            <input type="text" name="settings[social_tiktok]" class="form-control" value="{{ $val('social_tiktok') }}" placeholder="https://…" inputmode="url" autocomplete="off">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">YouTube</label>

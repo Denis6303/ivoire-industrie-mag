@@ -186,6 +186,44 @@ if (! function_exists('category_i18n')) {
     }
 }
 
+if (! function_exists('category_color')) {
+    /**
+     * Couleur d’affichage d’une catégorie (badge, pastille accueil, etc.).
+     * Lit la valeur en base ; si vide, tente la catégorie parente.
+     */
+    function category_color(?\App\Models\Category $category, ?string $fallback = null): string
+    {
+        $fallback = $fallback ?? (string) config('ivoireindustriemag.category_default_color', '#ff7800');
+
+        if (! $category) {
+            return $fallback;
+        }
+
+        $candidates = [$category->color];
+        if ($category->relationLoaded('parent') && $category->parent) {
+            $candidates[] = $category->parent->color;
+        } elseif ($category->parent_id && ! $category->relationLoaded('parent')) {
+            $parentColor = \App\Models\Category::query()->whereKey($category->parent_id)->value('color');
+            $candidates[] = $parentColor;
+        }
+
+        foreach ($candidates as $raw) {
+            $raw = is_string($raw) ? trim($raw) : '';
+            if ($raw === '' || ! preg_match('/^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/', $raw)) {
+                continue;
+            }
+            $inner = substr($raw, 1);
+            if (strlen($inner) === 3) {
+                $inner = $inner[0].$inner[0].$inner[1].$inner[1].$inner[2].$inner[2];
+            }
+
+            return '#'.strtoupper($inner);
+        }
+
+        return $fallback;
+    }
+}
+
 if (! function_exists('category_route')) {
     /**
      * URL catégorie avec contournement du cache 301 historique sur "industrie".
@@ -321,6 +359,7 @@ if (! function_exists('site_setting_fallback')) {
             'social_x' => (string) data_get(config('ivoireindustriemag.social'), 'twitter.url', '#'),
             'social_linkedin' => (string) data_get(config('ivoireindustriemag.social'), 'linkedin.url', '#'),
             'social_instagram' => (string) data_get(config('ivoireindustriemag.social'), 'instagram.url', '#'),
+            'social_tiktok' => (string) data_get(config('ivoireindustriemag.social'), 'tiktok.url', '#'),
             'social_youtube' => (string) data_get(config('ivoireindustriemag.social'), 'youtube.url', '#'),
             default => '',
         };

@@ -4,7 +4,7 @@
 ])
 @php
     $cover = article_cover($article->cover_image);
-    $catColor = $article->category?->color ?: '#0d6efd';
+    $catColor = category_color($article->category);
     $fallback16x9 = asset('images/ivm-placeholder-16x9.svg');
     $articleTitle = article_i18n($article, 'title') ?: $article->title;
     $articleExcerpt = article_i18n($article, 'excerpt') ?: $article->excerpt;

@@ -42,20 +42,5 @@
         </style>
     @endpush
 
-    <div class="ivm-social-row" aria-label="{{ __('sidebar.follow_social_heading') }}">
-        <a href="{{ site_setting('social_facebook') ?: '#' }}" class="ivm-social-btn" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-            <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
-        </a>
-        <a href="{{ site_setting('social_linkedin') ?: '#' }}" class="ivm-social-btn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-            <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
-        </a>
-        <a href="{{ site_setting('social_x') ?: '#' }}" class="ivm-social-btn" target="_blank" rel="noopener noreferrer" aria-label="X">
-            <svg class="ivm-x-svg" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.5l-5.1-6.6L5.8 22H2.7l7.3-8.4L1.2 2h6.6l4.6 6L18.9 2Zm-1.1 18h1.7L6.9 3.9H5.1L17.8 20Z"/>
-            </svg>
-        </a>
-        <a href="{{ site_setting('social_youtube') ?: '#' }}" class="ivm-social-btn" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-            <i class="fa-brands fa-youtube" aria-hidden="true"></i>
-        </a>
-    </div>
+    @include('front.partials.social-links', ['variant' => 'sidebar'])
 </div>
