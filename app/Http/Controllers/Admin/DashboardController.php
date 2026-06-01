@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Comment;
 use App\Models\NewsletterSubscription;
+use App\Models\SiteVisitor;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Carbon;
 
 class DashboardController extends Controller
@@ -24,8 +26,13 @@ class DashboardController extends Controller
         $avgViews       = max(0, (int) round(Article::where('status', 'published')->avg('view_count') ?? 0));
         $totalComments  = Comment::count();
 
+        $siteVisitorsCount = Schema::hasTable('site_visitors')
+            ? SiteVisitor::count()
+            : 0;
+
         $stats = [
             'published_articles'      => Article::where('status', 'published')->count(),
+            'site_visitors'           => $siteVisitorsCount,
             'total_views'             => $totalViews,
             'newsletter_subscribers'  => NewsletterSubscription::whereIn('status', ['pending', 'active'])->count(),
             'total_comments'          => $totalComments,

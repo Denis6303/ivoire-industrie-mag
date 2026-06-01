@@ -56,6 +56,17 @@
                 </div>
             </div>
         </div>
+        <div class="col-6 col-md-6 col-xl-3">
+            <div class="card card-mag h-100 admin-stat-card admin-stat-visitors">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="text-muted small">Visiteurs du site</div>
+                        <i class="fa-solid fa-users admin-stat-icon"></i>
+                    </div>
+                    <div class="display-6 fw-bold">{{ number_format($stats['site_visitors'], 0, ',', ' ') }}</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row g-3 mb-4">
@@ -129,6 +140,10 @@
                         <div class="admin-kpi-item">
                             <span>Articles en brouillon</span>
                             <strong>{{ $stats['draft_articles'] }}</strong>
+                        </div>
+                        <div class="admin-kpi-item">
+                            <span>Visiteurs du site</span>
+                            <strong>{{ number_format($stats['site_visitors'], 0, ',', ' ') }}</strong>
                         </div>
                         <div class="admin-kpi-item">
                             <span>Vues totales</span>

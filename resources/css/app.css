@@ -173,6 +173,10 @@ textarea {
     border-top: 3px solid #f97316;
 }
 
+.admin-stat-visitors {
+    border-top: 3px solid #8b5cf6;
+}
+
 .admin-stat-icon {
     font-size: 1.1rem;
     color: #7a8797;

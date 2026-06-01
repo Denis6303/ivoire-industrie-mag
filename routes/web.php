@@ -39,6 +39,7 @@ $localePattern = implode('|', $supportedLocales);
 
 Route::prefix('{locale}')
     ->where(['locale' => $localePattern])
+    ->middleware('track.site.visit')
     ->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('home');
 
