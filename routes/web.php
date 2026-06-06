@@ -14,6 +14,7 @@ use App\Http\Controllers\Front\ProjectController;
 use App\Http\Controllers\Front\SearchController;
 use App\Http\Controllers\Front\SectorController;
 use App\Http\Controllers\Front\SitemapController;
+use App\Http\Controllers\SocialImageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +34,10 @@ Route::get('/newsletter/confirm/{token}', [NewsletterController::class, 'confirm
 Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
 
 Route::get('/ads/{ad}/click', [AdvertisementController::class, 'trackClick'])->name('ads.click');
+
+Route::get('/og-image/{filename}', [SocialImageController::class, 'show'])
+    ->where('filename', '[A-Za-z0-9._-]+\.(?:jpe?g|png|webp)')
+    ->name('og-image');
 
 $supportedLocales = config('ivoireindustriemag.supported_locales', ['fr', 'en']);
 $localePattern = implode('|', $supportedLocales);

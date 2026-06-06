@@ -20,10 +20,7 @@
         $articleBreadcrumbItems[] = ['label' => category_i18n($c), 'url' => route('categories.show', ['slug' => $c->slug])];
     }
 
-    $articleCover = article_cover($article->cover_image);
-    $articleOgImage = $articleCover
-        ? (preg_match('/^https?:\/\//i', $articleCover) ? $articleCover : url($articleCover))
-        : asset('images/og-default.jpg');
+    $articleOgImage = article_og_image($article->cover_image);
 @endphp
 @section('title', e($articleMetaTitle))
 @section('meta_description', e($articleMetaDescription))

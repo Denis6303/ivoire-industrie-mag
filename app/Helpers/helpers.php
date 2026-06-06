@@ -323,6 +323,30 @@ if (! function_exists('article_cover')) {
     }
 }
 
+if (! function_exists('article_og_image')) {
+    /**
+     * URL absolue optimisée pour le partage social (Open Graph / Twitter Cards).
+     * Les images locales passent par /og-image/ (1200×630, JPEG compressé).
+     */
+    function article_og_image(?string $coverImage): string
+    {
+        $cover = article_cover($coverImage);
+        if ($cover === null) {
+            return asset('images/og-default.jpg');
+        }
+
+        if (preg_match('~/storage/media/([^/?#]+)$~i', $cover, $matches)) {
+            return app(\App\Services\SocialImageService::class)->publicUrl($matches[1]);
+        }
+
+        if (preg_match('/^https?:\/\//i', $cover) === 1) {
+            return $cover;
+        }
+
+        return url($cover);
+    }
+}
+
 if (! function_exists('company_logo')) {
     /**
      * URL du logo entreprise : toujours via asset() pour respecter APP_URL (sous-dossier WAMP, etc.).

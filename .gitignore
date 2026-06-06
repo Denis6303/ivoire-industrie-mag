@@ -4,6 +4,7 @@
 /public/build
 /public/hot
 /public/storage
+/storage/app/public/og-cache
 /storage/*.key
 /vendor
 .env
