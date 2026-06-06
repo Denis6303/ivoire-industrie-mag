@@ -19,18 +19,23 @@
         }
         $articleBreadcrumbItems[] = ['label' => category_i18n($c), 'url' => route('categories.show', ['slug' => $c->slug])];
     }
+
+    $articleCover = article_cover($article->cover_image);
+    $articleOgImage = $articleCover
+        ? (preg_match('/^https?:\/\//i', $articleCover) ? $articleCover : url($articleCover))
+        : asset('images/og-default.jpg');
 @endphp
 @section('title', e($articleMetaTitle))
 @section('meta_description', e($articleMetaDescription))
 @section('og_type', 'article')
-@section('meta_image', $article->image ? asset('storage/'.$article->image) : asset('images/og-default.jpg'))
+@section('meta_image', $articleOgImage)
 @section('canonical', url()->current())
 
 @section('jsonld')
 @php
     $appUrl       = rtrim(config('app.url'), '/');
     $articleUrl   = url()->current();
-    $imageUrl     = $article->image ? asset('storage/'.$article->image) : asset('images/og-default.jpg');
+    $imageUrl     = $articleOgImage;
     $authorName   = $article->author?->name ?? 'Ivoire Industrie Magazine';
     $publishedAt  = $article->published_at?->toAtomString() ?? $article->created_at->toAtomString();
     $modifiedAt   = $article->updated_at->toAtomString();
