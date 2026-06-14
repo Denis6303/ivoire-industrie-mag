@@ -290,47 +290,6 @@
         </div>
     </div>
 
-    <div class="row g-3 mb-4">
-        <div class="col-md-4">
-            <div class="card card-mag h-100">
-                <div class="card-body">
-                    <h2 class="h6 mb-3">Navigateurs</h2>
-                    @forelse($report['browsers'] as $browser => $total)
-                        <div class="d-flex justify-content-between small mb-1"><span>{{ $browser }}</span><strong>{{ $fmt($total) }}</strong></div>
-                    @empty
-                        <p class="text-muted mb-0">—</p>
-                    @endforelse
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card card-mag h-100">
-                <div class="card-body">
-                    <h2 class="h6 mb-3">Pays (top 10)</h2>
-                    @forelse($report['countries'] as $code => $total)
-                        <div class="d-flex justify-content-between small mb-1"><span>{{ $code }}</span><strong>{{ $fmt($total) }}</strong></div>
-                    @empty
-                        <p class="text-muted mb-0">Non disponible (nécessite Cloudflare ou en-tête pays).</p>
-                    @endforelse
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card card-mag h-100">
-                <div class="card-body">
-                    <h2 class="h6 mb-3">SEO & technique</h2>
-                    <ul class="list-unstyled admin-kpi-list mb-0">
-                        <li class="admin-kpi-item"><span>LCP moyen</span><strong>{{ $report['web_vitals']['lcp_ms'] ? $report['web_vitals']['lcp_ms'].' ms' : '—' }}</strong></li>
-                        <li class="admin-kpi-item"><span>CLS moyen</span><strong>{{ $report['web_vitals']['cls'] ?? '—' }}</strong></li>
-                        <li class="admin-kpi-item"><span>INP / interactivité</span><strong>{{ $report['web_vitals']['inp_ms'] ? $report['web_vitals']['inp_ms'].' ms' : '—' }}</strong></li>
-                        <li class="admin-kpi-item"><span>Échantillons Web Vitals</span><strong>{{ $fmt($report['web_vitals']['samples']) }}</strong></li>
-                        <li class="admin-kpi-item"><span>Search Console</span><strong class="text-muted">Intégration à venir</strong></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {

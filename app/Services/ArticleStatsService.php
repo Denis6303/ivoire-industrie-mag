@@ -86,8 +86,9 @@ class ArticleStatsService
             ->first();
 
         $isReturning = $existingSession !== null;
+        $referrerHost = $context->referrerHost();
 
-        DB::transaction(function () use ($article, $visitorKey, $snapshot, $sourceType, $locale, $device, $now, $existingSession, $isReturning) {
+        DB::transaction(function () use ($article, $visitorKey, $snapshot, $sourceType, $locale, $device, $now, $existingSession, $isReturning, $referrerHost) {
             $increments = [
                 'views_total' => 1,
                 'last_view_at' => $now,
@@ -175,9 +176,9 @@ class ArticleStatsService
                 'views_en' => $locale === 'en' ? 1 : 0,
             ]);
 
-            if ($host = $context->referrerHost()) {
+            if ($referrerHost) {
                 $referrer = ArticleStatReferrer::query()->firstOrCreate(
-                    ['article_id' => $article->id, 'referrer_host' => $host],
+                    ['article_id' => $article->id, 'referrer_host' => $referrerHost],
                     ['hit_count' => 0]
                 );
                 $referrer->increment('hit_count');
@@ -300,45 +301,11 @@ class ArticleStatsService
             ->groupBy('device_type')
             ->pluck('total', 'device_type');
 
-        $browsers = ArticleViewSession::query()
-            ->where('article_id', $article->id)
-            ->select('browser', DB::raw('COUNT(*) as total'))
-            ->groupBy('browser')
-            ->orderByDesc('total')
-            ->limit(6)
-            ->pluck('total', 'browser');
-
-        $countries = ArticleViewSession::query()
-            ->where('article_id', $article->id)
-            ->whereNotNull('country_code')
-            ->select('country_code', DB::raw('COUNT(*) as total'))
-            ->groupBy('country_code')
-            ->orderByDesc('total')
-            ->limit(10)
-            ->pluck('total', 'country_code');
-
         $sources = ArticleViewSession::query()
             ->where('article_id', $article->id)
             ->select('source_type', DB::raw('COUNT(*) as total'))
             ->groupBy('source_type')
             ->pluck('total', 'source_type');
-
-        $locales = ArticleViewSession::query()
-            ->where('article_id', $article->id)
-            ->select('locale', DB::raw('COUNT(*) as total'))
-            ->groupBy('locale')
-            ->pluck('total', 'locale');
-
-        $webVitals = ArticleStatEvent::query()
-            ->where('article_id', $article->id)
-            ->where('event_type', 'web_vitals')
-            ->orderByDesc('created_at')
-            ->limit(100)
-            ->get();
-
-        $avgLcp = $this->averagePayloadMetric($webVitals, 'lcp');
-        $avgCls = $this->averagePayloadMetric($webVitals, 'cls');
-        $avgInp = $this->averagePayloadMetric($webVitals, 'inp');
 
         $categoryAvgViews = 0;
         if ($article->category_id) {
@@ -429,10 +396,7 @@ class ArticleStatsService
             'daily' => $daily,
             'referrers' => $referrers,
             'devices' => $devices,
-            'browsers' => $browsers,
-            'countries' => $countries,
             'sources' => $sources,
-            'locales' => $locales,
             'comments' => [
                 'total' => $comments->count(),
                 'approved' => $approvedComments->count(),
@@ -467,18 +431,6 @@ class ArticleStatsService
                 'scroll_75_rate' => $this->rate($stat->scroll_75, $stat->views_total),
                 'scroll_100_rate' => $this->rate($stat->scroll_100, $stat->views_total),
                 'qualified_rate' => $this->rate($stat->qualified_reads, $stat->views_total),
-            ],
-            'web_vitals' => [
-                'lcp_ms' => $avgLcp,
-                'cls' => $avgCls,
-                'inp_ms' => $avgInp,
-                'samples' => $webVitals->count(),
-            ],
-            'seo' => [
-                'search_console_connected' => false,
-                'impressions' => null,
-                'ctr' => null,
-                'avg_position' => null,
             ],
         ];
     }
@@ -603,16 +555,5 @@ class ArticleStatsService
     private function rate(int $part, int $total): float
     {
         return $total > 0 ? round(($part / $total) * 100, 2) : 0.0;
-    }
-
-    /** @param \Illuminate\Support\Collection<int, ArticleStatEvent> $events */
-    private function averagePayloadMetric($events, string $key): ?float
-    {
-        $values = $events
-            ->map(fn (ArticleStatEvent $event) => $event->payload[$key] ?? null)
-            ->filter(fn ($value) => is_numeric($value))
-            ->map(fn ($value) => (float) $value);
-
-        return $values->isNotEmpty() ? round($values->avg(), 2) : null;
     }
 }
