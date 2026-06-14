@@ -120,6 +120,9 @@
                                 <td class="text-end">{{ optional($article->updated_at)->format('d/m/Y H:i') }}</td>
                                 <td class="text-end">
                                     <div class="d-inline-flex gap-1">
+                                        <a href="{{ route('admin.articles.stats', $article) }}" class="btn btn-sm btn-outline-info" title="Statistiques">
+                                            <i class="fa-solid fa-chart-line"></i>
+                                        </a>
                                         <a href="{{ route('admin.articles.edit', $article) }}" class="btn btn-sm btn-outline-secondary" title="Modifier">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </a>

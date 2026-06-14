@@ -324,6 +324,21 @@
                                     @endforeach
                           </div>
                             @endif
+
+                            @php
+                                $shareUrl = urlencode(url()->current());
+                                $shareTitle = urlencode($articleTitle);
+                            @endphp
+                            <div class="ivm-article-share mt-4 pt-3 border-top">
+                                <span class="ivm-tag-label d-block mb-2">Partager</span>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" class="btn btn-sm btn-outline-primary" target="_blank" rel="noopener noreferrer" data-share-network="facebook" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ $shareUrl }}" class="btn btn-sm btn-outline-primary" target="_blank" rel="noopener noreferrer" data-share-network="linkedin" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                                    <a href="https://twitter.com/intent/tweet?url={{ $shareUrl }}&text={{ $shareTitle }}" class="btn btn-sm btn-outline-dark" target="_blank" rel="noopener noreferrer" data-share-network="twitter" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+                                    <a href="https://wa.me/?text={{ $shareTitle }}%20{{ $shareUrl }}" class="btn btn-sm btn-outline-success" target="_blank" rel="noopener noreferrer" data-share-network="whatsapp" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-share-network="copy" data-share-url="{{ url()->current() }}" aria-label="Copier le lien"><i class="fa-regular fa-copy"></i></button>
+                                </div>
+                            </div>
                             <hr class="my-4">
                         </div>
                     </article>
@@ -467,4 +482,25 @@
         </div>
       </div>
     </section>
+
+    <div
+        data-article-stats
+        data-endpoint="{{ route('articles.stats.store', ['locale' => app()->getLocale(), 'slug' => $article->slug]) }}"
+        hidden
+        aria-hidden="true"
+    ></div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('click', function (event) {
+            var btn = event.target.closest('[data-share-network="copy"]');
+            if (!btn) return;
+            var url = btn.getAttribute('data-share-url');
+            if (!url || !navigator.clipboard) return;
+            event.preventDefault();
+            navigator.clipboard.writeText(url);
+        });
+    </script>
+    <script src="{{ asset('js/article-stats.js') }}" defer></script>
+@endpush

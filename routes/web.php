@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\ClientAuthController;
 use App\Http\Controllers\Front\AdvertisementController;
 use App\Http\Controllers\Front\ArticleController;
+use App\Http\Controllers\Front\ArticleStatsController;
 use App\Http\Controllers\Front\CategoryController;
 use App\Http\Controllers\Front\CommentController;
 use App\Http\Controllers\Front\CompanyController;
@@ -50,6 +51,7 @@ Route::prefix('{locale}')
 
         Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
         Route::get('/articles/{slug}', [ArticleController::class, 'show'])->name('articles.show')->middleware('track.article.view');
+        Route::post('/articles/{slug}/stats', [ArticleStatsController::class, 'store'])->name('articles.stats.store');
 
         Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
 

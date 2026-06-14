@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdvertisementController;
 use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\Admin\ArticleStatsController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\CompanyController;
@@ -29,6 +30,7 @@ Route::middleware('role:super_admin,admin,editor')->group(function () {
     Route::patch('articles/{article}/publish', [ArticleController::class, 'publish'])->name('articles.publish');
     Route::patch('articles/{article}/unpublish', [ArticleController::class, 'unpublish'])->name('articles.unpublish');
     Route::patch('articles/{article}/feature', [ArticleController::class, 'feature'])->name('articles.feature');
+    Route::get('articles/{article}/stats', [ArticleStatsController::class, 'show'])->name('articles.stats');
     Route::resource('emplois', JobOfferController::class)->parameters(['emplois' => 'job'])->except(['show']);
     Route::patch('emplois/{job}/publish', [JobOfferController::class, 'publish'])->name('jobs.publish');
     Route::patch('emplois/{job}/unpublish', [JobOfferController::class, 'unpublish'])->name('jobs.unpublish');

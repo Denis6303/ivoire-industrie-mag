@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -58,6 +59,16 @@ class Article extends Model
     public function related(): BelongsToMany
     {
         return $this->belongsToMany(Article::class, 'related_articles', 'article_id', 'related_id');
+    }
+
+    public function stats(): HasOne
+    {
+        return $this->hasOne(ArticleStat::class);
+    }
+
+    public function statDaily(): HasMany
+    {
+        return $this->hasMany(ArticleStatDaily::class);
     }
 
     public function scopePublished($query)
