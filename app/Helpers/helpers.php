@@ -105,6 +105,42 @@ if (! function_exists('article_route_slug')) {
     }
 }
 
+if (! function_exists('article_public_url')) {
+    /**
+     * URL publique absolue d'un article (partage, canonical, Open Graph).
+     */
+    function article_public_url(\App\Models\Article $article, ?string $locale = null): string
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        return route('articles.show', [
+            'locale' => $locale,
+            'slug' => article_route_slug($article),
+        ], absolute: true);
+    }
+}
+
+if (! function_exists('article_share_urls')) {
+    /**
+     * URLs de partage social pour un article.
+     *
+     * @return array{page: string, facebook: string, linkedin: string, twitter: string, whatsapp: string}
+     */
+    function article_share_urls(\App\Models\Article $article, string $title, ?string $locale = null): array
+    {
+        $pageUrl = article_public_url($article, $locale);
+        $text = trim(strip_tags($title));
+
+        return [
+            'page' => $pageUrl,
+            'facebook' => 'https://www.facebook.com/sharer/sharer.php?'.http_build_query(['u' => $pageUrl]),
+            'linkedin' => 'https://www.linkedin.com/sharing/share-offsite/?'.http_build_query(['url' => $pageUrl]),
+            'twitter' => 'https://twitter.com/intent/tweet?'.http_build_query(['url' => $pageUrl, 'text' => $text]),
+            'whatsapp' => 'https://api.whatsapp.com/send?'.http_build_query(['text' => $text.' '.$pageUrl]),
+        ];
+    }
+}
+
 if (! function_exists('youtube_video_id_from_text')) {
     /**
      * Extrait le premier ID vidéo YouTube trouvé dans une chaîne (HTML ou texte).

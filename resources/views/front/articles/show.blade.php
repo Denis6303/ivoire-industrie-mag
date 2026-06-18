@@ -26,12 +26,12 @@
 @section('meta_description', e($articleMetaDescription))
 @section('og_type', 'article')
 @section('meta_image', $articleOgImage)
-@section('canonical', url()->current())
+@section('canonical', article_public_url($article))
 
 @section('jsonld')
 @php
     $appUrl       = rtrim(config('app.url'), '/');
-    $articleUrl   = url()->current();
+    $articleUrl   = article_public_url($article);
     $imageUrl     = $articleOgImage;
     $authorName   = $article->author?->name ?? 'Ivoire Industrie Magazine';
     $publishedAt  = $article->published_at?->toAtomString() ?? $article->created_at->toAtomString();
@@ -364,7 +364,7 @@
                           </div>
                             @endif
 
-                            @include('front.partials.article-share', ['articleTitle' => $articleTitle])
+                            @include('front.partials.article-share', ['article' => $article, 'articleTitle' => $articleTitle])
                             <hr class="my-4">
                         </div>
                     </article>
