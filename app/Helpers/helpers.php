@@ -359,6 +359,16 @@ if (! function_exists('article_cover')) {
     }
 }
 
+if (! function_exists('site_og_image')) {
+    /**
+     * Image Open Graph par défaut du site (logo 2IM) pour le partage social.
+     */
+    function site_og_image(): string
+    {
+        return asset('images/2im_couleur.png');
+    }
+}
+
 if (! function_exists('article_og_image')) {
     /**
      * URL absolue optimisée pour le partage social (Open Graph / Twitter Cards).
@@ -368,7 +378,7 @@ if (! function_exists('article_og_image')) {
     {
         $cover = article_cover($coverImage);
         if ($cover === null) {
-            return asset('images/og-default.jpg');
+            return site_og_image();
         }
 
         if (preg_match('~/storage/media/([^/?#]+)$~i', $cover, $matches)) {

@@ -4,6 +4,7 @@
 @section('meta_description', app()->getLocale() === 'en'
     ? 'Ivoire Industrie Magazine (2IM) — Industry news from Côte d\'Ivoire: agro-industry, energy, mining, BTP, innovation, investment and industrial zones.'
     : 'Ivoire Industrie Magazine (2IM) — Actualités industrielles de Côte d\'Ivoire : agro-industrie, énergie, mines, BTP, innovation, investissement et zones industrielles.')
+@section('meta_image', site_og_image())
 @section('meta_keywords', 'industrie Côte d\'Ivoire, actualité industrielle, 2IM, magazine industrie ivoirien, Abidjan industrie, investissement ivoirien, agro-industrie, énergie, mines, BTP, innovation, zones industrielles, économie africaine')
 
 @push('styles')

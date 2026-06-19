@@ -10,7 +10,8 @@
     $metaTitle   = trim(strip_tags($__env->yieldContent('title')));
     $fullTitle   = $metaTitle ? "$metaTitle - $siteName" : $siteName;
     $metaDesc    = trim(strip_tags($__env->yieldContent('meta_description'))) ?: $defaultDesc;
-    $metaImage   = trim($__env->yieldContent('meta_image')) ?: asset('images/og-default.jpg');
+    $metaImageRaw = trim($__env->yieldContent('meta_image')) ?: site_og_image();
+    $metaImage = preg_match('/^https?:\/\//i', $metaImageRaw) ? $metaImageRaw : url($metaImageRaw);
     $canonicalUrl = trim($__env->yieldContent('canonical')) ?: url()->current();
     $gaMeasurementId = config('services.google_analytics.measurement_id');
     // URL de la même page dans l'autre langue
@@ -47,8 +48,13 @@
 <meta property="og:description" content="{{ Str::limit($metaDesc, 200) }}">
 <meta property="og:url" content="{{ $canonicalUrl }}">
 <meta property="og:image" content="{{ $metaImage }}">
+@if (str_contains($metaImage, '2im_couleur'))
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+@else
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+@endif
 <meta property="og:image:alt" content="{{ $fullTitle }}">
 <meta property="og:locale" content="{{ $locale === 'en' ? 'en_US' : 'fr_FR' }}">
 <meta property="og:locale:alternate" content="{{ $locale === 'en' ? 'fr_FR' : 'en_US' }}">
