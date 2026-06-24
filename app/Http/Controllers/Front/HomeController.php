@@ -42,7 +42,7 @@ class HomeController extends Controller
             'industrie-story',
             'zones-industrielles',
             'investissement',
-            'infrastructure',
+            'agriculture',
             'international',
             'etudes',
             'innovation',
