@@ -203,6 +203,8 @@ if (! function_exists('category_i18n')) {
             'investissement' => 'nav.investment',
             'usines' => 'nav.factory',
             'international' => 'nav.international',
+            'afrique' => 'nav.africa',
+            'monde' => 'nav.world',
             'agenda' => 'nav.agenda',
             'innovation' => 'nav.innovation',
             'hommes-et-femmes-industriels-ivoiriens' => 'nav.industrial_leaders',

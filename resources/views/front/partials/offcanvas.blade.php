@@ -56,6 +56,8 @@
             $industryParent = $navIndustryParent ?? null;
             $hidden = $navHiddenCategories ?? collect();
             $innovationChildren = $navInnovationChildren ?? collect();
+            $internationalParent = $navInternationalParent ?? $primary->firstWhere('slug', 'international');
+            $internationalChildren = $navInternationalChildren ?? collect();
         @endphp
 
         <ul class="navbar-nav navbar-nav-style-03 ivm-offcanvas-nav">
@@ -89,13 +91,32 @@
                     'zones-industrielles' => __('nav.industrial_zones'),
                     'investissement' => __('nav.investment'),
                     'usines' => __('nav.factory'),
-                    'international' => __('nav.international'),
                     'agenda' => __('nav.agenda'),
                 ] as $slug => $label)
                     @if ($cat = $primary->firstWhere('slug', $slug))
                         <li class="nav-item"><a class="nav-link" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ $label }}</a></li>
                     @endif
                 @endforeach
+
+                @if ($internationalParent)
+                    <li class="nav-item">
+                        @if ($internationalChildren->isEmpty())
+                            <a class="nav-link" href="{{ category_show_url($internationalParent) }}">{{ __('nav.international') }}</a>
+                        @else
+                            <div class="d-flex align-items-stretch border-bottom">
+                                <a class="nav-link flex-grow-1 py-2" href="{{ category_show_url($internationalParent) }}">{{ __('nav.international') }}</a>
+                                <a class="nav-link py-2 px-2 text-secondary" data-bs-toggle="collapse" href="#offcanvasInternational" role="button" aria-expanded="false" aria-controls="offcanvasInternational" aria-label="{{ __('nav.international_open_submenu') }}"><i class="fas fa-chevron-down fa-xs"></i></a>
+                            </div>
+                            <div class="collapse" id="offcanvasInternational">
+                                <ul class="list-unstyled ps-3 mb-2">
+                                    @foreach ($internationalChildren as $child)
+                                        <li><a class="nav-link py-1" href="{{ route('categories.show', ['slug' => $child->slug]) }}">{{ category_i18n($child) }}</a></li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    </li>
+                @endif
             @endif
 
             @if ($innovation = $hidden->firstWhere('slug', 'innovation'))

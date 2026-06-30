@@ -24,6 +24,12 @@
                         <li><a href="{{ route('categories.show', ['slug' => 'industrie-story']) }}"><i class="fa-solid fa-chevron-right"></i>Industrie Story</a></li>
                         <li><a href="{{ category_route('industrie') }}"><i class="fa-solid fa-chevron-right"></i>{{ __('nav.industry') }}</a></li>
                         <li><a href="{{ route('categories.show', ['slug' => 'zones-industrielles']) }}"><i class="fa-solid fa-chevron-right"></i>{{ __('nav.industrial_zones') }}</a></li>
+                        @if ($intlParent = $navInternationalParent ?? null)
+                            <li><a href="{{ category_show_url($intlParent) }}"><i class="fa-solid fa-chevron-right"></i>{{ __('nav.international') }}</a></li>
+                            @foreach ($navInternationalChildren ?? collect() as $child)
+                                <li class="ps-3"><a href="{{ route('categories.show', ['slug' => $child->slug]) }}"><i class="fa-solid fa-chevron-right"></i>{{ category_i18n($child) }}</a></li>
+                            @endforeach
+                        @endif
                     </ul>
                 </div>
                 <div class="col-xl-3 col-lg-6 col-md-6 mb-4">

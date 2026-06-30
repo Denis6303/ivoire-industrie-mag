@@ -109,10 +109,22 @@ class AppServiceProvider extends ServiceProvider
                         ->get();
                 }
 
+                $international = $all->get('international');
+                $internationalChildren = collect();
+                if ($international) {
+                    $internationalChildren = Category::query()
+                        ->where('parent_id', $international->id)
+                        ->whereHas('articles', fn ($q) => $q->published())
+                        ->orderBy('order')
+                        ->orderBy('name')
+                        ->get();
+                }
+
                 $offcanvasCoveredSlugs = $primaryCategories->pluck('slug')
                     ->merge($hiddenCategories->pluck('slug'))
                     ->merge($industryCategories->pluck('slug'))
                     ->merge($innovationChildren->pluck('slug'))
+                    ->merge($internationalChildren->pluck('slug'))
                     ->unique()
                     ->filter();
 
@@ -130,6 +142,8 @@ class AppServiceProvider extends ServiceProvider
                     'primaryCategories' => $primaryCategories,
                     'hiddenCategories' => $hiddenCategories,
                     'innovationChildren' => $innovationChildren,
+                    'internationalParent' => $international,
+                    'internationalChildren' => $internationalChildren,
                     'offcanvasExtraCategories' => $navOffcanvasExtraCategories,
                 ];
 
@@ -141,6 +155,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with('navPrimaryCategories', $navData['primaryCategories'] ?? collect());
             $view->with('navHiddenCategories', $navData['hiddenCategories'] ?? collect());
             $view->with('navInnovationChildren', $navData['innovationChildren'] ?? collect());
+            $view->with('navInternationalParent', $navData['internationalParent'] ?? null);
+            $view->with('navInternationalChildren', $navData['internationalChildren'] ?? collect());
             $view->with('navOffcanvasExtraCategories', $navData['offcanvasExtraCategories'] ?? collect());
 
             $adsData = request()->attributes->get('adsData');

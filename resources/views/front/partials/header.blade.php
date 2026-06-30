@@ -89,11 +89,15 @@
                         </li>
                     @endif
 
+                    @php
+                        $internationalHub = $primary->firstWhere('slug', 'international');
+                        $international = $navInternationalChildren ?? collect();
+                    @endphp
+
                     @foreach ([
                         'zones-industrielles' => __('nav.industrial_zones'),
                         'investissement' => __('nav.investment'),
                         'usines' => __('nav.factory'),
-                        'international' => __('nav.international'),
                         'agenda' => __('nav.agenda'),
                     ] as $slug => $label)
                         @if ($cat = $primary->firstWhere('slug', $slug))
@@ -102,6 +106,28 @@
                             </li>
                         @endif
                     @endforeach
+
+                    @if ($internationalHub)
+                        @if ($international->isEmpty())
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('categories.show') && request()->route('slug') === $internationalHub->slug ? 'active' : '' }}" href="{{ category_show_url($internationalHub) }}">{{ __('nav.international') }}</a>
+                            </li>
+                        @else
+                            <li class="nav-item dropdown">
+                                <div class="dropdown">
+                                    <div class="d-flex align-items-center flex-wrap">
+                                        <a class="nav-link py-2 {{ request()->routeIs('categories.show') && (request()->route('slug') === $internationalHub->slug || $international->pluck('slug')->contains(request()->route('slug'))) ? 'active' : '' }}" href="{{ category_show_url($internationalHub) }}">{{ __('nav.international') }}</a>
+                                        <a class="nav-link dropdown-toggle py-2 ps-1 pe-2 border-0" href="#" id="navInternational" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" aria-label="{{ __('nav.international_open_submenu') }}"><i class="fas fa-chevron-down fa-xs" aria-hidden="true"></i></a>
+                                    </div>
+                                    <div class="dropdown-menu py-2" aria-labelledby="navInternational">
+                                        @foreach ($international as $cat)
+                                            <a class="dropdown-item" href="{{ route('categories.show', ['slug' => $cat->slug]) }}">{{ category_i18n($cat) }}</a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </li>
+                        @endif
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('jobs.index') ? 'active' : '' }}" href="{{ route('jobs.index') }}">{{ __('nav.jobs') }}</a>
                     </li>
