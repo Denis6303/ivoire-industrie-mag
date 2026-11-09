@@ -12,15 +12,16 @@ class TranslateArticlesEn extends Command
                             {--force : Régénère même si une version anglaise existe déjà}
                             {--id= : Limiter à un article}
                             {--incomplete : Inclure aussi les articles déjà OK en titre mais incomplets (châpeau/contenu)}
-                            {--skip-content : Ne pas traduire le corps HTML (plus fiable / plus rapide)}
-                            {--sleep=0.4 : Pause en secondes entre les articles}';
+                            {--with-content : Traduire aussi le corps HTML (plus lent)}
+                            {--skip-content : (déprécié) identique au comportement par défaut}
+                            {--sleep=0.15 : Pause en secondes entre les articles}';
 
     protected $description = 'Traduit uniquement les articles en échec (sans titre anglais), sans retoucher ceux déjà OK';
 
     public function handle(ArticleTranslationService $translator): int
     {
         $fields = ArticleTranslationService::FIELDS;
-        if ($this->option('skip-content')) {
+        if (! $this->option('with-content')) {
             $fields = array_values(array_filter($fields, fn ($field) => $field !== 'content'));
         }
 
@@ -86,8 +87,8 @@ class TranslateArticlesEn extends Command
         });
 
         $this->info("Terminé : {$ok} OK, {$partial} partiel(s), {$fail} échec(s).");
-        if ($partial > 0 && ! $this->option('skip-content')) {
-            $this->comment('Astuce : relancer avec --skip-content pour valider titres/chapeaux, puis sans pour le corps.');
+        if ($partial > 0 && $this->option('with-content')) {
+            $this->comment('Certains contenus HTML ont échoué. Relancer sans --with-content puis avec, plus tard.');
         }
 
         return $fail > 0 && $ok === 0 && $partial === 0 ? self::FAILURE : self::SUCCESS;
