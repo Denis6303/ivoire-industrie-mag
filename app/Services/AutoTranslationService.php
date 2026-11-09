@@ -8,40 +8,93 @@ use Illuminate\Support\Facades\Log;
 
 class AutoTranslationService
 {
-    private const CHUNK_SIZE = 4200;
+    private const CHUNK_SIZE = 1500;
+
+    public ?string $lastError = null;
+
+    private static int $lastRequestMs = 0;
 
     /**
-     * Traduit un texte. Retourne null si le fournisseur a échoué (ne jamais
-     * renvoyer le texte source dans ce cas, pour éviter de cacher un échec).
+     * Traduit un texte. Retourne null si le fournisseur a échoué.
      */
     public function translate(string $text, string $source = 'fr', string $target = 'en'): ?string
     {
         $text = trim($text);
-        if ($text === '' || $source === $target) {
-            return $text === '' ? null : $text;
+        $this->lastError = null;
+
+        if ($text === '') {
+            $this->lastError = 'texte vide';
+
+            return null;
         }
 
-        $cacheKey = 'auto_translation:v2:'.md5($source.'|'.$target.'|'.$text);
+        if ($source === $target) {
+            return $text;
+        }
+
+        $cacheKey = 'auto_translation:v3:'.md5($source.'|'.$target.'|'.$text);
         $cached = Cache::get($cacheKey);
         if (is_string($cached) && $cached !== '') {
             return $cached;
         }
 
         try {
-            $translated = $this->translateChunks($text, $source, $target);
+            $translated = $this->looksLikeHtml($text)
+                ? $this->translateHtml($text, $source, $target)
+                : $this->translateChunks($text, $source, $target);
         } catch (\Throwable $e) {
+            $this->lastError = $e->getMessage();
             Log::warning('Auto translation failed', ['message' => $e->getMessage()]);
 
             return null;
         }
 
         if ($translated === null || trim($translated) === '') {
+            $this->lastError ??= 'traduction vide';
+
             return null;
         }
 
         Cache::put($cacheKey, $translated, now()->addDays(30));
 
         return $translated;
+    }
+
+    private function looksLikeHtml(string $text): bool
+    {
+        return (bool) preg_match('/<\/?(p|div|h[1-6]|li|ul|ol|br|strong|em|a|span|blockquote)\b/i', $text);
+    }
+
+    /**
+     * Traduit bloc par bloc pour ne pas envoyer tout le HTML d'un article d'un coup.
+     */
+    private function translateHtml(string $html, string $source, string $target): ?string
+    {
+        $parts = preg_split('/(?=<p\b|<h[1-6]\b|<li\b|<div\b|<blockquote\b|<ul\b|<ol\b)/i', $html) ?: [$html];
+        $out = '';
+        $anySuccess = false;
+
+        foreach ($parts as $part) {
+            if (trim($part) === '') {
+                $out .= $part;
+                continue;
+            }
+
+            if (! preg_match('/[A-Za-zÀ-ÿ]{3,}/u', strip_tags($part))) {
+                $out .= $part;
+                continue;
+            }
+
+            $translated = $this->translateChunks($part, $source, $target);
+            if ($translated === null) {
+                $out .= $part;
+                continue;
+            }
+            $anySuccess = true;
+            $out .= $translated;
+        }
+
+        return $anySuccess ? $out : null;
     }
 
     private function translateChunks(string $text, string $source, string $target): ?string
@@ -85,7 +138,7 @@ class AutoTranslationService
             return [$text];
         }
 
-        $parts = preg_split('/(?<=<\/p>|<\/h[1-6]>|<\/li>|<\/div>|\n\n)/u', $text) ?: [$text];
+        $parts = preg_split('/(?<=<\/p>|<\/h[1-6]>|<\/li>|<\/div>|\. |\n\n)/u', $text) ?: [$text];
         $chunks = [];
         $current = '';
 
@@ -127,11 +180,27 @@ class AutoTranslationService
         return Http::withOptions([
             'verify' => (bool) config('translation.verify_ssl', false),
         ])
-            ->timeout((int) config('translation.timeout_seconds', 8))
+            ->connectTimeout(10)
+            ->timeout((int) config('translation.timeout_seconds', 20))
             ->withHeaders([
                 'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Accept' => 'application/json,text/plain,*/*',
+                'Accept' => '*/*',
             ]);
+    }
+
+    private function throttle(): void
+    {
+        $delay = max(0, (int) config('translation.request_delay_ms', 400));
+        if ($delay === 0) {
+            return;
+        }
+
+        $now = (int) floor(microtime(true) * 1000);
+        $wait = $delay - ($now - self::$lastRequestMs);
+        if (self::$lastRequestMs > 0 && $wait > 0) {
+            usleep($wait * 1000);
+        }
+        self::$lastRequestMs = (int) floor(microtime(true) * 1000);
     }
 
     private function translateWithLibreTranslate(string $text, string $source, string $target): ?string
@@ -141,6 +210,7 @@ class AutoTranslationService
             return null;
         }
 
+        $this->throttle();
         $isHtml = strip_tags($text) !== $text;
 
         $response = $this->httpClient()
@@ -155,6 +225,8 @@ class AutoTranslationService
             ]);
 
         if (! $response->ok()) {
+            $this->lastError = 'LibreTranslate HTTP '.$response->status();
+
             return null;
         }
 
@@ -170,34 +242,68 @@ class AutoTranslationService
             'sl' => $source,
             'tl' => $target,
             'dt' => 't',
+            'ie' => 'UTF-8',
+            'oe' => 'UTF-8',
             'q' => $text,
         ];
+        $url = 'https://translate.googleapis.com/translate_a/single';
+        $attempts = max(1, (int) config('translation.retries', 4));
 
-        $response = $this->httpClient()->asForm()->post(
-            'https://translate.googleapis.com/translate_a/single',
-            $params
-        );
+        for ($attempt = 1; $attempt <= $attempts; $attempt++) {
+            $this->throttle();
+            $usePost = mb_strlen($text) > 1200;
+            $response = $usePost
+                ? $this->httpClient()->asForm()->post($url, $params)
+                : $this->httpClient()->get($url, $params);
 
-        if (! $response->ok()) {
-            $response = $this->httpClient()->get(
-                'https://translate.googleapis.com/translate_a/single',
-                $params
-            );
+            $status = $response->status();
+            if (in_array($status, [429, 503, 502, 500], true)) {
+                $this->lastError = 'Google HTTP '.$status;
+                sleep(min(30, 2 ** $attempt));
+                continue;
+            }
+
+            if (! $response->ok()) {
+                $this->throttle();
+                $response = $usePost
+                    ? $this->httpClient()->get($url, $params)
+                    : $this->httpClient()->asForm()->post($url, $params);
+                $status = $response->status();
+            }
+
+            if ($response->ok()) {
+                $parsed = $this->parseGooglePayload($response->body());
+                if ($parsed !== null) {
+                    return $parsed;
+                }
+                $this->lastError = 'réponse Google illisible';
+            } else {
+                $this->lastError = 'Google HTTP '.$status;
+                if (in_array($status, [429, 503, 502, 500], true)) {
+                    sleep(min(30, 2 ** $attempt));
+                    continue;
+                }
+            }
+
+            if ($attempt < $attempts) {
+                sleep($attempt);
+            }
         }
 
-        if (! $response->ok()) {
-            Log::warning('Google translate HTTP error', ['status' => $response->status()]);
+        Log::warning('Google translate failed', ['error' => $this->lastError]);
 
-            return null;
-        }
-
-        return $this->parseGooglePayload($response->json() ?? $response->body());
+        return null;
     }
 
     private function parseGooglePayload(mixed $payload): ?string
     {
         if (is_string($payload)) {
-            $payload = json_decode($payload, true);
+            $payload = trim($payload);
+            $decoded = json_decode($payload, true);
+            if (! is_array($decoded)) {
+                return null;
+            }
+            $payload = $decoded;
         }
 
         if (! is_array($payload) || ! isset($payload[0]) || ! is_array($payload[0])) {
@@ -220,16 +326,24 @@ class AutoTranslationService
             return null;
         }
 
+        $this->throttle();
         $response = $this->httpClient()->get('https://api.mymemory.translated.net/get', [
             'q' => $text,
             'langpair' => $source.'|'.$target,
         ]);
 
         if (! $response->ok()) {
+            $this->lastError = 'MyMemory HTTP '.$response->status();
+
             return null;
         }
 
         $translated = (string) ($response->json('responseData.translatedText') ?? '');
+        if (stripos($translated, 'MYMEMORY WARNING') !== false) {
+            $this->lastError = 'MyMemory quota';
+
+            return null;
+        }
 
         return trim($translated) !== '' ? $translated : null;
     }

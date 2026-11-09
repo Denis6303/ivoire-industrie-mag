@@ -7,24 +7,29 @@ use Illuminate\Support\Str;
 
 class ArticleTranslationService
 {
-    private const FIELDS = ['title', 'excerpt', 'content', 'meta_title', 'meta_description'];
+    public const FIELDS = ['title', 'excerpt', 'content', 'meta_title', 'meta_description'];
 
     public function __construct(private AutoTranslationService $translator)
     {
     }
 
     /**
-     * Remplit les champs anglais manquants (ou les régénère si le français a changé).
+     * @param  list<string>|null  $fields
+     * @return array{saved: bool, translated: list<string>, failed: array<string, string>, skipped: list<string>}
      */
-    public function syncEnglish(Article $article, bool $force = false, ?array $fields = null): bool
+    public function syncEnglish(Article $article, bool $force = false, ?array $fields = null): array
     {
         $dirty = false;
+        $translated = [];
+        $failed = [];
+        $skipped = [];
         $fields = $fields ?: self::FIELDS;
 
         foreach ($fields as $field) {
             $enField = $field.'_en';
             $source = $article->{$field} ?? null;
             if (! is_string($source) || trim($source) === '') {
+                $skipped[] = $field;
                 continue;
             }
 
@@ -33,15 +38,18 @@ class ArticleTranslationService
             $shouldTranslate = $force || ! $hasEn || $frenchChanged;
 
             if (! $shouldTranslate) {
+                $skipped[] = $field;
                 continue;
             }
 
-            $translated = $this->translator->translate($source, 'fr', 'en');
-            if (! is_string($translated) || trim($translated) === '') {
+            $value = $this->translator->translate($source, 'fr', 'en');
+            if (! is_string($value) || trim($value) === '') {
+                $failed[$field] = $this->translator->lastError ?: 'échec fournisseur';
                 continue;
             }
 
-            $article->{$enField} = $translated;
+            $article->{$enField} = $value;
+            $translated[] = $field;
             $dirty = true;
         }
 
@@ -53,6 +61,11 @@ class ArticleTranslationService
             $article->saveQuietly();
         }
 
-        return $dirty;
+        return [
+            'saved' => $dirty,
+            'translated' => $translated,
+            'failed' => $failed,
+            'skipped' => $skipped,
+        ];
     }
 }
