@@ -42,16 +42,16 @@ class ImportEnglishArticles extends Command
             if (! is_array($row)) {
                 continue;
             }
-            if (trim((string) ($row['title_en'] ?? '')) !== '' || trim((string) ($row['content_en'] ?? '')) !== '') {
+            if (trim((string) ($row['title_en'] ?? '')) !== '' || trim((string) ($row['excerpt_en'] ?? '')) !== '' || trim((string) ($row['content_en'] ?? '')) !== '') {
                 $withEn++;
             }
         }
 
         $this->comment('Fichier : '.$path.' ('.strlen($raw).' octets)');
-        $this->comment("Lignes : {$total} | avec title_en : {$withEn}");
+        $this->comment("Lignes : {$total} | avec traduction : {$withEn}");
 
         if ($withEn === 0) {
-            $this->error('Ce fichier n\'est pas traduit (title_en vide partout).');
+            $this->error('Ce fichier ne contient aucune traduction (title_en, excerpt_en et content_en vides).');
             $this->line('Vous avez probablement réimporté l\'export d\'origine.');
             $this->line('Écrasez storage/app/i18n-missing.json par le fichier traduit depuis le PC local, puis relancez.');
             $sample = is_array($rows[0] ?? null) ? implode(', ', array_keys($rows[0])) : '(vide)';
@@ -68,8 +68,9 @@ class ImportEnglishArticles extends Command
             }
             $id = (int) ($row['id'] ?? 0);
             $titleEn = trim((string) ($row['title_en'] ?? ''));
+            $excerptEn = trim((string) ($row['excerpt_en'] ?? ''));
             $contentEn = trim((string) ($row['content_en'] ?? ''));
-            if ($id < 1 || ($titleEn === '' && $contentEn === '')) {
+            if ($id < 1 || ($titleEn === '' && $excerptEn === '' && $contentEn === '')) {
                 continue;
             }
 
@@ -82,8 +83,8 @@ class ImportEnglishArticles extends Command
             if ($titleEn !== '') {
                 $article->title_en = $titleEn;
             }
-            if (! empty($row['excerpt_en'])) {
-                $article->excerpt_en = $row['excerpt_en'];
+            if ($excerptEn !== '') {
+                $article->excerpt_en = $excerptEn;
             }
             if ($contentEn !== '') {
                 $article->content_en = $contentEn;
