@@ -14,8 +14,22 @@ class AutoTranslationService
 
     private static int $lastRequestMs = 0;
 
+    private static int $consecutiveFailures = 0;
+
     /** @var array<string, bool> */
     private static array $disabledProviders = [];
+
+    public function isUnavailable(): bool
+    {
+        return self::$consecutiveFailures >= 3;
+    }
+
+    public function probe(): bool
+    {
+        $result = $this->translate('Bonjour le monde', 'fr', 'en');
+
+        return is_string($result) && mb_strtolower($result) !== 'bonjour le monde' && trim($result) !== '';
+    }
 
     public function translate(string $text, string $source = 'fr', string $target = 'en'): ?string
     {
@@ -32,9 +46,17 @@ class AutoTranslationService
             return $text;
         }
 
-        $cacheKey = 'auto_translation:v4:'.md5($source.'|'.$target.'|'.$text);
+        if ($this->isUnavailable()) {
+            $this->lastError = 'APIs de traduction injoignables depuis ce serveur';
+
+            return null;
+        }
+
+        $cacheKey = 'auto_translation:v5:'.md5($source.'|'.$target.'|'.$text);
         $cached = Cache::get($cacheKey);
         if (is_string($cached) && $cached !== '') {
+            self::$consecutiveFailures = 0;
+
             return $cached;
         }
 
@@ -43,16 +65,19 @@ class AutoTranslationService
         } catch (\Throwable $e) {
             $this->lastError = $e->getMessage();
             Log::warning('Auto translation failed', ['message' => $e->getMessage()]);
+            self::$consecutiveFailures++;
 
             return null;
         }
 
         if ($translated === null || trim($translated) === '') {
             $this->lastError ??= 'traduction vide';
+            self::$consecutiveFailures++;
 
             return null;
         }
 
+        self::$consecutiveFailures = 0;
         Cache::put($cacheKey, $translated, now()->addDays(30));
 
         return $translated;
@@ -74,12 +99,12 @@ class AutoTranslationService
 
     private function translateChunk(string $text, string $source, string $target): ?string
     {
-        $translated = $this->translateWithGoogleChrome($text, $source, $target);
+        $translated = $this->translateWithMyMemory($text, $source, $target);
         if ($translated !== null) {
             return $translated;
         }
 
-        $translated = $this->translateWithMyMemory($text, $source, $target);
+        $translated = $this->translateWithGoogleChrome($text, $source, $target);
         if ($translated !== null) {
             return $translated;
         }
@@ -128,19 +153,6 @@ class AutoTranslationService
         return $normalized ?: [$text];
     }
 
-    private function httpClient()
-    {
-        return Http::withOptions([
-            'verify' => (bool) config('translation.verify_ssl', false),
-        ])
-            ->connectTimeout(4)
-            ->timeout((int) config('translation.timeout_seconds', 6))
-            ->withHeaders([
-                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Accept' => '*/*',
-            ]);
-    }
-
     private function throttle(): void
     {
         $delay = max(0, (int) config('translation.request_delay_ms', 150));
@@ -156,89 +168,71 @@ class AutoTranslationService
         self::$lastRequestMs = (int) floor(microtime(true) * 1000);
     }
 
-    private function disableProvider(string $name, string $reason): void
+    /**
+     * @param  array<string, mixed>  $params
+     */
+    private function httpGet(string $url, array $params = []): ?string
     {
-        self::$disabledProviders[$name] = true;
-        $this->lastError = $reason;
-        Log::warning('Translation provider disabled for this process', [
-            'provider' => $name,
-            'reason' => $reason,
-        ]);
-    }
-
-    private function translateWithGoogleChrome(string $text, string $source, string $target): ?string
-    {
-        if (! empty(self::$disabledProviders['chrome'])) {
-            return null;
-        }
-
         $this->throttle();
-        $url = 'https://clients5.google.com/translate_a/t';
-        $params = [
-            'client' => 'dict-chrome-ex',
-            'sl' => $source,
-            'tl' => $target,
-            'q' => $text,
-        ];
+        $fullUrl = $params === [] ? $url : $url.'?'.http_build_query($params);
 
         try {
-            $response = mb_strlen($text) > 700
-                ? $this->httpClient()->asForm()->post($url, $params)
-                : $this->httpClient()->get($url, $params);
+            $response = Http::withOptions([
+                'verify' => (bool) config('translation.verify_ssl', false),
+            ])
+                ->connectTimeout(4)
+                ->timeout((int) config('translation.timeout_seconds', 6))
+                ->withHeaders([
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Accept' => '*/*',
+                ])
+                ->get($fullUrl);
+
+            if ($response->ok()) {
+                return $response->body();
+            }
+            $this->lastError = 'HTTP '.$response->status();
         } catch (\Throwable $e) {
-            $this->disableProvider('chrome', 'Chrome timeout: '.$e->getMessage());
-
-            return null;
+            $this->lastError = $e->getMessage();
         }
 
-        $status = $response->status();
-        if (in_array($status, [429, 403, 503], true)) {
-            $this->disableProvider('chrome', 'Chrome HTTP '.$status);
-
-            return null;
+        $body = $this->streamGet($fullUrl);
+        if ($body !== null) {
+            $this->lastError = null;
         }
 
-        if (! $response->ok()) {
-            $this->lastError = 'Chrome HTTP '.$status;
-
-            return null;
-        }
-
-        $parsed = $this->parseChromePayload($response->body());
-        if ($parsed === null) {
-            $this->lastError = 'réponse Chrome illisible';
-        }
-
-        return $parsed;
+        return $body;
     }
 
-    private function parseChromePayload(string $body): ?string
+    private function streamGet(string $url): ?string
     {
-        $payload = json_decode(trim($body), true);
-        if (! is_array($payload) || $payload === []) {
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'GET',
+                'timeout' => (int) config('translation.timeout_seconds', 6),
+                'header' => "User-Agent: Mozilla/5.0\r\nAccept: */*\r\n",
+                'ignore_errors' => true,
+            ],
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+            ],
+        ]);
+
+        $body = @file_get_contents($url, false, $context);
+        if (! is_string($body) || $body === '') {
             return null;
         }
 
-        if (isset($payload[0]) && is_string($payload[0])) {
-            $translated = implode('', array_filter($payload, 'is_string'));
-
-            return trim($translated) !== '' ? $translated : null;
-        }
-
-        return $this->parseGtxPayload($payload);
+        return $body;
     }
 
     private function translateWithMyMemory(string $text, string $source, string $target): ?string
     {
-        if (! empty(self::$disabledProviders['mymemory'])) {
+        if (! empty(self::$disabledProviders['mymemory']) || mb_strlen($text) > 450) {
             return null;
         }
 
-        if (mb_strlen($text) > 450) {
-            return null;
-        }
-
-        $this->throttle();
         $query = [
             'q' => $text,
             'langpair' => $source.'|'.$target,
@@ -248,32 +242,53 @@ class AutoTranslationService
             $query['de'] = $email;
         }
 
-        try {
-            $response = $this->httpClient()->get('https://api.mymemory.translated.net/get', $query);
-        } catch (\Throwable $e) {
-            $this->disableProvider('mymemory', 'MyMemory timeout: '.$e->getMessage());
-
+        $body = $this->httpGet('https://api.mymemory.translated.net/get', $query);
+        if ($body === null) {
             return null;
         }
 
-        if (! $response->ok()) {
-            if (in_array($response->status(), [429, 403], true)) {
-                $this->disableProvider('mymemory', 'MyMemory HTTP '.$response->status());
-            } else {
-                $this->lastError = 'MyMemory HTTP '.$response->status();
-            }
-
-            return null;
-        }
-
-        $translated = (string) ($response->json('responseData.translatedText') ?? '');
+        $payload = json_decode($body, true);
+        $translated = (string) data_get($payload, 'responseData.translatedText', '');
         if (stripos($translated, 'MYMEMORY WARNING') !== false) {
-            $this->disableProvider('mymemory', 'MyMemory quota');
+            self::$disabledProviders['mymemory'] = true;
+            $this->lastError = 'MyMemory quota';
 
             return null;
         }
 
         return trim($translated) !== '' ? $translated : null;
+    }
+
+    private function translateWithGoogleChrome(string $text, string $source, string $target): ?string
+    {
+        if (! empty(self::$disabledProviders['chrome'])) {
+            return null;
+        }
+
+        $body = $this->httpGet('https://clients5.google.com/translate_a/t', [
+            'client' => 'dict-chrome-ex',
+            'sl' => $source,
+            'tl' => $target,
+            'q' => $text,
+        ]);
+        if ($body === null) {
+            if (str_contains((string) $this->lastError, 'HTTP 429') || str_contains((string) $this->lastError, 'HTTP 403')) {
+                self::$disabledProviders['chrome'] = true;
+            }
+
+            return null;
+        }
+
+        $payload = json_decode(trim($body), true);
+        if (is_array($payload) && isset($payload[0]) && is_string($payload[0])) {
+            $translated = trim(implode('', array_filter($payload, 'is_string')));
+
+            return $translated !== '' ? $translated : null;
+        }
+
+        $this->lastError = 'réponse Chrome illisible';
+
+        return null;
     }
 
     private function translateWithGoogleGtx(string $text, string $source, string $target): ?string
@@ -282,39 +297,24 @@ class AutoTranslationService
             return null;
         }
 
-        $this->throttle();
-        try {
-            $response = $this->httpClient()->get('https://translate.googleapis.com/translate_a/single', [
-                'client' => 'gtx',
-                'sl' => $source,
-                'tl' => $target,
-                'dt' => 't',
-                'ie' => 'UTF-8',
-                'oe' => 'UTF-8',
-                'q' => $text,
-            ]);
-        } catch (\Throwable $e) {
-            $this->disableProvider('gtx', 'GTX timeout: '.$e->getMessage());
+        $body = $this->httpGet('https://translate.googleapis.com/translate_a/single', [
+            'client' => 'gtx',
+            'sl' => $source,
+            'tl' => $target,
+            'dt' => 't',
+            'q' => $text,
+        ]);
+        if ($body === null) {
+            self::$disabledProviders['gtx'] = true;
 
             return null;
         }
 
-        if (! $response->ok()) {
-            $this->disableProvider('gtx', 'GTX HTTP '.$response->status());
-
-            return null;
-        }
-
-        return $this->parseGtxPayload($response->body());
-    }
-
-    private function parseGtxPayload(mixed $payload): ?string
-    {
-        if (is_string($payload)) {
-            $payload = json_decode(trim($payload), true);
-        }
-
+        $payload = json_decode(trim($body), true);
         if (! is_array($payload) || ! isset($payload[0]) || ! is_array($payload[0])) {
+            self::$disabledProviders['gtx'] = true;
+            $this->lastError = 'GTX illisible';
+
             return null;
         }
 

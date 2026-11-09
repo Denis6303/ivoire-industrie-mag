@@ -16,7 +16,11 @@ class ArticleObserver
             return;
         }
 
-        // Titre / châpeau seulement à la sauvegarde (le contenu HTML est trop long pour bloquer l'admin).
+        $api = app(\App\Services\AutoTranslationService::class);
+        if ($api->isUnavailable()) {
+            return;
+        }
+
         app(ArticleTranslationService::class)->syncEnglish(
             $article,
             false,

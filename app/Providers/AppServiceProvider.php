@@ -21,6 +21,8 @@ class AppServiceProvider extends ServiceProvider
         if (is_file($helpers)) {
             require_once $helpers;
         }
+
+        $this->app->singleton(\App\Services\AutoTranslationService::class);
     }
 
     /**

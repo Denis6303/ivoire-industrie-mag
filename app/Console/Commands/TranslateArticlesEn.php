@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Article;
 use App\Services\ArticleTranslationService;
+use App\Services\AutoTranslationService;
 use Illuminate\Console\Command;
 
 class TranslateArticlesEn extends Command
@@ -18,8 +19,22 @@ class TranslateArticlesEn extends Command
 
     protected $description = 'Traduit uniquement les articles en échec (sans titre anglais), sans retoucher ceux déjà OK';
 
-    public function handle(ArticleTranslationService $translator): int
+    public function handle(ArticleTranslationService $translator, AutoTranslationService $api): int
     {
+        $this->comment('Test de connexion aux APIs de traduction...');
+        if (! $api->probe()) {
+            $this->error('Impossible de traduire depuis ce serveur ('.$api->lastError.').');
+            $this->line('Le serveur de production n\'a probablement pas accès à Google/MyMemory.');
+            $this->newLine();
+            $this->info('Procédure qui fonctionne :');
+            $this->line('1) Ici en prod :  php artisan articles:export-missing-en');
+            $this->line('2) En local     :  php artisan articles:translate-json');
+            $this->line('3) Ici en prod :  php artisan articles:import-en');
+
+            return self::FAILURE;
+        }
+        $this->info('API OK : « '.$api->translate('Bonjour le monde', 'fr', 'en').' »');
+
         $fields = ArticleTranslationService::FIELDS;
         if (! $this->option('with-content')) {
             $fields = array_values(array_filter($fields, fn ($field) => $field !== 'content'));
@@ -61,7 +76,7 @@ class TranslateArticlesEn extends Command
         $fail = 0;
         $sleep = max(0, (float) $this->option('sleep'));
 
-        $query->orderBy('id')->chunkById(10, function ($articles) use ($translator, $fields, $sleep, &$ok, &$partial, &$fail) {
+        $query->orderBy('id')->chunkById(10, function ($articles) use ($translator, $api, $fields, $sleep, &$ok, &$partial, &$fail) {
             foreach ($articles as $article) {
                 $result = $translator->syncEnglish($article, (bool) $this->option('force'), $fields);
                 $hasTitle = filled($article->title_en);
@@ -78,6 +93,12 @@ class TranslateArticlesEn extends Command
                     $fail++;
                     $reason = $this->formatFailures($result['failed']) ?: 'titre non traduit';
                     $this->error("Échec #{$article->id} {$article->title} ({$reason})");
+                    if ($api->isUnavailable() || $fail >= 3 && $ok === 0) {
+                        $this->error('Arrêt : les APIs ne répondent pas depuis ce serveur.');
+                        $this->line('Utilisez articles:export-missing-en → translate-json (en local) → import-en.');
+
+                        return false;
+                    }
                 }
 
                 if ($sleep > 0) {
