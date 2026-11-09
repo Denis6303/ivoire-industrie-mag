@@ -39,11 +39,12 @@ class TranslateJsonFile extends Command
 
         foreach ($rows as $i => $row) {
             $title = (string) ($row['title'] ?? '');
-            if ($title === '') {
+            $content = (string) ($row['content'] ?? '');
+            if ($title === '' && $content === '') {
                 continue;
             }
 
-            if (empty($row['title_en'])) {
+            if ($title !== '' && empty($row['title_en'])) {
                 $translated = $translator->translate($title, 'fr', 'en');
                 if (is_string($translated) && $translated !== '') {
                     $rows[$i]['title_en'] = $translated;
@@ -66,6 +67,23 @@ class TranslateJsonFile extends Command
                     $rows[$i]['excerpt_en'] = $excerptEn;
                 }
             }
+
+            if ($content !== '' && empty($row['content_en'])) {
+                $contentEn = $translator->translate($content, 'fr', 'en');
+                if (is_string($contentEn) && $contentEn !== '') {
+                    $rows[$i]['content_en'] = $contentEn;
+                    $ok++;
+                    $this->line('Contenu OK #'.($row['id'] ?? '?'));
+                } else {
+                    $fail++;
+                    $this->error('Contenu échec #'.($row['id'] ?? '?').' '.($translator->lastError ?: ''));
+                    if ($translator->isUnavailable()) {
+                        break;
+                    }
+                }
+            }
+
+            file_put_contents($path, json_encode($rows, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
         }
 
         file_put_contents($path, json_encode($rows, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));

@@ -42,7 +42,7 @@ class ImportEnglishArticles extends Command
             if (! is_array($row)) {
                 continue;
             }
-            if (trim((string) ($row['title_en'] ?? '')) !== '') {
+            if (trim((string) ($row['title_en'] ?? '')) !== '' || trim((string) ($row['content_en'] ?? '')) !== '') {
                 $withEn++;
             }
         }
@@ -68,7 +68,8 @@ class ImportEnglishArticles extends Command
             }
             $id = (int) ($row['id'] ?? 0);
             $titleEn = trim((string) ($row['title_en'] ?? ''));
-            if ($id < 1 || $titleEn === '') {
+            $contentEn = trim((string) ($row['content_en'] ?? ''));
+            if ($id < 1 || ($titleEn === '' && $contentEn === '')) {
                 continue;
             }
 
@@ -78,11 +79,16 @@ class ImportEnglishArticles extends Command
                 continue;
             }
 
-            $article->title_en = $titleEn;
+            if ($titleEn !== '') {
+                $article->title_en = $titleEn;
+            }
             if (! empty($row['excerpt_en'])) {
                 $article->excerpt_en = $row['excerpt_en'];
             }
-            if (empty($article->slug_en)) {
+            if ($contentEn !== '') {
+                $article->content_en = $contentEn;
+            }
+            if ($titleEn !== '' && empty($article->slug_en)) {
                 $article->slug_en = Str::slug($titleEn).'-'.Str::lower(Str::random(6));
             }
             $article->saveQuietly();
