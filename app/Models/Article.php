@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Observers\ArticleObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +15,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Article extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected static function booted(): void
+    {
+        static::observe(ArticleObserver::class);
+    }
 
     protected $fillable = [
         'title', 'title_en', 'signature', 'slug', 'slug_en', 'excerpt', 'excerpt_en', 'content', 'content_en',

@@ -87,7 +87,22 @@ if (! function_exists('article_i18n')) {
         }
 
         if ($locale === 'en' && in_array($field, ['title', 'excerpt', 'content', 'meta_title', 'meta_description'], true)) {
-            return app(\App\Services\AutoTranslationService::class)->translate($value, 'fr', 'en');
+            $translated = app(\App\Services\AutoTranslationService::class)->translate($value, 'fr', 'en');
+            if (! is_string($translated) || trim($translated) === '') {
+                return $value;
+            }
+
+            try {
+                $article->{$englishField} = $translated;
+                if ($field === 'title' && empty($article->slug_en)) {
+                    $article->slug_en = \Illuminate\Support\Str::slug($translated).'-'.\Illuminate\Support\Str::lower(\Illuminate\Support\Str::random(6));
+                }
+                $article->saveQuietly();
+            } catch (\Throwable $e) {
+                // La traduction affichée reste valable même si la persistance échoue.
+            }
+
+            return $translated;
         }
 
         return $value;
